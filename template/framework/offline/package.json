@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "light-sdk": "^2.0.4",
+    "@winner-fed/native-bridge-methods": "*"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@winner-fed/win-ui": "^0.0.6"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.13.3"
+  }
+}

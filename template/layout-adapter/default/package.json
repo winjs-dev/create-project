@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "amfe-flexible": "2.2.1"
+  },
+  "devDependencies": {
+    "postcss-pxtorem": "^4.0.1"
+  }
+}

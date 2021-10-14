@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "vue-cli-plugin-qrcode": "*",
+    "vue-template-compiler": "^2.6.11"
+  }
+}

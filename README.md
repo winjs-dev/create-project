@@ -1,11 +1,11 @@
-# create-vue
+# create-project
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/vuejs/create-vue)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/cloud-templates/create-project)
 
-An easy way to start a Vue project
+An easy way to start a project
 
 ## Usage
 
 ```sh
-npm init vue@next
+npm init @winner-fed/project
 ```
