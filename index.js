@@ -1,42 +1,45 @@
 #!/usr/bin/env node
 // @ts-check
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'
+import path from 'path'
 
-import minimist from 'minimist';
-import prompts from 'prompts';
-import { red, yellow, cyan, magenta, green, bold, blue } from 'kolorist';
+import minimist from 'minimist'
+import prompts from 'prompts'
+import { red, yellow, cyan, magenta, green, bold, blue } from 'kolorist'
 
-import renderTemplate from './utils/renderTemplate.js';
-import { postOrderDirectoryTraverse, preOrderDirectoryTraverse } from './utils/directoryTraverse.js';
-// import generateReadme from './utils/generateReadme.js';
-import generateMain from './utils/generateMain.js';
-import getCommand from './utils/getCommand.js';
+import renderTemplate from './utils/renderTemplate.js'
+import { postOrderDirectoryTraverse, preOrderDirectoryTraverse } from './utils/directoryTraverse.js'
+import generateMain from './utils/generateMain.js'
+import generateMainV3 from './utils/generateMainV3.js'
+import generateVueConfig from './utils/generateVueConfig.js'
+import getCommand from './utils/getCommand.js'
+import generateOfflinePackage from './utils/generateOfflinePackage'
+import generateRouterInterceptor from './utils/generateRouterInterceptor'
 
-function isValidPackageName (projectName) {
-  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
+function isValidPackageName(projectName) {
+  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName)
 }
 
-function toValidPackageName (projectName) {
+function toValidPackageName(projectName) {
   return projectName
     .trim()
     .toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/^[._]/, '')
-    .replace(/[^a-z0-9-~]+/g, '-');
+    .replace(/[^a-z0-9-~]+/g, '-')
 }
 
-function canSafelyOverwrite (dir) {
-  return !fs.existsSync(dir) || fs.readdirSync(dir).length === 0;
+function canSafelyOverwrite(dir) {
+  return !fs.existsSync(dir) || fs.readdirSync(dir).length === 0
 }
 
-function emptyDir (dir) {
+function emptyDir(dir) {
   postOrderDirectoryTraverse(
     dir,
     (dir) => fs.rmdirSync(dir),
     (file) => fs.unlinkSync(file)
-  );
+  )
 }
 
 // 步骤
@@ -48,8 +51,8 @@ function emptyDir (dir) {
 // 5. 选择 版本控制工具 version-control
 // 6. 是否使用公司镜像源 mirror-source
 // 7. 是否使用 see 命令输出包
-async function init () {
-  const cwd = process.cwd();
+async function init() {
+  const cwd = process.cwd()
   // possible options:
   // --default
   // --typescript / --ts
@@ -64,20 +67,18 @@ async function init () {
     },
     // all arguments are treated as booleans
     boolean: true
-  });
+  })
 
   // if any of the feature flags is set, we would skip the feature prompts
   // use `??` instead of `||` once we drop Node.js 12 support
-  const isFeatureFlagsUsed =
-    typeof (argv.default || argv.ts || argv.see || argv.ms) ===
-    'boolean';
+  const isFeatureFlagsUsed = typeof (argv.default || argv.ts || argv.see || argv.ms) === 'boolean'
 
-  let targetDir = argv._[0];
-  const defaultProjectName = !targetDir ? 'winner-project' : targetDir;
+  let targetDir = argv._[0]
+  const defaultProjectName = !targetDir ? 'winner-project' : targetDir
 
-  const forceOverwrite = argv.force;
+  const forceOverwrite = argv.force
 
-  let result = {};
+  let result = {}
 
   const pcUI = [
     {
@@ -88,7 +89,7 @@ async function init () {
       title: magenta('ant-design-vue'),
       value: 'ant'
     }
-  ];
+  ]
 
   // 没有用vue3实现
   const pcUI2 = [
@@ -97,7 +98,7 @@ async function init () {
       value: 'hui'
     },
     ...pcUI
-  ];
+  ]
 
   try {
     // Prompts:
@@ -126,18 +127,18 @@ async function init () {
           type: () => (canSafelyOverwrite(targetDir) || forceOverwrite ? null : 'confirm'),
           message: () => {
             const dirForPrompt =
-              targetDir === '.' ? 'Current directory' : `Target directory "${targetDir}"`;
+              targetDir === '.' ? 'Current directory' : `Target directory "${targetDir}"`
 
-            return `${dirForPrompt} is not empty. Remove existing files and continue?`;
+            return `${dirForPrompt} is not empty. Remove existing files and continue?`
           }
         },
         {
           name: 'overwriteChecker',
           type: (prev, values = {}) => {
             if (values.shouldOverwrite === false) {
-              throw new Error(red('✖') + ' Operation cancelled');
+              throw new Error(red('✖') + ' Operation cancelled')
             }
-            return null;
+            return null
           }
         },
         {
@@ -176,7 +177,9 @@ async function init () {
         },
         {
           name: 'application',
-          type: (values) => values.framework !== 'mini' ? 'select' : null,
+          type: (prev, values) => {
+            return values.framework !== 'mini' ? 'select' : null
+          },
           message: 'Choose whether your app is a PC or a mobile?',
           choices: [
             {
@@ -195,35 +198,37 @@ async function init () {
         },
         {
           name: 'offlineId',
-          type: (values) => (values.framework !== 'mini' && values.application === 'offline') ? 'text' : null,
+          type: (prev, values) =>
+            values.framework !== 'mini' && values.application === 'offline' ? 'text' : null,
           message: 'Fill in the offline package ID',
           validate: function (val) {
             return /^[0-9a-z]{4,8}$/.test(val)
               ? true
-              : '请输入4-8位的小写英文字母或数字，注意唯一性';
+              : '请输入4-8位的小写英文字母或数字，注意唯一性'
           },
           initial: '离线包 ID'
         },
         {
           name: 'offlineName',
-          type: (values) => (values.framework !== 'mini' && values.application === 'offline') ? 'text' : null,
+          type: (prev, values) =>
+            values.framework !== 'mini' && values.application === 'offline' ? 'text' : null,
           message: 'Fill in the offline package name',
           validate: function (val) {
             return /^[\u4e00-\u9fa5a-zA-Z0-9]{1,10}$/.test(val)
               ? true
-              : '请输入1-10位的中英文字符或数字';
+              : '请输入1-10位的中英文字符或数字'
           }
         },
         {
           name: 'uiFramework',
-          type: (values) => values.framework !== 'mini' ? 'select' : null,
+          type: (prev, values) => (values.framework !== 'mini' ? 'select' : null),
           message: 'Select a UI Framework',
           choices: (answers) => {
             if (answers.framework === 'mini') {
-              return;
+              return
             }
             if (answers.application === 'pc') {
-              return answers.framework === 'v2' ? pcUI2 : pcUI;
+              return answers.framework === 'v2' ? pcUI2 : pcUI
             }
             // mobile or offline
             return [
@@ -235,7 +240,7 @@ async function init () {
                 title: blue('Vant'),
                 value: 'vant'
               }
-            ];
+            ]
           }
         },
         {
@@ -255,15 +260,16 @@ async function init () {
         },
         {
           name: 'needsMirrorSource',
-          type: (values) => (values.framework !== 'mini' ? 'toggle' : null),
-          message: 'Add Mirror Source?',
+          type: (prev, values) => (values.framework !== 'mini' ? 'toggle' : null),
+          message: 'Add Mirror Source Support?',
           initial: false,
           active: 'Yes',
           inactive: 'No'
         },
         {
           name: 'needsSeePackage',
-          type: (values) => values.framework !== 'mini' || values.needsMirrorSource === true || isFeatureFlagsUsed ? null : 'toggle',
+          type: (prev, values) =>
+            values.framework !== 'mini' && values.needsMirrorSource === true ? 'toggle' : null,
           message: 'Add See Package Support?',
           initial: false,
           active: 'Yes',
@@ -272,13 +278,13 @@ async function init () {
       ],
       {
         onCancel: () => {
-          throw new Error(red('✖') + ' Operation cancelled');
+          throw new Error(red('✖') + ' Operation cancelled')
         }
       }
-    );
+    )
   } catch (cancelled) {
-    console.log(cancelled.message);
-    process.exit(1);
+    console.log(cancelled.message)
+    process.exit(1)
   }
   // `initial` won't take effect if the prompt type is null
   // so we still have to assign the default values here
@@ -295,25 +301,25 @@ async function init () {
     versionControl = argv.versionControl,
     needsMirrorSource = argv.ms,
     needsSeePackage = argv.see
-  } = result;
-  const root = path.join(cwd, targetDir);
-
+  } = result
+  const root = path.join(cwd, targetDir)
+  console.log('result', result)
   if (shouldOverwrite) {
-    emptyDir(root);
+    emptyDir(root)
   } else if (!fs.existsSync(root)) {
-    fs.mkdirSync(root);
+    fs.mkdirSync(root)
   }
 
-  console.log(`\nScaffolding project in ${root}...`);
+  console.log(`\nScaffolding project in ${root}...`)
 
-  const pkg = {name: packageName, version: '0.0.0'};
-  fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2));
+  const pkg = { name: packageName, version: '0.0.0' }
+  fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2))
 
   // todo:
   // work around the esbuild issue that `import.meta.url` cannot be correctly transpiled
   // when bundling for node and the format is cjs
   // const templateRoot = new URL('./template', import.meta.url).pathname
-  const templateRoot = path.resolve(__dirname, 'template');
+  const templateRoot = path.resolve(__dirname, 'template')
   const options = {
     packageName,
     framework,
@@ -323,59 +329,118 @@ async function init () {
     uiFramework,
     layoutAdapter,
     versionControl
-  };
-  const render = function render (templateName) {
-    const templateDir = path.resolve(templateRoot, templateName);
-    renderTemplate(templateDir, root, options);
-  };
+  }
+  const render = function render(templateName) {
+    const templateDir = path.resolve(templateRoot, templateName)
+    renderTemplate(templateDir, root, options)
+  }
 
   // Render base template
-  render('base');
+  render('base')
 
   // Add configs.
   if (framework === 'mini') {
-    render('framework/miniprogram');
+    render('framework/miniprogram')
   } else if (framework === 'v3') {
-    render('framework/vue3');
+    render('framework/vue3')
   } else {
-    render('framework/default');
+    render('framework/default')
   }
 
-  // if (needsTypeScript) {
-  //   render('config/typescript');
-  // }
+  // typescript support
+  if (needsTypeScript) {
+    if (framework === 'v2') {
+      render('language/typescript/v2')
+    } else if (framework === 'v3') {
+      render('language/typescript/v3')
+    }
+  } else {
+    if (framework === 'v2') {
+      render('language/default/v2')
+    } else if (framework === 'v3') {
+      render('language/default/v3')
+    }
+  }
 
   if (application === 'pc') {
-    render('application/pc');
-  } else if(application === 'offline') {
-    render('application/offline');
+    render('application/pc')
   } else {
-    render('application/default');
+    render('application/default')
   }
 
-  // Render code template.
-  // prettier-ignore
-  // const codeTemplate =
-  //   (needsTypeScript ? 'typescript-' : '') ;
-  // render(`code/${codeTemplate}`);
+  if (uiFramework === 'wui') {
+    render('ui-framework/default')
+  } else if (uiFramework === 'vant') {
+    render('ui-framework/vant')
+  } else if (uiFramework === 'hui') {
+    render('ui-framework/hui')
+  } else if (uiFramework === 'ant') {
+    render('ui-framework/ant-design-vue')
+  } else if (uiFramework === 'element-ui') {
+    render('ui-framework/element-ui')
+  }
+
+  if (layoutAdapter === 'vw') {
+    render('layout-adapter/viewpoint')
+  } else {
+    render('layout-adapter/default')
+  }
 
   if (needsMirrorSource) {
-    render('mirror-source');
+    render('mirror-source')
   }
 
   if (needsSeePackage) {
-    render('see-package');
+    render('see-package')
   }
 
   // Main generation
-  fs.writeFileSync(
-    path.resolve(root, 'src/main.js'),
-    generateMain({
+  let mainContent = generateMain({
+    application,
+    uiFramework,
+    layoutAdapter
+  })
+
+  if (framework === 'v3') {
+    generateMainV3({
       application,
       uiFramework,
-      layoutAdapter
+      layoutAdapter,
+      needsTypeScript
+    })
+  }
+  fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent)
+
+  // vue.config.js
+  fs.writeFileSync(
+    path.resolve(root, 'vue.config.js'),
+    generateVueConfig({
+      application,
+      uiFramework,
+      layoutAdapter,
+      needsTypeScript,
+      versionControl
     })
   )
+
+  // router.interceptor.js
+  fs.writeFileSync(
+    path.resolve(root, 'src/router/router.interceptor.js'),
+    generateRouterInterceptor({
+      application
+    })
+  )
+
+  // 离线包
+  if (application === 'offline') {
+    fs.writeFileSync(
+      path.resolve(root, 'offlinePackage.json'),
+      generateOfflinePackage({
+        offlineId,
+        offlineName
+      })
+    )
+  }
 
   // Cleanup.
 
@@ -384,21 +449,20 @@ async function init () {
     // rename jsconfig.json to tsconfig.json
     preOrderDirectoryTraverse(
       root,
-      () => {
-      },
+      () => {},
       (filepath) => {
         if (filepath.endsWith('.js')) {
-          fs.renameSync(filepath, filepath.replace(/\.js$/, '.ts'));
+          fs.renameSync(filepath, filepath.replace(/\.js$/, '.ts'))
         } else if (path.basename(filepath) === 'jsconfig.json') {
-          fs.renameSync(filepath, filepath.replace(/jsconfig\.json$/, 'tsconfig.json'));
+          fs.renameSync(filepath, filepath.replace(/jsconfig\.json$/, 'tsconfig.json'))
         }
       }
-    );
+    )
 
     // Rename entry in `index.html`
-    const indexHtmlPath = path.resolve(root, 'index.html');
-    const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
-    fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
+    const indexHtmlPath = path.resolve(root, 'public/index.html')
+    const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8')
+    fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'))
   }
 
   // Instructions:
@@ -408,28 +472,18 @@ async function init () {
   const packageManager = /pnpm/.test(process.env.npm_execpath)
     ? 'pnpm'
     : /yarn/.test(process.env.npm_execpath)
-      ? 'yarn'
-      : 'npm';
+    ? 'yarn'
+    : 'npm'
 
-  // README generation
-  // fs.writeFileSync(
-  //   path.resolve(root, 'README.md'),
-  //   generateReadme({
-  //     projectName: result.projectName || defaultProjectName,
-  //     packageManager,
-  //     needsTypeScript
-  //   })
-  // )
-
-  console.log(`\nDone. Now run:\n`);
+  console.log(`\nDone. Now run:\n`)
   if (root !== cwd) {
-    console.log(`  ${bold(green(`cd ${path.relative(cwd, root)}`))}`);
+    console.log(`  ${bold(green(`cd ${path.relative(cwd, root)}`))}`)
   }
-  console.log(`  ${bold(green(getCommand(packageManager, 'install')))}`);
-  console.log(`  ${bold(green(getCommand(packageManager, 'dev')))}`);
-  console.log();
+  console.log(`  ${bold(green(getCommand(packageManager, 'install')))}`)
+  console.log(`  ${bold(green(getCommand(packageManager, 'dev')))}`)
+  console.log()
 }
 
 init().catch((e) => {
-  console.error(e);
-});
+  console.error(e)
+})
