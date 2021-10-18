@@ -1,7 +1,5 @@
-# [vue-template](https://github.com/cklwblove/vue-cli3-template)
-
-基于 vue-cli 搭建的前端模板
-
+# <%= options.packageName %>
+<%= packageName %>
 ## 特性
 
 - CSS 预编译语言：[less](http://lesscss.org/)

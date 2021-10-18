@@ -4,7 +4,7 @@
   "description": "An easy way to start a project",
   "type": "module",
   "bin": {
-    "create-vue": "outfile.cjs"
+    "create-project": "outfile.cjs"
   },
   "files": [
     "outfile.cjs",
@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/cloud-templates/create-project#readme",
   "devDependencies": {
+    "ejs": "^3.1.6",
     "esbuild": "^0.12.29",
     "husky": "^7.0.2",
     "kolorist": "^1.5.0",
@@ -41,7 +42,8 @@
     "minimist": "^1.2.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
-    "prompts": "^2.4.1"
+    "prompts": "^2.4.1",
+    "yaml-front-matter": "^4.1.1"
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": [

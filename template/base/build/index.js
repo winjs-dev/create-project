@@ -1,8 +1,7 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
-const {sh, cli} = require('tasksfile');
+const {sh} = require('tasksfile');
 const chalk = require('chalk');
 const rawArgv = process.argv.slice(2);
 const args = rawArgv.join(' ');
@@ -19,11 +18,6 @@ function command() {
     stdio: 'inherit'
   })
     .then((output) => {
-    <%_ if (options.application === 'offline') { _%>
-        // 离线包的说明信息
-      fs.createReadStream(resolve(`offlinePackage.json`))
-        .pipe(fs.createWriteStream(resolve('dist/offlinePackage.json')));
-    <%_ } _%>
       console.log(chalk.cyan(output || ''));
     })
     .catch((err) => {
