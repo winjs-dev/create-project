@@ -114,7 +114,7 @@ async function init() {
     // - Project name:
     //   - whether to overwrite the existing directory or not?
     //   - enter a valid package name for package.json
-    // - Framework: vue2 / vue3 / miniprogram
+    // - Framework: default / vue3 / miniprogram
     // - Application: mobile / pc / offline
     // - Add Typescript Support?
     // - UI Framework: wui / vant / hui / element-ui / ant-design-vue ...
@@ -174,7 +174,8 @@ async function init() {
               title: magenta('miniprogram'),
               value: 'mini'
             }
-          ]
+          ],
+          initial: 0
         },
         {
           name: 'needsTypeScript',
@@ -311,6 +312,7 @@ async function init() {
     needsMirrorSource = argv.ms,
     needsSeePackage = argv.see
   } = result
+
   const root = path.join(cwd, targetDir)
 
   if (shouldOverwrite) {

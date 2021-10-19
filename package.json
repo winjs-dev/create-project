@@ -1,6 +1,6 @@
 {
   "name": "@winner-fed/create-project",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "An easy way to start a project",
   "type": "module",
   "bin": {
@@ -49,5 +49,9 @@
     "*.{js,ts,vue,json}": [
       "prettier --write"
     ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
