@@ -54,14 +54,21 @@ function emptyDir(dir) {
 async function init() {
   const cwd = process.cwd()
   // possible options:
-  // --default
+  // --framework   / --fa
+  // --application / --ap
   // --typescript / --ts
+  // --ui-framework    / --uf
+  // --layout-adapter   / --la
+  // --version-control / --vc
   // --mirror-source / --ms
   // --see / --see
   // --force (for force overwriting)
   const argv = minimist(process.argv.slice(2), {
     alias: {
       typescript: ['ts'],
+      'ui-framework': ['uf'],
+      'layout-adapter': ['la'],
+      'version-control': ['vc'],
       'mirror-source': ['ms'],
       see: ['see']
     },
@@ -71,7 +78,9 @@ async function init() {
 
   // if any of the feature flags is set, we would skip the feature prompts
   // use `??` instead of `||` once we drop Node.js 12 support
-  const isFeatureFlagsUsed = typeof (argv.default || argv.ts || argv.see || argv.ms) === 'boolean'
+  const isFeatureFlagsUsed =
+    typeof (argv.default || argv.ts || argv.ui || argv.la || argv.vc || argv.see || argv.ms) ===
+    'boolean'
 
   let targetDir = argv._[0]
   const defaultProjectName = !targetDir ? 'winner-project' : targetDir
@@ -296,14 +305,14 @@ async function init() {
     application = argv.application,
     offlineId = argv.offlineId,
     offlineName = argv.offlineName,
-    uiFramework = argv.uiFramework,
-    layoutAdapter = argv.layoutAdapter,
-    versionControl = argv.versionControl,
+    uiFramework = argv.ui,
+    layoutAdapter = argv.la,
+    versionControl = argv.vc,
     needsMirrorSource = argv.ms,
     needsSeePackage = argv.see
   } = result
   const root = path.join(cwd, targetDir)
-  console.log('result', result)
+
   if (shouldOverwrite) {
     emptyDir(root)
   } else if (!fs.existsSync(root)) {
@@ -371,13 +380,25 @@ async function init() {
   if (uiFramework === 'wui') {
     render('ui-framework/default')
   } else if (uiFramework === 'vant') {
-    render('ui-framework/vant')
+    if (framework === 'v2') {
+      render('ui-framework/vant/v2')
+    } else {
+      render('ui-framework/vant/v3')
+    }
   } else if (uiFramework === 'hui') {
     render('ui-framework/hui')
   } else if (uiFramework === 'ant') {
-    render('ui-framework/ant-design-vue')
+    if (framework === 'v2') {
+      render('ui-framework/ant-design-vue/v2')
+    } else {
+      render('ui-framework/ant-design-vue/v3')
+    }
   } else if (uiFramework === 'element-ui') {
-    render('ui-framework/element-ui')
+    if (framework === 'v2') {
+      render('ui-framework/element-ui/v2')
+    } else {
+      render('ui-framework/element-ui/v3')
+    }
   }
 
   if (layoutAdapter === 'vw') {
