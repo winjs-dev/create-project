@@ -1,7 +1,6 @@
-import ejs from 'ejs'
+import ejs from 'ejs';
 
-const mainV3 = `
-import 'core-js/stable';
+const mainV3 = `import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 <%_ if ((application === 'mobile' || application === 'offline') && options['layout-adapter'] !== 'vw') { _%>
 import 'amfe-flexible';
@@ -10,9 +9,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import { setupRouter } from './router';
 import './router/router.interceptor';
-<%_ if (needsTypeScript) { _%>
-import './pwa/register-service-worker';
-<%_ } _%>
 import { setGlobalProperties } from '@/services';
 import setupSvgIcon from './icons';
 import { setApp } from './useApp';
@@ -31,7 +27,6 @@ import LightSDK from 'light-sdk/dist/index.umd';
 
 window.LightSDK = LightSDK;
 <%_ } _%>
-
 import './assets/style/app.less';
 
 const app = createApp(App);
@@ -56,7 +51,8 @@ app.mount('#app');
 <%_ } _%>
 
 setApp(app);
-`
+`;
+
 export default function generateMainV3({
   application,
   uiFramework,
@@ -68,5 +64,5 @@ export default function generateMainV3({
     layoutAdapter,
     uiFramework,
     needsTypeScript
-  })
+  });
 }

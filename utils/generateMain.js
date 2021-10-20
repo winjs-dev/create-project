@@ -12,10 +12,9 @@ import Component from 'vue-class-component';
 import App from './App.vue';
 import router from './router';
 import './router/router.interceptor';
-<%_ if (needsTypeScript) { _%>
-import './pwa/register-service-worker';
-<%_ } _%>
+<%_ if (!needsTypeScript) { _%>
 import './components/global';
+<%_ } _%>
 import './icons';
 import './filters';
 import './services';
@@ -45,6 +44,7 @@ Component.registerHooks([
   'beforeRouteUpdate'
 ]);
 <%_ } _%>
+
 /* eslint-disable */
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 

@@ -11,13 +11,9 @@
 
 <script lang="ts">
   import { Vue, Component } from 'vue-property-decorator';
-  import ServiceWorkerUpdatePopup from '@/pwa/components/ServiceWorkerUpdatePopup.vue';
 
   @Component({
-    name: 'App',
-    components: {
-      ServiceWorkerUpdatePopup
-    }
+    name: 'App'
   })
   export default class App extends Vue {}
 </script>

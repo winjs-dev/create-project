@@ -30,5 +30,5 @@
     "tests/**/*.tsx",
     "./types/*.d.ts"
   ],
-  "exclude": ["node_modules", "build/*.ts"]
+  "exclude": ["node_modules", "build/*.ts", "src/assets"]
 }

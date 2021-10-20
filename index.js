@@ -393,12 +393,14 @@ async function init() {
       }
     }
 
+    // application
     if (application === 'pc') {
       render('application/pc');
     } else {
       render('application/default');
     }
 
+    // ui-framework
     if (uiFramework === 'vant') {
       if (framework === 'v2') {
         render('ui-framework/vant/v2');
@@ -445,9 +447,8 @@ async function init() {
       layoutAdapter,
       needsTypeScript
     });
-
     if (framework === 'v3') {
-      generateMainV3({
+      mainContent = generateMainV3({
         application,
         uiFramework,
         layoutAdapter,
@@ -490,10 +491,10 @@ async function init() {
     // Cleanup.
 
     if (needsTypeScript) {
-      // rename all `.js` files to `.ts`
+      // rename all src `.js` files to `.ts`
       // rename jsconfig.json to tsconfig.json
       preOrderDirectoryTraverse(
-        root,
+        path.resolve(root, 'src'),
         () => {},
         (filepath) => {
           if (filepath.endsWith('.js')) {

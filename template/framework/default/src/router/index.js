@@ -8,11 +8,6 @@ export const routes = [
     path: '/hello'
   },
   {
-    component: () => import('@/views/svgIcons/index.vue'),
-    name: 'svgIcons',
-    path: '/svgIcons'
-  },
-  {
     path: '/',
     redirect: '/hello'
   }
