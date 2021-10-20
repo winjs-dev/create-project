@@ -155,14 +155,15 @@ export default function request(
     responseType: dataType,
     // 这里将 response.data 为 string 做了 JSON.parse 的转换处理
     transformResponse: axios.defaults.transformResponse.concat(function (data) {
+      let copyData = data;
       if (typeof data === 'string' && data.length) {
         try {
-          data = JSON.parse(data);
+          copyData = JSON.parse(data);
         } catch (e) {
           console.error(e);
         }
       }
-      return data;
+      return copyData;
     })
   };
 
@@ -179,7 +180,7 @@ export default function request(
         defaultConfig.data = data;
       } else if (contentType.indexOf('json') !== -1) {
         // 类型 `application/json`
-        // 服务器收到的raw body(原始数据) "{name:"jhon",sex:"man"}"（普通字符串）
+        // 服务器收到的raw body(原始数据) '{name:'jhon',sex:'man'}'（普通字符串）
         defaultConfig.data = JSON.stringify(data);
       } else {
         // 类型 `application/x-www-form-urlencoded`

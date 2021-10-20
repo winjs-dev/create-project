@@ -1,88 +1,54 @@
-export default function generateMain({ application, uiFramework, layoutAdapter, needsTypescript }) {
-  let mainContent = `import 'core-js/stable';
+import ejs from 'ejs';
+
+const mainV2 = `import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-`
-
-  if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') {
-    mainContent += `
+<%_ if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') { _%>
 import 'amfe-flexible';
-    `
-  }
-
-  mainContent += `
+<%_ } _%>
 import Vue from 'vue';
-`
-
-  needsTypescript &&
-    (mainContent += `
+<%_ if (needsTypeScript) { _%>
 import Component from 'vue-class-component';
-import './bus';
-import './pwa/register-service-worker';
-    `)
-
-  mainContent += `
+<%_ } _%>
 import App from './App.vue';
 import router from './router';
 import './router/router.interceptor';
+<%_ if (needsTypeScript) { _%>
+import './pwa/register-service-worker';
+<%_ } _%>
 import './components/global';
 import './icons';
 import './filters';
 import './services';
-  `
-
-  if (uiFramework === 'element-ui') {
-    mainContent += `
+<%_ if (uiFramework === 'element-ui') { _%>
 import './vendor/element';
-    `
-  } else if (uiFramework === 'ant') {
-    mainContent += `
+<%_ } else if (uiFramework === 'ant') { _%>
 import './vendor/ant';
-    `
-  } else if (uiFramework === 'hui') {
-    mainContent += `
+<%_ } else if (uiFramework === 'hui') { _%>
 import './vendor/hui';
-    `
-  } else if (uiFramework === 'vant') {
-    mainContent += `
+<%_ } else if (uiFramework === 'vant') { _%>
 import './vendor/vant';
-    `
-  } else if (uiFramework === 'wui') {
-    mainContent += `
+<%_ } else if (uiFramework === 'wui') { _%>
 import './vendor/wui';
-    `
-  }
-
-  mainContent += `
-import './assets/style/app.less';
-  `
-
-  if (application === 'offline') {
-    mainContent += `
+<%_ } _%>
+<%_ if (application === 'offline') { _%>
 import {isLightOS, nativeReady} from '@winner-fed/native-bridge-methods';
 import LightSDK from 'light-sdk/dist/index.umd';
 
 window.LightSDK = LightSDK;
-   `
-  }
-
-  if (needsTypescript) {
-    mainContent += `
+<%_ } _%>
+import './assets/style/app.less';
+<%_ if (needsTypeScript) { _%>
 // 注册钩子函数
 Component.registerHooks([
   'beforeRouteEnter',
   'beforeRouteLeave',
   'beforeRouteUpdate'
 ]);
-    `
-  }
-
-  mainContent += `
+<%_ } _%>
 /* eslint-disable */
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
-  `
 
-  if (application === 'offline') {
-    mainContent += `
+<%_ if (application === 'offline') { _%>
 if (isLightOS()) {
   nativeReady().then(() => {
     new Vue({
@@ -103,9 +69,7 @@ if (isLightOS()) {
     render: (h) => h(App),
   });
 }
-    `
-  } else {
-    mainContent += `
+<%_ } else { _%>
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -114,8 +78,14 @@ new Vue({
   // https://vuejs.org/v2/guide/installation.html
   render: (h) => h(App)
 });
-    `
-  }
+<%_ } _%>
+`;
 
-  return mainContent
+export default function generateMain({ application, uiFramework, layoutAdapter, needsTypeScript }) {
+  return ejs.render(mainV2, {
+    application,
+    layoutAdapter,
+    uiFramework,
+    needsTypeScript
+  });
 }

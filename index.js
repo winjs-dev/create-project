@@ -6,7 +6,7 @@ import path from 'path';
 
 import minimist from 'minimist';
 import prompts from 'prompts';
-import { red, yellow, cyan, magenta, green, bold, blue } from 'kolorist';
+import { red, yellow, cyan, magenta, green, bold } from 'kolorist';
 
 import renderTemplate from './utils/renderTemplate.js';
 import {
@@ -252,7 +252,7 @@ async function init() {
                 value: 'wui'
               },
               {
-                title: blue('Vant'),
+                title: green('Vant'),
                 value: 'vant'
               }
             ];
@@ -272,7 +272,7 @@ async function init() {
               value: 'git'
             },
             {
-              title: blue('SVN'),
+              title: green('SVN'),
               value: 'svn'
             }
           ],
@@ -442,7 +442,8 @@ async function init() {
     let mainContent = generateMain({
       application,
       uiFramework,
-      layoutAdapter
+      layoutAdapter,
+      needsTypeScript
     });
 
     if (framework === 'v3') {
