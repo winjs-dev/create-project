@@ -25,4 +25,3 @@ exports.getCurrentVersion = function () {
 
   return pkg.name;
 };
-
