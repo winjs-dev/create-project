@@ -8,7 +8,7 @@ const plugins = [
     },
     'vant'
   ]
-]
+];
 
 module.exports = {
   presets: [
@@ -20,4 +20,4 @@ module.exports = {
     ]
   ],
   plugins
-}
+};

@@ -4,14 +4,14 @@
 self.addEventListener('message', (e) => {
   if (e.data) {
     if (e.data === 'skipWaiting') {
-      self.skipWaiting()
+      self.skipWaiting();
     }
   }
-})
+});
 
-workbox.clientsClaim()
+workbox.clientsClaim();
 
 // The precaching code provided by Workbox. You don't need to change this part.
-self.__precacheManifest = [].concat(self.__precacheManifest || [])
-workbox.precaching.suppressWarnings()
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {})
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
+workbox.precaching.suppressWarnings();
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});

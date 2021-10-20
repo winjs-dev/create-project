@@ -13,5 +13,17 @@
   "insertPragma": false,
   "requirePragma": false,
   "endOfLine": "lf",
-  "rangeStart": 0
+  "rangeStart": 0,
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    },
+    {
+      "files": ["*.less", "*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
 }

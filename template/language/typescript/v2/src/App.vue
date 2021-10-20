@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import ServiceWorkerUpdatePopup from '@/pwa/components/ServiceWorkerUpdatePopup.vue'
+  import { Vue, Component } from 'vue-property-decorator';
+  import ServiceWorkerUpdatePopup from '@/pwa/components/ServiceWorkerUpdatePopup.vue';
 
-@Component({
-  name: 'App',
-  components: {
-    ServiceWorkerUpdatePopup
-  }
-})
-export default class App extends Vue {}
+  @Component({
+    name: 'App',
+    components: {
+      ServiceWorkerUpdatePopup
+    }
+  })
+  export default class App extends Vue {}
 </script>

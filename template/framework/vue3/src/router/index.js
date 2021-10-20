@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 export const routes = [
   {
@@ -10,15 +10,15 @@ export const routes = [
     path: '/',
     redirect: '/hello'
   }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
+});
 
 export function setupRouter(app) {
-  app.use(router)
+  app.use(router);
 }
 
-export default router
+export default router;

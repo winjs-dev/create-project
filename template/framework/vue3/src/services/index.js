@@ -1,16 +1,16 @@
-import request from './request'
-import urls from './RESTFULURL'
+import request from './request';
+import urls from './RESTFULURL';
 
-const FUNS = {}
+const FUNS = {};
 
 Object.keys(urls).forEach((key) => {
   FUNS[key] = (options = {}) => {
-    return request(urls[key], options)
-  }
-})
+    return request(urls[key], options);
+  };
+});
 
 export function setGlobalProperties(app) {
-  app.config.globalProperties.$services = FUNS
+  app.config.globalProperties.$services = FUNS;
 }
 
-export default FUNS
+export default FUNS;

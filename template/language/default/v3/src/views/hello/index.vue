@@ -59,43 +59,43 @@
 </template>
 
 <script>
-/**
- * 以下仅为事例代码，可以随意扩展修改
- */
-// 工具类
-import { formatDate } from 'utils'
-import cat from '@icon/cat.svg'
+  /**
+   * 以下仅为事例代码，可以随意扩展修改
+   */
+  // 工具类
+  import { formatDate } from 'utils';
+  import cat from '@icon/cat.svg';
 
-export default {
-  data() {
-    return {
-      cat,
-      msg: 'Welcome to Your Vue.js 3.x App',
-      message: '现在时间是：' + formatDate(Date.now())
+  export default {
+    data() {
+      return {
+        cat,
+        msg: 'Welcome to Your Vue.js 3.x App',
+        message: '现在时间是：' + formatDate(Date.now())
+      };
+    },
+
+    created() {
+      this.movieComingSoon();
+    },
+
+    methods: {
+      movieComingSoon() {
+        const data = {};
+        this.$services
+          .octocat({
+            method: 'get',
+            data
+          })
+          .then((res) => {
+            console.log('接口请求成功：' + JSON.stringify(res, null, 2));
+          })
+          .catch((err) => {
+            console.log('接口请求异常：' + err);
+          });
+      }
     }
-  },
-
-  created() {
-    this.movieComingSoon()
-  },
-
-  methods: {
-    movieComingSoon() {
-      const data = {}
-      this.$services
-        .octocat({
-          method: 'get',
-          data
-        })
-        .then((res) => {
-          console.log('接口请求成功：' + JSON.stringify(res, null, 2))
-        })
-        .catch((err) => {
-          console.log('接口请求异常：' + err)
-        })
-    }
-  }
-}
+  };
 </script>
 
 <style lang="less" scoped src="./style.less"></style>

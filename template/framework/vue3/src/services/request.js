@@ -5,10 +5,10 @@
  * @description https://github.com/axios/axios
  */
 
-import Qs from 'qs'
-import axios from 'axios'
-import autoMatchBaseUrl from './autoMatchBaseUrl'
-import { TIMEOUT } from '@/constant'
+import Qs from 'qs';
+import axios from 'axios';
+import autoMatchBaseUrl from './autoMatchBaseUrl';
+import { TIMEOUT } from '@/constant';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -26,49 +26,49 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。'
-}
+};
 
 function responseLog(response) {
   if (process.env.NODE_ENV === 'development') {
     const randomColor = `rgba(${Math.round(Math.random() * 255)},${Math.round(
       Math.random() * 255
-    )},${Math.round(Math.random() * 255)})`
+    )},${Math.round(Math.random() * 255)})`;
     console.log(
       '%c┍------------------------------------------------------------------┑',
       `color:${randomColor};`
-    )
-    console.log('| 请求地址：', response.config.url)
-    console.log('| 请求参数：', Qs.parse(response.config.data))
-    console.log('| 返回数据：', response.data)
+    );
+    console.log('| 请求地址：', response.config.url);
+    console.log('| 请求参数：', Qs.parse(response.config.data));
+    console.log('| 返回数据：', response.data);
     console.log(
       '%c┕------------------------------------------------------------------┙',
       `color:${randomColor};`
-    )
+    );
   } else {
-    console.log('| 请求地址：', response.config.url)
-    console.log('| 请求参数：', Qs.parse(response.config.data))
-    console.log('| 返回数据：', response.data)
+    console.log('| 请求地址：', response.config.url);
+    console.log('| 请求参数：', Qs.parse(response.config.data));
+    console.log('| 返回数据：', response.data);
   }
 }
 
 function checkStatus(response) {
   // 如果http状态码正常，则直接返回数据
   if (response) {
-    const { status, statusText } = response
+    const { status, statusText } = response;
     if ((status >= 200 && status < 300) || status === 304) {
       // 如果不需要除了data之外的数据，可以直接 return response.data
-      return response.data
+      return response.data;
     }
     return {
       status,
       msg: codeMessage[status] || statusText
-    }
+    };
   }
   // 异常状态下，把错误信息返回去
   return {
     status: -404,
     msg: '网络异常'
-  }
+  };
 }
 
 /**
@@ -81,12 +81,12 @@ const axiosRequest = {
     // demo示例:
     if (config['url'].indexOf('operatorQry') !== -1) {
       config.headers['accessToken'] =
-        'de4738c67e1bb450be71b660f0716aa4675860cec1ff9bc23d800efb40519cf3'
+        'de4738c67e1bb450be71b660f0716aa4675860cec1ff9bc23d800efb40519cf3';
     }
-    return config
+    return config;
   },
   error: (error) => Promise.reject(error)
-}
+};
 
 /**
  * 全局请求响应处理
@@ -95,32 +95,32 @@ const axiosRequest = {
  */
 const axiosResponse = {
   success: (response) => {
-    responseLog(response)
-    return checkStatus(response)
+    responseLog(response);
+    return checkStatus(response);
   },
   error: (error) => {
-    const { response, code } = error
+    const { response, code } = error;
     // 接口请求异常统一处理
     if (code === 'ECONNABORTED') {
       // Timeout error
-      console.log('Timeout error', code)
+      console.log('Timeout error', code);
     }
     if (response) {
       // 请求已发出，但是不在2xx的范围
       // 对返回的错误进行一些处理
-      return Promise.reject(checkStatus(response))
+      return Promise.reject(checkStatus(response));
     } else {
       // 处理断网的情况
       // eg:请求超时或断网时，更新state的network状态
       // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
       // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
-      console.log('断网了~')
+      console.log('断网了~');
     }
   }
-}
+};
 
-axios.interceptors.request.use(axiosRequest.success, axiosRequest.error)
-axios.interceptors.response.use(axiosResponse.success, axiosResponse.error)
+axios.interceptors.request.use(axiosRequest.success, axiosRequest.error);
+axios.interceptors.response.use(axiosResponse.success, axiosResponse.error);
 
 /**
  * 基于axios ajax请求
@@ -137,12 +137,12 @@ export default function request(
   url,
   { method = 'post', timeout = TIMEOUT, prefix = '', data = {}, headers = {}, dataType = 'json' }
 ) {
-  const baseURL = autoMatchBaseUrl(prefix)
+  const baseURL = autoMatchBaseUrl(prefix);
 
   const formatHeaders = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     ...headers
-  }
+  };
 
   const defaultConfig = {
     baseURL,
@@ -157,39 +157,39 @@ export default function request(
     transformResponse: axios.defaults.transformResponse.concat(function (data) {
       if (typeof data === 'string' && data.length) {
         try {
-          data = JSON.parse(data)
+          data = JSON.parse(data);
         } catch (e) {
-          console.error(e)
+          console.error(e);
         }
       }
-      return data
+      return data;
     })
-  }
+  };
 
   if (method === 'get') {
-    defaultConfig.data = {}
+    defaultConfig.data = {};
   } else {
-    defaultConfig.params = {}
+    defaultConfig.params = {};
 
-    const contentType = formatHeaders['Content-Type']
+    const contentType = formatHeaders['Content-Type'];
 
     if (typeof contentType !== 'undefined') {
       if (contentType.indexOf('multipart') !== -1) {
         // 类型 `multipart/form-data;`
-        defaultConfig.data = data
+        defaultConfig.data = data;
       } else if (contentType.indexOf('json') !== -1) {
         // 类型 `application/json`
         // 服务器收到的raw body(原始数据) "{name:"jhon",sex:"man"}"（普通字符串）
-        defaultConfig.data = JSON.stringify(data)
+        defaultConfig.data = JSON.stringify(data);
       } else {
         // 类型 `application/x-www-form-urlencoded`
         // 服务器收到的raw body(原始数据) name=homeway&key=nokey
-        defaultConfig.data = Qs.stringify(data)
+        defaultConfig.data = Qs.stringify(data);
       }
     }
   }
 
-  return axios(defaultConfig)
+  return axios(defaultConfig);
 }
 
 // 上传文件封装
@@ -198,5 +198,5 @@ export const uploadFile = (url, formData) => {
     method: 'post',
     data: formData,
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
-}
+  });
+};

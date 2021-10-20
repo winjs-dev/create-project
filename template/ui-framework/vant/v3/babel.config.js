@@ -7,7 +7,7 @@ const plugins = [
       style: true
     }
   ]
-]
+];
 
 module.exports = {
   presets: [
@@ -19,4 +19,4 @@ module.exports = {
     ]
   ],
   plugins
-}
+};

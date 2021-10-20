@@ -14,72 +14,72 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+  import { defineComponent } from 'vue';
 
-export default defineComponent({
-  name: 'RouteError',
-  setup() {
-    function refresh() {
-      window.location.reload()
-    }
+  export default defineComponent({
+    name: 'RouteError',
+    setup() {
+      function refresh() {
+        window.location.reload();
+      }
 
-    return {
-      refresh
+      return {
+        refresh
+      };
     }
-  }
-})
+  });
 </script>
 
 <style scoped>
-.page-network {
-  height: 100%;
-  overflow: hidden;
-  background-color: #f5f5f5;
-}
+  .page-network {
+    height: 100%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
 
-.network-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 70%;
-  height: 70%;
-  transform: translate(-50%, -40%);
-}
+  .network-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 70%;
+    transform: translate(-50%, -40%);
+  }
 
-.network-box img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-}
+  .network-box img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
 
-.page-network .info {
-  padding-top: 15px;
-  font-size: 14px;
-  color: #999;
-  text-align: center;
-}
+  .page-network .info {
+    padding-top: 15px;
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+  }
 
-.page-network .info p {
-  padding: 10px 0;
-}
+  .page-network .info p {
+    padding: 10px 0;
+  }
 
-.page-network .network-button {
-  position: relative;
-  display: inline-block;
-  width: 68px;
-  height: 28px;
-  padding: 0 15px;
-  font-size: 14px;
-  line-height: 28px;
-  color: #fff;
-  text-align: center;
-  cursor: pointer;
-  background-color: #ee0a24;
-  border: 1px solid #ee0a24;
-  border-radius: 4px;
-  box-sizing: border-box;
-  transition: opacity 0.2s;
-  -webkit-appearance: none;
-}
+  .page-network .network-button {
+    position: relative;
+    display: inline-block;
+    width: 68px;
+    height: 28px;
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 28px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    background-color: #ee0a24;
+    border: 1px solid #ee0a24;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: opacity 0.2s;
+    -webkit-appearance: none;
+  }
 </style>

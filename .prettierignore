@@ -6,3 +6,4 @@ pnpm-lock.yaml
 **/*.spec.ts
 **/dist
 playground
+template/application/default/public/vconsole.min.js

@@ -1,6 +1,6 @@
 // @winner-fed/cloud-utils -> webpack alias utils
-declare module 'utils'
+declare module 'utils';
 
-declare module '*.png'
+declare module '*.png';
 
-declare module '*.gif'
+declare module '*.gif';

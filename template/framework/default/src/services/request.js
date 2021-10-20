@@ -135,14 +135,7 @@ axios.interceptors.response.use(axiosResponse.success, axiosResponse.error);
  */
 export default function request(
   url,
-  {
-    method = 'post',
-    timeout = TIMEOUT,
-    prefix = '',
-    data = {},
-    headers = {},
-    dataType = 'json'
-  }
+  { method = 'post', timeout = TIMEOUT, prefix = '', data = {}, headers = {}, dataType = 'json' }
 ) {
   const baseURL = autoMatchBaseUrl(prefix);
 
@@ -170,7 +163,7 @@ export default function request(
         }
       }
       return data;
-    }),
+    })
   };
 
   if (method === 'get') {

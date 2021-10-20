@@ -41,8 +41,7 @@ if (window.LOCAL_CONFIG.IS_OPEN_VCONSOLE) {
 
     function ieOnEnd(script, cb) {
       script.onreadystatechange = function () {
-        if (this.readyState !== 'complete' && this.readyState !== 'loaded')
-          return;
+        if (this.readyState !== 'complete' && this.readyState !== 'loaded') return;
         this.onreadystatechange = null;
         cb(null, script); // there is no way to catch loading errors in IE8
       };

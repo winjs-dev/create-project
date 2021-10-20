@@ -12,51 +12,51 @@
 </template>
 
 <script>
-import icons from '@/icons/requireIcons'
+  import icons from '@/icons/requireIcons';
 
-export default {
-  name: 'Icons',
-  data() {
-    return {
-      iconsMap: icons
+  export default {
+    name: 'Icons',
+    data() {
+      return {
+        iconsMap: icons
+      };
+    },
+    methods: {
+      generateIconCode(symbol) {
+        return `<svg-icon name="${symbol}" />`;
+      }
     }
-  },
-  methods: {
-    generateIconCode(symbol) {
-      return `<svg-icon name="${symbol}" />`
-    }
-  }
-}
+  };
 </script>
 
 <style lang="less" scoped>
-.icons-container {
-  margin: 15px;
-  overflow: hidden;
+  .icons-container {
+    margin: 15px;
+    overflow: hidden;
 
-  .icons-wrapper {
-    margin: 0 auto;
-  }
+    .icons-wrapper {
+      margin: 0 auto;
+    }
 
-  .icon-item {
-    float: left;
-    width: 110px;
-    height: 110px;
-    margin: 20px;
-    font-size: 30px;
-    color: #24292e;
-    text-align: center;
-    cursor: pointer;
-  }
+    .icon-item {
+      float: left;
+      width: 110px;
+      height: 110px;
+      margin: 20px;
+      font-size: 30px;
+      color: #24292e;
+      text-align: center;
+      cursor: pointer;
+    }
 
-  span {
-    display: block;
-    margin-top: 10px;
-    font-size: 24px;
-  }
+    span {
+      display: block;
+      margin-top: 10px;
+      font-size: 24px;
+    }
 
-  .disabled {
-    pointer-events: none;
+    .disabled {
+      pointer-events: none;
+    }
   }
-}
 </style>
