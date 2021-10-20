@@ -172,7 +172,10 @@ async function init() {
         },
         {
           name: 'needsTypeScript',
-          type: () => (isFeatureFlagsUsed ? null : 'toggle'),
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'toggle' : null;
+          },
           message: 'Add TypeScript?',
           initial: false,
           active: 'Yes',
@@ -258,7 +261,10 @@ async function init() {
         },
         {
           name: 'versionControl',
-          type: () => (isFeatureFlagsUsed ? null : 'select'),
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'select' : null;
+          },
           message: 'Select a Version control tool?',
           choices: [
             {
@@ -357,147 +363,151 @@ async function init() {
     renderTemplate(templateDir, root, options);
   };
 
-  // Render base template
-  render('base');
-
-  // Add framework.
+  // mini 小程序
   if (framework === 'mini') {
     render('framework/miniprogram');
-  } else if (framework === 'v3') {
-    render('framework/vue3');
   } else {
-    render('framework/default');
-  }
+    // vue2 vue3
+    // Render base template
+    render('base');
 
-  // typescript support
-  if (needsTypeScript) {
+    // Add framework.
     if (framework === 'v3') {
-      render('language/typescript/v3');
+      render('framework/vue3');
     } else {
-      render('language/typescript/v2');
+      render('framework/default');
     }
-  } else {
-    if (framework === 'v3') {
-      render('language/default/v3');
+
+    // typescript support
+    if (needsTypeScript) {
+      if (framework === 'v3') {
+        render('language/typescript/v3');
+      } else {
+        render('language/typescript/v2');
+      }
     } else {
-      render('language/default/v2');
+      if (framework === 'v3') {
+        render('language/default/v3');
+      } else {
+        render('language/default/v2');
+      }
     }
-  }
 
-  if (application === 'pc') {
-    render('application/pc');
-  } else {
-    render('application/default');
-  }
-
-  if (uiFramework === 'vant') {
-    if (framework === 'v2') {
-      render('ui-framework/vant/v2');
+    if (application === 'pc') {
+      render('application/pc');
     } else {
-      render('ui-framework/vant/v3');
+      render('application/default');
     }
-  } else if (uiFramework === 'hui') {
-    render('ui-framework/hui');
-  } else if (uiFramework === 'ant') {
-    if (framework === 'v2') {
-      render('ui-framework/ant-design-vue/v2');
+
+    if (uiFramework === 'vant') {
+      if (framework === 'v2') {
+        render('ui-framework/vant/v2');
+      } else {
+        render('ui-framework/vant/v3');
+      }
+    } else if (uiFramework === 'hui') {
+      render('ui-framework/hui');
+    } else if (uiFramework === 'ant') {
+      if (framework === 'v2') {
+        render('ui-framework/ant-design-vue/v2');
+      } else {
+        render('ui-framework/ant-design-vue/v3');
+      }
+    } else if (uiFramework === 'element-ui') {
+      if (framework === 'v2') {
+        render('ui-framework/element-ui/v2');
+      } else {
+        render('ui-framework/element-ui/v3');
+      }
     } else {
-      render('ui-framework/ant-design-vue/v3');
+      // default
+      render('ui-framework/default');
     }
-  } else if (uiFramework === 'element-ui') {
-    if (framework === 'v2') {
-      render('ui-framework/element-ui/v2');
+
+    if (layoutAdapter === 'vw') {
+      render('layout-adapter/viewpoint');
     } else {
-      render('ui-framework/element-ui/v3');
+      render('layout-adapter/default');
     }
-  } else {
-    // default
-    render('ui-framework/default');
-  }
 
-  if (layoutAdapter === 'vw') {
-    render('layout-adapter/viewpoint');
-  } else {
-    render('layout-adapter/default');
-  }
+    if (needsMirrorSource) {
+      render('mirror-source');
+    }
 
-  if (needsMirrorSource) {
-    render('mirror-source');
-  }
+    if (needsSeePackage) {
+      render('see-package');
+    }
 
-  if (needsSeePackage) {
-    render('see-package');
-  }
-
-  // Main generation
-  let mainContent = generateMain({
-    application,
-    uiFramework,
-    layoutAdapter
-  });
-
-  if (framework === 'v3') {
-    generateMainV3({
+    // Main generation
+    let mainContent = generateMain({
       application,
       uiFramework,
-      layoutAdapter,
-      needsTypeScript
+      layoutAdapter
     });
-  }
-  fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent);
 
-  // vue.config.js
-  fs.writeFileSync(
-    path.resolve(root, 'vue.config.js'),
-    generateVueConfig({
-      application,
-      uiFramework,
-      layoutAdapter,
-      needsTypeScript,
-      versionControl
-    })
-  );
+    if (framework === 'v3') {
+      generateMainV3({
+        application,
+        uiFramework,
+        layoutAdapter,
+        needsTypeScript
+      });
+    }
+    fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent);
 
-  // router.interceptor.js
-  fs.writeFileSync(
-    path.resolve(root, 'src/router/router.interceptor.js'),
-    generateRouterInterceptor({
-      application
-    })
-  );
-
-  // 离线包
-  if (application === 'offline') {
+    // vue.config.js
     fs.writeFileSync(
-      path.resolve(root, 'offlinePackage.json'),
-      generateOfflinePackage({
-        offlineId,
-        offlineName
+      path.resolve(root, 'vue.config.js'),
+      generateVueConfig({
+        application,
+        uiFramework,
+        layoutAdapter,
+        needsTypeScript,
+        versionControl
       })
     );
-  }
 
-  // Cleanup.
-
-  if (needsTypeScript) {
-    // rename all `.js` files to `.ts`
-    // rename jsconfig.json to tsconfig.json
-    preOrderDirectoryTraverse(
-      root,
-      () => {},
-      (filepath) => {
-        if (filepath.endsWith('.js')) {
-          fs.renameSync(filepath, filepath.replace(/\.js$/, '.ts'));
-        } else if (path.basename(filepath) === 'jsconfig.json') {
-          fs.renameSync(filepath, filepath.replace(/jsconfig\.json$/, 'tsconfig.json'));
-        }
-      }
+    // router.interceptor.js
+    fs.writeFileSync(
+      path.resolve(root, 'src/router/router.interceptor.js'),
+      generateRouterInterceptor({
+        application
+      })
     );
 
-    // Rename entry in `index.html`
-    const indexHtmlPath = path.resolve(root, 'public/index.html');
-    const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
-    fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
+    // 离线包
+    if (application === 'offline') {
+      fs.writeFileSync(
+        path.resolve(root, 'offlinePackage.json'),
+        generateOfflinePackage({
+          offlineId,
+          offlineName
+        })
+      );
+    }
+
+    // Cleanup.
+
+    if (needsTypeScript) {
+      // rename all `.js` files to `.ts`
+      // rename jsconfig.json to tsconfig.json
+      preOrderDirectoryTraverse(
+        root,
+        () => {},
+        (filepath) => {
+          if (filepath.endsWith('.js')) {
+            fs.renameSync(filepath, filepath.replace(/\.js$/, '.ts'));
+          } else if (path.basename(filepath) === 'jsconfig.json') {
+            fs.renameSync(filepath, filepath.replace(/jsconfig\.json$/, 'tsconfig.json'));
+          }
+        }
+      );
+
+      // Rename entry in `index.html`
+      const indexHtmlPath = path.resolve(root, 'public/index.html');
+      const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
+      fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
+    }
   }
 
   // Instructions:

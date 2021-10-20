@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
-    "build": "node build/index.js",
+    "dev": "npm run serve",
     "serve": "vue-cli-service serve",
+    "build": "node build/index.js",
     "lint": "vue-cli-service lint",
     "lint:style": "vue-cli-service lint:style",
     "lint:prettier": "check-prettier lint",
