@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const {sh} = require('tasksfile');
+const { sh } = require('tasksfile');
 const chalk = require('chalk');
 const rawArgv = process.argv.slice(2);
 const args = rawArgv.join(' ');

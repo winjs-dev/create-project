@@ -2,8 +2,5 @@
 // http://eslint.cn/docs/user-guide/configuring 中文
 
 module.exports = {
-  extends: [
-    '@winner-fed/win',
-    '@winner-fed/win/vue'
-  ]
+  extends: ['@winner-fed/win', '@winner-fed/win/vue']
 };

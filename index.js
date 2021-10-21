@@ -238,14 +238,23 @@ async function init() {
             return values.framework !== 'mini' ? 'select' : null;
           },
           message: 'Select a UI Framework',
-          choices: (answers) => {
-            if (answers.framework === 'mini') {
+          choices: (prev, values) => {
+            if (values.framework === 'mini') {
               return;
             }
-            if (answers.application === 'pc') {
-              return answers.framework === 'v2' ? pcUI2 : pcUI;
+            if (values.application === 'pc') {
+              return values.framework === 'v2' ? pcUI2 : pcUI;
             }
             // mobile or offline
+            if (values.framework === 'v3') {
+              return [
+                {
+                  title: green('Vant'),
+                  value: 'vant'
+                }
+              ];
+            }
+            // default v2
             return [
               {
                 title: yellow('WinUI'),
@@ -257,6 +266,25 @@ async function init() {
               }
             ];
           },
+          initial: 0
+        },
+        {
+          name: 'layoutAdapter',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' && values.application !== 'pc' ? 'select' : null;
+          },
+          message: 'Select a mobile layout adaptation plan?',
+          choices: [
+            {
+              title: yellow('rem'),
+              value: 'rem'
+            },
+            {
+              title: green('viewpoint'),
+              value: 'vw'
+            }
+          ],
           initial: 0
         },
         {
@@ -398,6 +426,16 @@ async function init() {
       render('application/pc');
     } else {
       render('application/default');
+
+      if (application === 'offline') {
+        render('application/offline');
+      }
+
+      if (layoutAdapter === 'vw') {
+        render('layout-adapter/viewpoint');
+      } else {
+        render('layout-adapter/default');
+      }
     }
 
     // ui-framework
@@ -424,12 +462,6 @@ async function init() {
     } else {
       // default
       render('ui-framework/default');
-    }
-
-    if (layoutAdapter === 'vw') {
-      render('layout-adapter/viewpoint');
-    } else {
-      render('layout-adapter/default');
     }
 
     if (needsMirrorSource) {
@@ -461,6 +493,7 @@ async function init() {
     fs.writeFileSync(
       path.resolve(root, 'vue.config.js'),
       generateVueConfig({
+        framework,
         application,
         uiFramework,
         layoutAdapter,

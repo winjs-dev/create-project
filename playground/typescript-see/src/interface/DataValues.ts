@@ -4,6 +4,6 @@
  */
 
 export interface DataValues {
-  year: string
-  value: number
+  year: string;
+  value: number;
 }

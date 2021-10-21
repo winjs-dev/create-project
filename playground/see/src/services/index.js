@@ -14,7 +14,7 @@ Object.keys(urls).forEach((key) => {
 // views引用的方法：this.$services.接口名（小驼峰）
 // 防止被篡改
 Object.defineProperty(Vue.prototype, '$services', {
-  get () {
+  get() {
     return FUNS;
   }
 });

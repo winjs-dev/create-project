@@ -56,7 +56,7 @@ if (isLightOS()) {
       router,
       // use Runtime-only
       // https://vuejs.org/v2/guide/installation.html
-      render: (h) => h(App),
+      render: (h) => h(App)
     });
   });
 } else {
@@ -66,7 +66,7 @@ if (isLightOS()) {
     router,
     // use Runtime-only
     // https://vuejs.org/v2/guide/installation.html
-    render: (h) => h(App),
+    render: (h) => h(App)
   });
 }
 <%_ } else { _%>

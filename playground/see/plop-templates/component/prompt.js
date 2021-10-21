@@ -31,10 +31,7 @@ module.exports = {
         }
       ],
       validate(value) {
-        if (
-          value.indexOf('script') === -1 &&
-          value.indexOf('template') === -1
-        ) {
+        if (value.indexOf('script') === -1 && value.indexOf('template') === -1) {
           return 'Components require at least a <script> or <template> tag.';
         }
         return true;

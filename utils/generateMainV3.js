@@ -2,7 +2,7 @@ import ejs from 'ejs';
 
 const mainV3 = `import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-<%_ if ((application === 'mobile' || application === 'offline') && options['layout-adapter'] !== 'vw') { _%>
+<%_ if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') { _%>
 import 'amfe-flexible';
 <%_ } _%>
 import { createApp } from 'vue';
@@ -16,9 +16,7 @@ import { setApp } from './useApp';
 import setupVendor from './vendor/element';
 <%_ } else if (uiFramework === 'ant') { _%>
 import setupVendor from './vendor/ant';
-<%_ } else if (uiFramework === 'hui') { _%>
-import './vendor/hui';
-<%_ } else if (options['mobile-ui-framework'] === 'vant') { _%>
+<%_ } else if (uiFramework === 'vant') { _%>
 import setupVendor from './vendor/vant';
 <%_ } _%>
 <%_ if (application === 'offline') { _%>
@@ -29,28 +27,36 @@ window.LightSDK = LightSDK;
 <%_ } _%>
 import './assets/style/app.less';
 
-const app = createApp(App);
+async function bootstrap() {
+  const app = createApp(App);
 
-setGlobalProperties(app);
+  setGlobalProperties(app);
 <%_ if (uiFramework === 'element-ui' || uiFramework === 'ant' || uiFramework === 'vant') { _%>
-setupVendor(app);
+  setupVendor(app);
 <%_ } _%>
-setupSvgIcon(app);
-setupRouter(app);
+  setupSvgIcon(app);
+  setupRouter(app);
 
+  // Mount when the route is ready
+  // https://next.router.vuejs.org/api/#isready
+  await router.isReady();
 <%_ if (application === 'offline') { _%>
-if (isLightOS()) {
-  nativeReady().then(() => {
-    app.mount('#app');
-  });
-} else {
-  app.mount('#app');
-}
+  if (isLightOS()) {
+    nativeReady().then(() => {
+      app.mount('#app');
+    });
+  } else {
+    app.mount('#app', true);
+  }
 <%_ } else { _%>
-app.mount('#app');
+  app.mount('#app', true);
 <%_ } _%>
 
-setApp(app);
+  setApp(app);
+}
+
+bootstrap();
+
 `;
 
 export default function generateMainV3({

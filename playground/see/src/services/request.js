@@ -135,14 +135,7 @@ axios.interceptors.response.use(axiosResponse.success, axiosResponse.error);
  */
 export default function request(
   url,
-  {
-    method = 'post',
-    timeout = TIMEOUT,
-    prefix = '',
-    data = {},
-    headers = {},
-    dataType = 'json'
-  }
+  { method = 'post', timeout = TIMEOUT, prefix = '', data = {}, headers = {}, dataType = 'json' }
 ) {
   const baseURL = autoMatchBaseUrl(prefix);
 
@@ -162,15 +155,16 @@ export default function request(
     responseType: dataType,
     // 这里将 response.data 为 string 做了 JSON.parse 的转换处理
     transformResponse: axios.defaults.transformResponse.concat(function (data) {
+      let copyData = data;
       if (typeof data === 'string' && data.length) {
         try {
-          data = JSON.parse(data);
+          copyData = JSON.parse(data);
         } catch (e) {
           console.error(e);
         }
       }
-      return data;
-    }),
+      return copyData;
+    })
   };
 
   if (method === 'get') {

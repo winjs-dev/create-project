@@ -16,30 +16,31 @@ let didError = false;
 
 const files = getPrettierFiles();
 
-Array.isArray(files) && files.forEach((file) => {
-  const options = prettier.resolveConfig.sync(file, {
-    config: prettierConfigPath
-  });
-  const fileInfo = prettier.getFileInfo.sync(file);
-  if (fileInfo.ignored) {
-    return;
-  }
-  try {
-    const input = fs.readFileSync(file, 'utf8');
-    const withParserOptions = {
-      ...options,
-      parser: fileInfo.inferredParser
-    };
-    const output = prettier.format(input, withParserOptions);
-    if (output !== input) {
-      fs.writeFileSync(file, output, 'utf8');
-      console.log(chalk.green(`${file} is prettier`));
+Array.isArray(files) &&
+  files.forEach((file) => {
+    const options = prettier.resolveConfig.sync(file, {
+      config: prettierConfigPath
+    });
+    const fileInfo = prettier.getFileInfo.sync(file);
+    if (fileInfo.ignored) {
+      return;
     }
-  } catch (e) {
-    console.log('format error', e);
-    didError = true;
-  }
-});
+    try {
+      const input = fs.readFileSync(file, 'utf8');
+      const withParserOptions = {
+        ...options,
+        parser: fileInfo.inferredParser
+      };
+      const output = prettier.format(input, withParserOptions);
+      if (output !== input) {
+        fs.writeFileSync(file, output, 'utf8');
+        console.log(chalk.green(`${file} is prettier`));
+      }
+    } catch (e) {
+      console.log('format error', e);
+      didError = true;
+    }
+  });
 
 if (didError) {
   process.exit(1);

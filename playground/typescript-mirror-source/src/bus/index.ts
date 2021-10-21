@@ -11,77 +11,77 @@
  所以一般在vue生命周期 beforeDestroy或者 destroyed中，需要用vue实例的 $off方法清除 eventBus
  可当你有多个 eventBus时，就需要重复性劳动 $off销毁这件事儿。这时候封装一个 eventBus就是更佳的解决方案。
  */
-import Vue from 'vue'
+import Vue from 'vue';
 
 class EventBus {
-  private handles: any
-  private readonly Vue: any
-  private readonly eventMapUid: object
+  private handles: any;
+  private readonly Vue: any;
+  private readonly eventMapUid: object;
   constructor(vue) {
     if (!this.handles) {
       Object.defineProperty(this, 'handles', {
         value: {},
         enumerable: false
-      })
+      });
     }
-    this.Vue = vue
+    this.Vue = vue;
     // _uid和EventName的映射
-    this.eventMapUid = {}
+    this.eventMapUid = {};
   }
 
   setEventMapUid(uid, eventName) {
-    if (!this.eventMapUid[uid]) this.eventMapUid[uid] = []
-    this.eventMapUid[uid].push(eventName) // 把每个_uid订阅的事件名字push到各自uid所属的数组里
+    if (!this.eventMapUid[uid]) this.eventMapUid[uid] = [];
+    this.eventMapUid[uid].push(eventName); // 把每个_uid订阅的事件名字push到各自uid所属的数组里
   }
 
   $on(eventName, callback, vm) {
     // vm是在组件内部使用时组件当前的this用于取_uid
-    if (!this.handles[eventName]) this.handles[eventName] = []
-    this.handles[eventName].push(callback)
-    if (vm instanceof this.Vue) this.setEventMapUid(vm._uid, eventName)
+    if (!this.handles[eventName]) this.handles[eventName] = [];
+    this.handles[eventName].push(callback);
+    if (vm instanceof this.Vue) this.setEventMapUid(vm._uid, eventName);
   }
 
   $emit(...args) {
-    const eventName = args[0]
-    const params = args.slice(1)
+    const eventName = args[0];
+    const params = args.slice(1);
     if (this.handles[eventName]) {
-      const len = this.handles[eventName].length
+      const len = this.handles[eventName].length;
       for (let i = 0; i < len; i++) {
-        this.handles[eventName][i](...params)
+        this.handles[eventName][i](...params);
       }
     }
   }
 
   $offVmEvent(uid) {
-    const currentEvents = this.eventMapUid[uid] || []
+    const currentEvents = this.eventMapUid[uid] || [];
     currentEvents.forEach((event) => {
-      this.$off(event)
-    })
+      this.$off(event);
+    });
     if (currentEvents.length) {
-      delete this.eventMapUid[uid]
+      delete this.eventMapUid[uid];
     }
   }
 
   $off(eventName) {
-    delete this.handles[eventName]
+    delete this.handles[eventName];
   }
 }
 
 // 写成Vue插件形式，直接引入然后Vue.use($EventBus)进行使用
-const $EventBus: any = {}
+const $EventBus: any = {};
 
 $EventBus.install = (Vue) => {
-  window.$eventBus = new EventBus(Vue)
-  Vue.prototype.$eventBus = new EventBus(Vue)
+  window.$eventBus = new EventBus(Vue);
+  Vue.prototype.$eventBus = new EventBus(Vue);
   Vue.mixin({
     beforeDestroy() {
       // 拦截beforeDestroy钩子自动销毁自身所有订阅的事件
-      this.$eventBus.$offVmEvent(this._uid)
+      this.$eventBus.$offVmEvent(this._uid);
     }
-  })
-}
+  });
+};
 
-Vue.use($EventBus)
+Vue.use($EventBus);
 
 // 组件中使用
 // created () {
