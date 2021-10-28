@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  *
  * @authors liwb (lwbhtml@gmail.com)

@@ -464,6 +464,13 @@ async function init() {
       render('ui-framework/default');
     }
 
+    // version-control
+    if (versionControl === 'svn') {
+      render('version-control/svn');
+    } else {
+      render('version-control/default');
+    }
+
     if (needsMirrorSource) {
       render('mirror-source');
     }

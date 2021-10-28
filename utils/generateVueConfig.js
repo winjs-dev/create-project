@@ -6,7 +6,7 @@ const vueConfig = `'use strict';
 const path = require('path');
 const pkg = require('./package.json');
 const webpack = require('webpack');
-const {formatDate} = require('@winner-fed/cloud-utils');
+const { formatDate } = require('@winner-fed/cloud-utils');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 <%_ if (application !== 'pc') { _%>
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
@@ -16,7 +16,7 @@ const WebpackBar = require('webpackbar');
 const VueRouterInvokeWebpackPlugin = require('@winner-fed/vue-router-invoke-webpack-plugin');
 <%_ } _%>
 const TerserPlugin = require('terser-webpack-plugin');
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 <%_ if (needsTypescript && uiFramework === 'vant') { _%>
 const tsImportPluginFactory = require('ts-import-plugin');
 const merge = require('webpack-merge');
@@ -25,8 +25,8 @@ const merge = require('webpack-merge');
 const svnInfo = require('svn-info');
 <%_ } _%>
 <%_ if (buildTools) { _%>
-const {readFileSync, writeFileSync, existsSync, mkdirSync} = require('fs');
-const {genHtmlOptions} = require('./build/utils');
+const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+const { genHtmlOptions } = require('./build/utils');
 
 const indexPath = path.resolve(__dirname, './index.html');
 const tmpDir = path.resolve(__dirname, 'node_modules/.tmp/build');
