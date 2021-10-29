@@ -69,7 +69,7 @@
     "lint-staged": "^10.5.4",
     "plop": "^2.3.0",
     "postcss-pxtorem": "^4.0.1",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "pretty-quick": "^3.1.0",
     "qrcode-terminal": "^0.12.0",
     "rimraf": "^3.0.2",
