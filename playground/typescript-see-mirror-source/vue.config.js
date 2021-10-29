@@ -3,12 +3,12 @@
 const path = require('path');
 const pkg = require('./package.json');
 const webpack = require('webpack');
-const {formatDate} = require('@winner-fed/cloud-utils');
+const { formatDate } = require('@winner-fed/cloud-utils');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const N = '\n';
 const resolve = (dir) => {
   return path.join(__dirname, './', dir);
