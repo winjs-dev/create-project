@@ -445,7 +445,7 @@ export default function generateVueConfig({
   framework,
   application,
   versionControl,
-  needsTypescript,
+  needsTypeScript,
   uiFramework,
   buildTools = false
 }) {
@@ -453,7 +453,7 @@ export default function generateVueConfig({
     framework,
     application,
     versionControl,
-    needsTypescript,
+    needsTypeScript,
     uiFramework,
     buildTools
   });

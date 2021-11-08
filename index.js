@@ -17,8 +17,8 @@ import generateMain from './utils/generateMain.js';
 import generateMainV3 from './utils/generateMainV3.js';
 import generateVueConfig from './utils/generateVueConfig.js';
 import getCommand from './utils/getCommand.js';
-import generateOfflinePackage from './utils/generateOfflinePackage';
-import generateRouterInterceptor from './utils/generateRouterInterceptor';
+import generateOfflinePackage from './utils/generateOfflinePackage.js';
+import generateRouterInterceptor from './utils/generateRouterInterceptor.js';
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
@@ -503,7 +503,6 @@ async function init() {
         framework,
         application,
         uiFramework,
-        layoutAdapter,
         needsTypeScript,
         versionControl
       })
