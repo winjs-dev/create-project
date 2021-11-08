@@ -17,7 +17,7 @@ const VueRouterInvokeWebpackPlugin = require('@winner-fed/vue-router-invoke-webp
 <%_ } _%>
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-<%_ if (needsTypescript && uiFramework === 'vant') { _%>
+<%_ if (needsTypeScript && uiFramework === 'vant') { _%>
 const tsImportPluginFactory = require('ts-import-plugin');
 const merge = require('webpack-merge');
 <%_ } _%>
@@ -197,7 +197,7 @@ module.exports = {
     //   }
     // }
   },
-  <%_ if (needsTypescript) { _%>
+  <%_ if (needsTypeScript) { _%>
   pwa: {
     name: \`\${pkg.name}\`,
     workboxPluginMode: 'InjectManifest',
@@ -206,7 +206,7 @@ module.exports = {
     }
   },
   <%_ } _%>
-  <%_ if (needsTypescript && framework === 'v3') { _%>
+  <%_ if (needsTypeScript && framework === 'v3') { _%>
   transpileDependencies: ['vue', 'vue-router', '@vue'],
   <%_ } _%>
   // css相关配置
@@ -286,7 +286,7 @@ module.exports = {
       .loader('url-loader')
       .end();
     <%_ } _%>
-  <%_ if (needsTypescript && uiFramework === 'vant') { _%>
+  <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
     config.module
       .rule('ts')
       .use('ts-loader')

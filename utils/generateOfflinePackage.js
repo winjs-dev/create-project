@@ -1,4 +1,4 @@
-import ejs from 'ejs'
+import ejs from 'ejs';
 
 const offlinePackage = `
 {
@@ -14,10 +14,10 @@ const offlinePackage = `
     "android": "6.0.0.0"
   }
 }
-`
+`;
 export default function generateOfflinePackage({ offlineId, offlineName }) {
   return ejs.render(offlinePackage, {
     offlineId,
     offlineName
-  })
+  });
 }

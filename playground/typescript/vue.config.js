@@ -134,6 +134,13 @@ module.exports = {
     //   }
     // }
   },
+  pwa: {
+    name: `${pkg.name}`,
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      swSrc: path.resolve(__dirname, 'src/pwa/service-worker.js')
+    }
+  },
   // css相关配置
   css: {
     // 是否使用css分离插件 ExtractTextPlugin

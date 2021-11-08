@@ -1,8 +1,8 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
-import deepMerge from './deepMerge.js'
-import sortDependencies from './sortDependencies.js'
+import deepMerge from './deepMerge.js';
+import sortDependencies from './sortDependencies.js';
 
 /**
  * Renders a template folder/file to the file system,
@@ -15,33 +15,33 @@ import sortDependencies from './sortDependencies.js'
  * @param {object} options data for ejs parse
  */
 function renderTemplate(src, dest, options = {}) {
-  const stats = fs.statSync(src)
+  const stats = fs.statSync(src);
   if (stats.isDirectory()) {
     // if it's a directory, render its subdirectories and files recusively
-    fs.mkdirSync(dest, { recursive: true })
+    fs.mkdirSync(dest, { recursive: true });
     for (const file of fs.readdirSync(src)) {
-      renderTemplate(path.resolve(src, file), path.resolve(dest, file), options)
+      renderTemplate(path.resolve(src, file), path.resolve(dest, file), options);
     }
-    return
+    return;
   }
 
-  const filename = path.basename(src)
+  const filename = path.basename(src);
 
   if (filename === 'package.json' && fs.existsSync(dest)) {
     // merge instead of overwriting
-    const existing = JSON.parse(fs.readFileSync(dest))
-    const newPackage = JSON.parse(fs.readFileSync(src))
-    const pkg = sortDependencies(deepMerge(existing, newPackage))
-    fs.writeFileSync(dest, JSON.stringify(pkg, null, 2) + '\n')
-    return
+    const existing = JSON.parse(fs.readFileSync(dest));
+    const newPackage = JSON.parse(fs.readFileSync(src));
+    const pkg = sortDependencies(deepMerge(existing, newPackage));
+    fs.writeFileSync(dest, JSON.stringify(pkg, null, 2) + '\n');
+    return;
   }
 
   if (filename.startsWith('_')) {
     // rename `_file` to `.file`
-    dest = path.resolve(path.dirname(dest), filename.replace(/^_/, '.'))
+    dest = path.resolve(path.dirname(dest), filename.replace(/^_/, '.'));
   }
 
-  fs.copyFileSync(src, dest)
+  fs.copyFileSync(src, dest);
 }
 
-export default renderTemplate
+export default renderTemplate;

@@ -1,29 +1,29 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
 export function preOrderDirectoryTraverse(dir, dirCallback, fileCallback) {
   for (const filename of fs.readdirSync(dir)) {
-    const fullpath = path.resolve(dir, filename)
+    const fullpath = path.resolve(dir, filename);
     if (fs.lstatSync(fullpath).isDirectory()) {
-      dirCallback(fullpath)
+      dirCallback(fullpath);
       // in case the dirCallback removes the directory entirely
       if (fs.existsSync(fullpath)) {
-        preOrderDirectoryTraverse(fullpath, dirCallback, fileCallback)
+        preOrderDirectoryTraverse(fullpath, dirCallback, fileCallback);
       }
-      continue
+      continue;
     }
-    fileCallback(fullpath)
+    fileCallback(fullpath);
   }
 }
 
 export function postOrderDirectoryTraverse(dir, dirCallback, fileCallback) {
   for (const filename of fs.readdirSync(dir)) {
-    const fullpath = path.resolve(dir, filename)
+    const fullpath = path.resolve(dir, filename);
     if (fs.lstatSync(fullpath).isDirectory()) {
-      postOrderDirectoryTraverse(fullpath, dirCallback, fileCallback)
-      dirCallback(fullpath)
-      continue
+      postOrderDirectoryTraverse(fullpath, dirCallback, fileCallback);
+      dirCallback(fullpath);
+      continue;
     }
-    fileCallback(fullpath)
+    fileCallback(fullpath);
   }
 }
