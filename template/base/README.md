@@ -277,7 +277,7 @@ export default {
 
 ## 开发及发布
 
-```
+```shell
 # 安装依赖
 yarn install
 
@@ -302,7 +302,7 @@ yarn run zip
 
 ## 其他
 
-```
+```shell
 # --svgo svg精简压缩
 yarn run svgo
 
