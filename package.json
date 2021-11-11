@@ -26,7 +26,11 @@
     "type": "git",
     "url": "git+https://github.com/cloud-templates/create-project.git"
   },
-  "keywords": [],
+  "keywords": [
+    "vue",
+    "vue3",
+    "create-project"
+  ],
   "author": "winner fed",
   "license": "MIT",
   "bugs": {

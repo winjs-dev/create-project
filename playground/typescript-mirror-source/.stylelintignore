@@ -1,9 +1,8 @@
-*.js
-*.png
-*.eot
-*.ttf
-*.woff
-
-/src/assets/fonts/
-/dist/
-/public/
+node_modules/
+build/
+dist/
+src/assets/fonts/
+public/
+**/*.min.css
+**/*-min.css
+**/*.bundle.css
