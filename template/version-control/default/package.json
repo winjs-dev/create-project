@@ -2,17 +2,11 @@
   "scripts": {
     "gen:log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lint:ls-lint": "ls-lint",
-    "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
-    "lint:pretty": "pretty-quick --staged"
+    "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.9.2",
-    "conventional-changelog-cli": "^2.1.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "f2elint commit-file-scan",
-      "commit-msg": "f2elint commit-msg-scan"
-    }
+    "conventional-changelog-cli": "^2.1.1",
+    "lint-staged": "^11.2.6"
   }
 }
