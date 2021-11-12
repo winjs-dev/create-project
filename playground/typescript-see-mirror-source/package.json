@@ -2,7 +2,6 @@
   "name": "typescript-see-mirror-source",
   "version": "0.0.0",
   "scripts": {
-    "prepare": "husky install",
     "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
     "dev": "npm run serve",
     "serve": "vue-cli-service serve",
@@ -23,6 +22,7 @@
     "f2elint-fix": "f2elint fix",
     "new": "plop",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6",
+    "prepare": "husky install",
     "gen:log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lint:ls-lint": "ls-lint",
     "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",

@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "prepare": "husky install",
     "gen:log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lint:ls-lint": "ls-lint",
     "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js"
