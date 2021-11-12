@@ -20,7 +20,8 @@
     "snapshot": "node snapshot.js",
     "pretest": "run-s build snapshot",
     "test": "node test.js",
-    "prepublishOnly": "run-s build snapshot"
+    "prepublishOnly": "run-s build snapshot",
+    "release": "node ./build/release.js"
   },
   "repository": {
     "type": "git",
