@@ -1,6 +1,6 @@
 {
   "name": "@winner-fed/create-project",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "An easy way to start a project",
   "type": "module",
   "bin": {
@@ -11,7 +11,7 @@
     "template"
   ],
   "engines": {
-    "node": "^12.13.0 || ^14.0.0 || >= 16.0.0"
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
     "prepare": "husky install",
