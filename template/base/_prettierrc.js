@@ -17,6 +17,8 @@ module.exports = {
   bracketSameLine: true,
   // 箭头函数，只有一个参数的时候，也需要括号
   arrowParens: 'always',
+  // 对象的 key 仅在必要时用引号
+  quoteProps: 'as-needed',
   // jsx 不使用单引号，而使用双引号
   jsxSingleQuote: false,
   // vue 文件中的 script 和 style 内需要缩进
