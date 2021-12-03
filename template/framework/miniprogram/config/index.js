@@ -57,7 +57,7 @@ const config = {
         }
       }
     },
-    sassLoaderOption: {
+    lessLoaderOption: {
       additionalData: `@import '@/assets/style/variables.scss'; @import '@/assets/style/mixins.scss';`
     }
   },
