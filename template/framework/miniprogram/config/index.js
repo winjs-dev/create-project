@@ -86,8 +86,8 @@ const config = {
         }
       }
     },
-    sassLoaderOption: {
-      additionalData: `@import '@/assets/style/variables.scss'; @import '@/assets/style/mixins.scss';`
+    lessLoaderOption: {
+      additionalData: `@import '@/assets/style/variables.less'; @import '@/assets/style/mixins.less';`
     }
   },
   h5: {
@@ -118,8 +118,8 @@ const config = {
         }
       }
     },
-    sassLoaderOption: {
-      prependData: `@import '@/assets/style/variables.scss'; @import '@/assets/style/mixins.scss';`
+    lessLoaderOption: {
+      additionalData: `@import '@/assets/style/variables.less'; @import '@/assets/style/mixins.less';`
     }
   }
 };
