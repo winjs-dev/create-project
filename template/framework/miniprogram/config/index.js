@@ -65,7 +65,7 @@ const config = {
     }
   },
   h5: {
-    publicPath: './',
+    publicPath: '/',
     staticDirectory: 'static',
     output: {
       filename: 'static/js/[name].[hash].js',

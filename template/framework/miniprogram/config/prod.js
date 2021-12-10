@@ -7,6 +7,7 @@ module.exports = {
   defineConstants: {},
   mini: {},
   h5: {
+    publicPath: './',
     webpackChain(chain) {
       // 阻止生成 *.license.txt
       chain.plugin('terser').use(TerserPlugin, [
