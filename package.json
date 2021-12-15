@@ -1,6 +1,6 @@
 {
   "name": "@winner-fed/create-project",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "An easy way to start a project",
   "type": "module",
   "bin": {
