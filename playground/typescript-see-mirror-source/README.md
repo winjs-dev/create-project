@@ -296,6 +296,17 @@ yarn run build
 # 压缩 dist 文件夹，生成 zip 包
 yarn run zip
 
+# see 包
+# 构建带时间串和gitcommitid的包
+npm run build:see 
+
+# 构建无时间戳的包，包名上的微服务版本取 buildVersion
+npm run build:see prod 
+# eg：
+npm run build:see - 构建结果是 hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
+npm run build:see prod - 构建结果是hscs-company-web-V202101-00-000.zip
+
+其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
 ```
 
 浏览器访问 <http://localhost:3000>

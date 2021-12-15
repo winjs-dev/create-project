@@ -1,6 +1,7 @@
 {
   "name": "see",
   "version": "0.0.0",
+  "buildVersion": "V202101-00-000",
   "scripts": {
     "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
     "dev": "npm run serve",
@@ -26,7 +27,7 @@
     "gen:log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lint:ls-lint": "ls-lint",
     "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
-    "see": "npm run build && node build/package/see.js"
+    "build:see": "npm run build && node build/package/see.js"
   },
   "dependencies": {
     "@winner-fed/cloud-utils": "*",
@@ -80,7 +81,7 @@
     "build": "生产环境执行构建",
     "analyz": "生产环境执行构建打包分析",
     "deploy": "生产环境执行构建并压缩zip包",
-    "see": "生成 see 平台部署发布物",
+    "build:see": "生成 see 平台部署发布物",
     "escheck": "检测是否含有 ES6+ 语法"
   }
 }
