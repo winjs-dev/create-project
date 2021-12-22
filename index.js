@@ -54,6 +54,7 @@ function emptyDir(dir) {
 // 5. 选择 版本控制工具 version-control
 // 6. 是否使用公司镜像源 mirror-source
 // 7. 是否使用 see 命令输出包
+// 8. 是否支持子应用或微应用
 async function init() {
   const cwd = process.cwd();
   // possible options:
@@ -115,6 +116,7 @@ async function init() {
     // - Version Control: default(git) / svn
     // - Add Mirror Source Support? no
     // - Add See package Support?  no
+    // - Add Subsystem Support? no
     result = await prompts(
       [
         {
@@ -329,6 +331,19 @@ async function init() {
           initial: false,
           active: 'Yes',
           inactive: 'No'
+        },
+        {
+          name: 'needsSubsystem',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' && values.needsMirrorSource === true
+              ? 'toggle'
+              : null;
+          },
+          message: 'Add Subsystem Support?',
+          initial: false,
+          active: 'Yes',
+          inactive: 'No'
         }
       ],
       {
@@ -355,7 +370,8 @@ async function init() {
     layoutAdapter = argv.layoutAdapter,
     versionControl = argv.versionControl,
     needsMirrorSource = argv.ms,
-    needsSeePackage = argv.see
+    needsSeePackage = argv.see,
+    needsSubsystem = argv.subsystem
   } = result;
 
   const root = path.join(cwd, targetDir);
@@ -477,6 +493,10 @@ async function init() {
 
     if (needsSeePackage) {
       render('see-package');
+    }
+
+    if (needsSubsystem) {
+      render('subsystem');
     }
 
     // Main generation

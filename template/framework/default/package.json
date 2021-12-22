@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "new": "plop",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6"
   },
   "dependencies": {
