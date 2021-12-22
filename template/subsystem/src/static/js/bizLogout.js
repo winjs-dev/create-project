@@ -1,6 +1,7 @@
 /*
  * 业务登入登出扩展逻辑
  */
+// eslint-disable-next-line no-undef
 define(function () {
   return {
     bizLogout: function () {

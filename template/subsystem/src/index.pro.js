@@ -40,6 +40,32 @@ const plugin = {
 };
 
 /**
+ * @description 生成 vuex 状态仓库模块，入参为 src/store 目录下的文件名
+ * @param {array} files 模块文件
+ */
+function generateStoreModules(files = []) {
+  const modules = {};
+  // files.forEach((file) => {
+  //   const name = file.replace(/\.js$/, "");
+  //   modules[name] = require(`@/store/${file}`);
+  // });
+  return modules;
+}
+
+/**
+ * @description 注册对应的子系统router到框架
+ */
+function generateRouterModules(routers = []) {
+  const result = {};
+  routers.forEach((item) => {
+    if (item.component && item.name) {
+      result[item.name] = item.component;
+    }
+  });
+  return result;
+}
+
+/**
  * @description 兼容框架 1.0 集成的入口文件
  *
  * 认识框架 1.0 的主子系统开发模式
@@ -88,57 +114,31 @@ export default {
 };
 
 /**
- * @description 生成 vuex 状态仓库模块，入参为 src/store 目录下的文件名
- * @param {array} files 模块文件
- */
-function generateStoreModules(files = []) {
-  const modules = {};
-  // files.forEach((file) => {
-  //   const name = file.replace(/\.js$/, "");
-  //   modules[name] = require(`@/store/${file}`);
-  // });
-  return modules;
-}
-
-/**
  * @description 合并 url 指定的语言包文件, 要求必须符合 requirejs 的模块规范 https://github.com/requirejs/requirejs
  * @param {String} url 语言文件路径, 应该是相对于根目录的一个路径地址, 如 “./static/locale/demo.js”
  * @param {Function} cb 回调函数
  * @returns {Promise}
  */
-export function mergeLocaleFromUrl(url) {
-  return new Promise((resolve, reject) => {
-    // if (url) {
-    //   requirejs(
-    //     [url],
-    //     (data) => {
-    //       for (let key in data) {
-    //         if (["zh-CN", "en-US", "zh-TW"].includes(key)) {
-    //           window.i18n.mergeLocaleMessage(key, data[key]);
-    //         }
-    //       }
-    //
-    //       resolve();
-    //     },
-    //     (error) => {
-    //       reject(error);
-    //     }
-    //   );
-    // } else {
-    //   reject("url is empty");
-    // }
-  });
-}
-
-/**
- * @description 注册对应的子系统router到框架
- */
-function generateRouterModules(routers = []) {
-  let result = {};
-  routers.forEach((item) => {
-    if (item.component && item.name) {
-      result[item.name] = item.component;
-    }
-  });
-  return result;
-}
+// export function mergeLocaleFromUrl(url) {
+//   return new Promise((resolve, reject) => {
+//     // if (url) {
+//     //   requirejs(
+//     //     [url],
+//     //     (data) => {
+//     //       for (let key in data) {
+//     //         if (["zh-CN", "en-US", "zh-TW"].includes(key)) {
+//     //           window.i18n.mergeLocaleMessage(key, data[key]);
+//     //         }
+//     //       }
+//     //
+//     //       resolve();
+//     //     },
+//     //     (error) => {
+//     //       reject(error);
+//     //     }
+//     //   );
+//     // } else {
+//     //   reject("url is empty");
+//     // }
+//   });
+// }
