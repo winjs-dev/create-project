@@ -1,8 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
-const Base64 = require('js-base64').Base64;
 const { generateSeePackageZip } = require('@winner-fed/winner-deploy');
-const { formatDate } = require('@winner-fed/cloud-utils');
+const { formatDate, generateGUID } = require('@winner-fed/cloud-utils');
 const { name, version, buildVersion } = require('../../package.json');
 const runtimeArgs = process.argv.slice(2);
 // 系统分类，必须按照实际项目要求填写
@@ -49,7 +48,7 @@ function getGitHash() {
       .split(/.*[: ]/)
       .slice(-1)[0];
   } catch (error) {
-    rev = Base64.encode(new Date());
+    rev = generateGUID().slice(0, 8);
   }
 
   if (rev.indexOf('/') === -1) {
