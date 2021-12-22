@@ -1,6 +1,7 @@
 import FUNS from '@/services';
 import { routes } from './router';
 import { filters } from './filters';
+import Lang from './static/lang';
 
 // icons
 import SvgIcon from 'vue-svgicon';
@@ -67,6 +68,9 @@ export default {
   uses: {
     plugin
   },
+
+  // 基于 vue-i18n 实现的语言切换功能
+  i18n: Lang,
 
   /**
    * 引导函数, 执行的时机是在组件、语言包等子系统资源加载完毕之后, 子系统路由注册之前

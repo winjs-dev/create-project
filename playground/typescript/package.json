@@ -21,7 +21,6 @@
     "zip": "node build/zip.js",
     "f2elint-scan": "f2elint scan",
     "f2elint-fix": "f2elint fix",
-    "new": "plop",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6",
     "prepare": "husky install",
     "gen:log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
