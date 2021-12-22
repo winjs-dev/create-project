@@ -40,8 +40,7 @@
     ├── services
     ├── vendor
     └── views
-        ├── hello
-        └── svgIcons
+        └── hello
 ```
 
 - build - 构建工具（如 webpack） 及 node 命令行工具相关配置
@@ -255,7 +254,6 @@ export default {
 - .editorconfig - 是一套用于统一代码格式的解决方案，可以帮助开发者在不同的编辑器和 IDE 之间定义和维护一致的代码风格。常见的 IDE 如 WebStorm 都可以配置。详见 [http://www.alloyteam.com/2014/12/editor-config/](http://www.alloyteam.com/2014/12/editor-config/)
 - .escheckrc - 使用简单的 shell 命令检查 JavaScript 文件中使用的 ES 版本。构建的前端包（dist 包）需要支持安卓 4.4 及 iOS9.0 机型，所以为了避免包里出现 ES6 语法，增加了新的 npm scripts 命令: escheck。执行完 npm run build 之后，可以使用 npm run escheck 进行检测。
 - JSON - 详见 [https://segmentfault.com/a/1190000018013282](https://segmentfault.com/a/1190000018013282)
-- plopfile.js - plop 相关 [https://github.com/plopjs/plop](https://github.com/plopjs/plop)。帮助团队快速创建具有一致性的新文件。
 - postcss.config.js - postcss 配置文件，集成了 autoprefixer ，px2rem 等插件
 - .prettierrc - prettier 配置文件，用于代码格式化，如 .Less 等文件
 - stylelint.config.js - 样式编码规范

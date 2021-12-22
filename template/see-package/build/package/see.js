@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
 const { generateSeePackageZip } = require('@winner-fed/winner-deploy');
 const { generateSeePackageInfo } = require('../utils');
-const { name } = require('../../package.json');
 
 // 系统分类，必须按照实际项目要求填写
 const system = 'winner-front';
