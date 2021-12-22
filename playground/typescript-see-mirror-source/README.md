@@ -20,7 +20,6 @@
 .
 ├── build
 ├── docs
-├── plop-templates
 ├── public
 ├── scripts
 └── src
@@ -178,8 +177,6 @@ export default {
 "lint:prettier": "check-prettier lint",
 # .css、.less、.sass 等文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-stylelint 实现
 "lint:style": "vue-cli-service lint:style",
-# 自定义一些代码片段或者基础模板，自动生成 view 或者 component 等文件，项目初始化的时候，创建视图文件比较方便
-"new": "plop",
 # .js、.vue、.md 等文件格式化，依赖于 prettier
 "prettier": "node ./scripts/prettier.js",
 # 重新安装
@@ -204,7 +201,7 @@ export default {
 "dependencies": {
 "@winner-fed/cloud-utils": "*",
 "@winner-fed/magicless": "*",
-"axios": "0.19.2",
+"axios": "0.23.20",
 "core-js": "^3.6.5",
 "amfe-flexible": "0.3.2",
 "normalize.css": "8.0.1",
@@ -239,7 +236,6 @@ export default {
 "internal-ip": "^4.2.0",
 "less": "^3.0.4",
 "less-loader": "^7.3.0",
-"plop": "^2.3.0",
 "postcss-pxtorem": "^4.0.1",
 "prettier": "^1.19.1",
 "qrcode-terminal": "^0.12.0",
@@ -248,11 +244,6 @@ export default {
 "stylelint": "^13.6.1",
 "svn-info": "^1.0.0",
 "tasksfile": "^5.1.0",
-"vite": "^2.2.3",
-"vite-plugin-components": "^0.8.4",
-"vite-plugin-html": "^2.0.3",
-"vite-plugin-style-import": "^0.10.0",
-"vite-plugin-vue2": "^1.4.4",
 "vue-cli-plugin-qrcode": "*",
 "vue-template-compiler": "^2.6.11",
 "webpack-manifest-plugin": "^3.0.0",
@@ -307,6 +298,13 @@ npm run build:see - 构建结果是 hscs-company-web-V202101-00-000-202112010925
 npm run build:see prod - 构建结果是hscs-company-web-V202101-00-000.zip
 
 其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
+
+# 构建支持容器化部署的SEE发布物
+npm run build:see -dockerSeePack=true
+# eg
+npm run build:see -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
+
+npm run build:see prod -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000.zip
 ```
 
 浏览器访问 <http://localhost:3000>
