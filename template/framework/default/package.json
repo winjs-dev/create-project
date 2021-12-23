@@ -8,8 +8,6 @@
     "vue-svgicon": "3.2.6"
   },
   "devDependencies": {
-    "@winner-fed/vue-router-invoke-webpack-plugin": "^1.0.0",
-    "plop": "^2.3.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

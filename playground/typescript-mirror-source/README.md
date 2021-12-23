@@ -14,6 +14,10 @@
 
 - 常用的 Less 的 mixins 集合：[magicless](https://github.com/cklwblove/magicless)
 
+- 支持**开发模式**下，终端打印入口页面地址及生成二维码，**依赖Wifi热点，手机设备和PC必须处在同一局域网**([vue-cli-plugin-qrcode](https://github.com/cklwblove/vue-cli-plugin-qrcode))
+
+- 接入编码规范 `eslint-config-win`，`stylelint-config-win`
+
 ## 目录介绍
 
 ```bash
@@ -139,8 +143,52 @@ export default {
 - views - 视图层，数据的消费者。尽可能的让视图层更“轻”。
     - 统一采用小驼峰（切记），如 helloWorld
 - constant.js - 定义常量（大驼峰，单词之间以下划线连接）。编写业务程序时，会有一些所需要的常量值，比如订单状态，1,2,3...。一般情况下，这些值都是固定不变的。如果直接将这些值硬编码到代码里，就可以理解成“魔法值”。魔法值的存在，从语法上来说是合理的，但是从业务上却让人无法理解其中 0，1，2，3 的含义。对于这些魔法值，我们往往需要通过上下文推断出来逻辑，如果是非常复杂的业务或者 10 年前的代码那就更惨了，搞不好连文档注释也没有。为了可读性，所以我们要尽量避免出现魔法值。
+  举个例子，如下
+    ```vue
+    <!-- 服务期限 -->
+    <div class="card-subscription viability-info">
+      <div class="header">
+        <span>服务期限</span>
+      </div>
+      <div class="content">
+        <div v-if="+combinePrice.farePerMonth !== 999999999"
+             class="viability-box"
+             :class="{active: viability === '1' }"
+             @click="viability = '1'">
+          <p>1个月</p>
+          <p class="price"><b>￥</b>{{combinePrice.farePerMonth}}</p>
+        </div>
+        <div v-if="+combinePrice.farePerQuarter !== 999999999"
+             class="viability-box"
+             :class="{active: viability === '3' }"
+             @click="viability = '3'">
+          <p>3个月</p>
+          <p class="price"><b>￥</b>{{combinePrice.farePerQuarter}}</p>
+        </div>
+        <div v-if="+combinePrice.farePerHalfyear !== 999999999"
+             class="viability-box"
+             :class="{active: viability === '6' }"
+             @click="viability = '6'">
+          <p>6个月</p>
+          <p class="price"><b>￥</b>{{combinePrice.farePerHalfyear}}</p>
+        </div>
+    </div>
+    ```
+  `999999999` 是什么玩意。。。
+    ```javascript
+    // constant.js
+    ...
+    // 中台与前端做的协定
+    // 特殊 999999999 价格，不做界面展示
+    const SPECIAL_PRICE = 999999999;
+    
+    export {
+      ...
+      SPECIAL_PRICE
+    };
+    ```
 
-- HTML - 遵循于 [EJS](https://ejs.co/) 嵌入式 JavaScript 模板引擎语法，比如 `<%% EJS %%>`。可以动态设置并解析所定义的变量，借助于 HTML
+- HTML - 遵循于 [EJS](https://ejs.co/) 嵌入式 JavaScript 模板引擎语法，比如 `<%% EJS %%>`。可以动态设置并解析所定义的变量，借助于 html-webpack-plugin
     - 配置文件 config.local.js 的引用方式这里做下说明，由于之前生产环境上遇到过，更改配置文件并上传服务器更新后，有缓存的问题，因此用了 `document.write` 方式实现，用于清除此文件的缓存
 
 ```javascript
@@ -153,102 +201,106 @@ export default {
 - JSON - 重点关注几个属性就行
     - scripts
 
-```json
-  "scripts": {
-# 开发调试，基于 webpack
-"serve": "vue-cli-service serve",
-# 构建打包
-"build": "node build/index.js",
-# .js、.vue、.jsx 文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-eslint 实现
-"lint": "vue-cli-service lint",
-# 生成部署包，并且压缩成 zip 包
-"deploy": "npm run build && npm run zip",
-# 初始化安装依赖包
-"bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
-# 开发调试，基于 vite
-"dev": "vite",
-# 针对 dist 包进行 ES6+ 的检测。目标是生成 ES5 的代码
-"escheck": "es-check",
-# 审查项目的 webpack 相关配置
-# 详见 https://cli.vuejs.org/zh/guide/webpack.html#%E4%BF%AE%E6%94%B9%E6%8F%92%E4%BB%B6%E9%80%89%E9%A1%B9
-"inspect": "vue inspect > output.js --verbose",
-# 文件格式化是以 prettier 实现
-"lint:prettier": "check-prettier lint",
-# .css、.less、.sass 等文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-stylelint 实现
-"lint:style": "vue-cli-service lint:style",
-# .js、.vue、.md 等文件格式化，依赖于 prettier
-"prettier": "node ./scripts/prettier.js",
-# 重新安装
-"reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
-"release": "sh build/release.sh",
-# 会根据构建统计生成报告，生成的 report.html 文件，它会帮助你分析包中包含的模块们的大小。
-"report": "vue-cli-service build --report",
-# 一键生成 SEE平台发布物
-"see": "npm run build && node build/package/see.js",
-# 一键生成 SVG 图标组件
-"svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6",
-# 将 dist 文件夹，压缩成 zip 包
-"zip": "node build/zip.js",
-# 根据文件夹 models 相关的前端领域模型，生成对应的文档说明
-"gen:docs": "./node_modules/.bin/jsdoc -c jsdoc.json"
-}
-```
+    ```json
+      "scripts": {
+        # 开发调试，基于 webpack
+        "serve": "vue-cli-service serve",
+        # 构建打包
+        "build": "node build/index.js",
+        # .js、.vue、.jsx 文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-eslint 实现
+        "lint": "vue-cli-service lint",
+        # 生成部署包，并且压缩成 zip 包
+        "deploy": "npm run build && npm run zip",
+        # 初始化安装依赖包
+        "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
+        # 开发调试，基于 vite
+        "dev": "vite",
+        # 针对 dist 包进行 ES6+ 的检测。目标是生成 ES5 的代码
+        "escheck": "es-check",
+        # 审查项目的 webpack 相关配置
+        # 详见 https://cli.vuejs.org/zh/guide/webpack.html#%E4%BF%AE%E6%94%B9%E6%8F%92%E4%BB%B6%E9%80%89%E9%A1%B9
+        "inspect": "vue inspect > output.js --verbose",
+        # 文件格式化是以 prettier 实现
+        "lint:prettier": "check-prettier lint",
+        # .css、.less、.sass 等文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-stylelint 实现
+        "lint:style": "vue-cli-service lint:style",
+        # .js、.vue、.md 等文件格式化，依赖于 prettier
+        "prettier": "node ./scripts/prettier.js",
+        # 重新安装
+        "reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
+        "release": "sh build/release.sh",
+        # 会根据构建统计生成报告，生成的 report.html 文件，它会帮助你分析包中包含的模块们的大小。
+        "report": "vue-cli-service build --report",
+        # 一键生成 SEE平台发布物，构建带时间串和 gitcommitid 的包
+        "build:see": "npm run build && node build/package/see.js",
+        # 负责构建子系统的包
+        "child": "node --max_old_space_size=4096 build/child/build.child.js",
+        # 负责构建做为子系统的 see 包
+        "build:see:child": "npm run child && node build/package/see.child.js"
+        # 一键生成 SVG 图标组件
+        "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6",
+        # 将 dist 文件夹，压缩成 zip 包
+        "zip": "node build/zip.js",
+        # 根据文件夹 models 相关的前端领域模型，生成对应的文档说明
+        "gen:docs": "./node_modules/.bin/jsdoc -c jsdoc.json"
+    }
+    ```
 
-- dependencies - 脚手架标配的依赖包如下所示：
+    - dependencies - 脚手架标配的依赖包如下所示：
 
-```json
-"dependencies": {
-"@winner-fed/cloud-utils": "*",
-"@winner-fed/magicless": "*",
-"axios": "0.23.20",
-"core-js": "^3.6.5",
-"amfe-flexible": "0.3.2",
-"normalize.css": "8.0.1",
-"vue": "^2.6.11",
-"vue-router": "3.5.1",
-"vue-svgicon": "3.2.6"
-}
-```
+    ```json
+    "dependencies": {
+        "@winner-fed/cloud-utils": "*",
+        "@winner-fed/magicless": "*",
+        "axios": "0.23.0",
+        "core-js": "^3.6.5",
+        "amfe-flexible": "0.3.2",
+        "normalize.css": "8.0.1",
+        "vue": "^2.6.11",
+        "vue-router": "3.5.1",
+        "vue-svgicon": "3.2.6"
+    }
+    ```
 
-- devDependencies
+    - devDependencies
 
-```json
-"devDependencies": {
-"@vue/cli-plugin-babel": "~4.5.0",
-"@vue/cli-service": "~4.5.0",
-"@vue/eslint-config-prettier": "^6.0.0",
-"@winner-fed/eslint-config-win": "^1.0.2",
-"@winner-fed/stylelint-config-win": "^0.1.0",
-"@winner-fed/vue-cli-plugin-eslint": "^1.0.2",
-"@winner-fed/vue-cli-plugin-stylelint": "^1.0.2",
-"@winner-fed/vue-router-invoke-webpack-plugin": "^1.0.0",
-"@winner-fed/winner-deploy": "^2.0.0",
-"add-asset-html-webpack-plugin": "^3.1.3",
-"archiver": "^3.0.0",
-"babel-eslint": "^10.0.1",
-"chalk": "^2.4.2",
-"check-prettier": "^1.0.3",
-"compression-webpack-plugin": "^3.0.0",
-"docdash": "^1.2.0",
-"es-check": "^5.2.3",
-"eslint": "^7.6.0",
-"internal-ip": "^4.2.0",
-"less": "^3.0.4",
-"less-loader": "^7.3.0",
-"postcss-pxtorem": "^4.0.1",
-"prettier": "^1.19.1",
-"qrcode-terminal": "^0.12.0",
-"rimraf": "^3.0.2",
-"script-ext-html-webpack-plugin": "^2.1.3",
-"stylelint": "^13.6.1",
-"svn-info": "^1.0.0",
-"tasksfile": "^5.1.0",
-"vue-cli-plugin-qrcode": "*",
-"vue-template-compiler": "^2.6.11",
-"webpack-manifest-plugin": "^3.0.0",
-"webpackbar": "^4.0.0"
-}
-```
+    ```json
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/eslint-config-prettier": "^6.0.0",
+        "@winner-fed/eslint-config-win": "^1.0.2",
+        "@winner-fed/stylelint-config-win": "^0.1.0",
+        "@winner-fed/vue-cli-plugin-eslint": "^1.0.2",
+        "@winner-fed/vue-cli-plugin-stylelint": "^1.0.2",
+        "@winner-fed/vue-router-invoke-webpack-plugin": "^1.0.0",
+        "@winner-fed/winner-deploy": "^3.0.0",
+        "add-asset-html-webpack-plugin": "^3.1.3",
+        "archiver": "^3.0.0",
+        "babel-eslint": "^10.0.1",
+        "chalk": "^2.4.2",
+        "check-prettier": "^1.0.3",
+        "compression-webpack-plugin": "^3.0.0",
+        "docdash": "^1.2.0",
+        "es-check": "^5.2.3",
+        "eslint": "^7.6.0",
+        "internal-ip": "^4.2.0",
+        "less": "^3.0.4",
+        "less-loader": "^7.3.0",
+        "postcss-pxtorem": "^4.0.1",
+        "prettier": "^1.19.1",
+        "qrcode-terminal": "^0.12.0",
+        "rimraf": "^3.0.2",
+        "script-ext-html-webpack-plugin": "^2.1.3",
+        "stylelint": "^13.6.1",
+        "svn-info": "^1.0.0",
+        "tasksfile": "^5.1.0",
+        "vue-cli-plugin-qrcode": "*",
+        "vue-template-compiler": "^2.6.11",
+        "webpack-manifest-plugin": "^3.0.0",
+        "webpackbar": "^4.0.0"
+    }
+    ```
 
 - .browserslistrc - 是在不同的前端工具之间共用目标浏览器和 node 版本的配置文件。主要用于 Autoprefixer Babel 等，详细可见 [https://juejin.cn/post/6844903669524086797](https://juejin.cn/post/6844903669524086797)
 - .editorconfig - 是一套用于统一代码格式的解决方案，可以帮助开发者在不同的编辑器和 IDE 之间定义和维护一致的代码风格。常见的 IDE 如 WebStorm 都可以配置。详见 [http://www.alloyteam.com/2014/12/editor-config/](http://www.alloyteam.com/2014/12/editor-config/)
@@ -285,7 +337,7 @@ yarn run build
 # 压缩 dist 文件夹，生成 zip 包
 yarn run zip
 
-# see 包
+# see 包，注意：不是运行在主框架里
 # 构建带时间串和gitcommitid的包
 npm run build:see 
 
@@ -303,6 +355,14 @@ npm run build:see -dockerSeePack=true
 npm run build:see -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
 
 npm run build:see prod -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000.zip
+
+# see 包，用于构建子系统的包，运行在主框架里
+# 构建子系统的包
+npm run child
+
+# 构建做为子系统的 see 包
+npm run build:see:child
+
 ```
 
 浏览器访问 <http://localhost:3000>

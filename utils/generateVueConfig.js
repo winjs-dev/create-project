@@ -12,9 +12,6 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 <%_ } _%>
 const WebpackBar = require('webpackbar');
-<%_ if (framework === 'v2') { _%>
-const VueRouterInvokeWebpackPlugin = require('@winner-fed/vue-router-invoke-webpack-plugin');
-<%_ } _%>
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
@@ -65,21 +62,7 @@ const getSvnInfo = () => {
 <%_ } _%>
 const genPlugins = () => {
   const plugins = [
-    new WebpackBar()<%_ if (framework === 'v2') { _%>,
-    new VueRouterInvokeWebpackPlugin({
-      dir: 'src/views',
-      // must set the alias for the dir option which you have set
-      alias: '@/views',
-      mode: 'hash',
-      routerDir: 'src/router',
-      ignore: ['images', 'components'],
-      redirect: [
-        {
-          redirect: '/hello',
-          path: '/'
-        }
-      ]
-    })<%_ } _%><%_ if (application !== 'pc') { _%>,
+    new WebpackBar()<%_ if (application !== 'pc') { _%>,
     // 为静态资源文件添加 hash，防止缓存
     new AddAssetHtmlPlugin([
       {
