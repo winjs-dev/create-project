@@ -384,9 +384,6 @@ async function init() {
 
   console.log(`\nScaffolding project in ${root}...`);
 
-  const pkg = { name: packageName, version: '0.0.0' };
-  fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2));
-
   // todo:
   // work around the esbuild issue that `import.meta.url` cannot be correctly transpiled
   // when bundling for node and the format is cjs
@@ -570,6 +567,10 @@ async function init() {
       fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
     }
   }
+
+  // rewrite package.json
+  const pkg = { name: packageName, version: '0.0.0' };
+  fs.writeFileSync(path.resolve(root, 'package.json'), JSON.stringify(pkg, null, 2));
 
   // Instructions:
   // Supported package managers: pnpm > yarn > npm
