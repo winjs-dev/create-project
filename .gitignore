@@ -1,5 +1,3 @@
-outfile.cjs
-
 # Logs
 logs
 *.log
@@ -110,6 +108,3 @@ dist
 
 .vscode
 .history
-
-# example project
-winner-project

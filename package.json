@@ -1,65 +1,23 @@
 {
-  "name": "@winner-fed/create-project",
-  "version": "1.1.4",
+  "name": "@winner-fed/create-project-docs",
+  "version": "1.0.0",
   "description": "An easy way to start a project",
-  "type": "module",
-  "bin": {
-    "create-project": "outfile.cjs"
-  },
-  "files": [
-    "outfile.cjs",
-    "template"
-  ],
-  "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
-  },
   "scripts": {
-    "prepare": "husky install",
-    "format": "prettier --write .",
-    "build": "esbuild --bundle index.js --format=cjs --platform=node --outfile=outfile.cjs",
-    "snapshot": "node snapshot.js",
-    "pretest": "run-s build snapshot",
-    "test": "node test.js",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "prepublishOnly": "run-s build snapshot",
-    "release": "np"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cloud-templates/create-project.git"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "deploy": "sh deploy.sh"
   },
   "keywords": [
     "vue",
     "vue3",
     "create-project"
   ],
-  "author": "winner fed",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cloud-templates/create-project/issues"
-  },
-  "homepage": "https://github.com/cloud-templates/create-project#readme",
+  "homepage": "https://github.com/cloud-templates/create-project",
   "devDependencies": {
-    "conventional-changelog-cli": "^2.1.1",
-    "ejs": "^3.1.6",
-    "esbuild": "^0.12.29",
-    "husky": "^7.0.2",
-    "kolorist": "^1.5.0",
-    "lint-staged": "^11.2.0",
-    "minimist": "^1.2.5",
-    "np": "^7.5.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.4.1",
-    "prompts": "^2.4.1",
-    "yaml-front-matter": "^4.1.1"
+    "vuepress": "^1.9.1"
   },
-  "lint-staged": {
-    "*.{js,ts,vue,json}": [
-      "prettier --write"
-    ]
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "dependencies": {
+    "vuepress-theme-reco": "^1.6.10"
   }
 }

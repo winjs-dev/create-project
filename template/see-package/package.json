@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "build:see": "npm run build && node build/package/see.js"
-  },
-  "devDependencies": {
-    "@winner-fed/winner-deploy": "^3.0.0"
-  }
-}

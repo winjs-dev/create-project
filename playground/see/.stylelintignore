@@ -1,8 +1,0 @@
-node_modules/
-build/
-dist/
-src/assets/fonts/
-public/
-**/*.min.css
-**/*-min.css
-**/*.bundle.css
