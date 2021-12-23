@@ -7,5 +7,5 @@ An easy way to start a project
 ## Usage
 
 ```sh
-npm init @winner-fed/project
+npm init @winner-fed/project project-name
 ```
