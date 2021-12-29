@@ -1,7 +1,7 @@
 ---
 title: create-project
 author: 文博
-date: '2021-12-21'
+date: '2021-12-29'
 ---
 
 ## 一、首先全局安装 vue-cli
@@ -337,7 +337,7 @@ export default {
     - [terser-webpack-plugin](https://webpack.docschina.org/plugins/terser-webpack-plugin/) - 由于 uglifyjs 不支持 ES6 语法，因此官方推荐使用此插件。该插件使用 terser 来压缩 JavaScript。
     - [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) - 静态资源的映射表。用于生成静态资源清单的插件，主要是生成 see 包需要此插件生成的 JSON，用于上传服务器生成对应的文件路径。
 
-## 开发及发布
+## 开发调试
 
 ```shell
 # 安装依赖
@@ -352,41 +352,69 @@ yarn run serve
 ## vite
 yarn run dev
 
-# 构建生产环境
-yarn run build
-
 # 压缩 dist 文件夹，生成 zip 包
 yarn run zip
+```
 
-# see 包，注意：不是运行在主框架里
+浏览器访问 <http://localhost:3000>
+
+## 构建发布
+```shell
+# 用于构建普通的包，注意：不是运行在主框架里
+
+# 构建普通的包，并产生 dist 目录。
+npm run build
 # 构建带时间串和gitcommitid的包
 npm run build:see 
+#eg
+npm run build:see - 构建结果是
+ hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 
 # 构建无时间戳的包，包名上的微服务版本取 buildVersion
 npm run build:see prod 
 # eg：
-npm run build:see - 构建结果是 hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 npm run build:see prod - 构建结果是hscs-company-web-V202101-00-000.zip
-
-其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
 
 # 构建支持容器化部署的SEE发布物
 npm run build:see -dockerSeePack=true
 # eg
-npm run build:see -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
+npm run build:see -dockerSeePack=true - 构建结果是
+ hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
+ hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 
-npm run build:see prod -dockerSeePack=true - 构建结果是 hscs-company-web-docker-V202101-00-000.zip
+npm run build:see prod -dockerSeePack=true - 构建结果是
+ hscs-company-web-docker-V202101-00-000.zip
+ hscs-company-web-V202101-00-000.zip
 
-# see 包，用于构建子系统的包，运行在主框架里
-# 构建子系统的包
+###################### 我是分隔符 ######################
+
+# 用于构建子系统的包，注意是：运行在主框架里
+
+# 构建子系统的包，产生 dist 目录
 npm run child
 
-# 构建做为子系统的 see 包
+# 构建作为子系统的 see 包，产品 package 目录
 npm run build:see:child
+# eg
+npm run build:see:child - 构建结果是
+ hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 
+npm run build:see:child prod - 构建结果是
+ hscs-company-web-docker-V202101-00-000.zip
+
+# 构建支持 docker 容器化部署的SEE发布物，注意：在 package 目录下，会同时创建两个压缩包，一个是 docker 的，一个是 see 的
+npm run build:see:child -dockerSeePack=true
+# eg
+npm run build:see:child -dockerSeePack=true - 构建结果是 
+ hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip 
+ hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
+
+npm run build:see:child prod -dockerSeePack=true - 构建结果是
+ hscs-company-web-docker-V202101-00-000.zip
+ hscs-company-web-V202101-00-000.zip
+   
+其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
 ```
-
-浏览器访问 <http://localhost:3000>
 
 ## 其他
 
