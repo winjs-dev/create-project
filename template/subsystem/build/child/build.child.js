@@ -47,12 +47,20 @@ rm(path.resolve(__dirname, '../../dist'), (err) => {
     .then(async () => {
       try {
         await fs.move(path.resolve(__dirname, '../../dist/views'), `${childPath}/views`);
-        await fs.move(
-          path.resolve(__dirname, '../../dist/vendors_views'),
-          `${childPath}/vendors_views`
-        );
+        if (fs.pathExistsSync(path.resolve(__dirname, '../../dist/vendors_views'))) {
+          await fs.move(
+            path.resolve(__dirname, '../../dist/vendors_views'),
+            `${childPath}/vendors_views`
+          );
+        }
+        if (fs.pathExistsSync(path.resolve(__dirname, '../../dist/default_views'))) {
+          await fs.move(
+            path.resolve(__dirname, '../../dist/default_views'),
+            `${childPath}/default_views`
+          );
+        }
       } catch (err) {
-        console.error('迁移 views 到子产品目录下出现异常', err);
+        console.error('迁移 views,vendors_views,default_views 到子产品目录下出现异常', err);
       }
 
       // 1, rename 全局变量 LOCAL_CONFIG TODO 风险 如果依赖主框架的全局变量
