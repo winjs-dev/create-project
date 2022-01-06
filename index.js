@@ -19,6 +19,7 @@ import generateVueConfig from './utils/generateVueConfig.js';
 import getCommand from './utils/getCommand.js';
 import generateOfflinePackage from './utils/generateOfflinePackage.js';
 import generateRouterInterceptor from './utils/generateRouterInterceptor.js';
+import banner from './utils/banner.js';
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
@@ -56,6 +57,8 @@ function emptyDir(dir) {
 // 7. 是否使用 see 命令输出包
 // 8. 是否支持子应用或微应用
 async function init() {
+  console.log(`\n${banner}\n`);
+
   const cwd = process.cwd();
   // possible options:
   // --typescript / --ts
@@ -557,7 +560,12 @@ async function init() {
         () => {},
         (filepath) => {
           if (filepath.endsWith('.js')) {
-            fs.renameSync(filepath, filepath.replace(/\.js$/, '.ts'));
+            const tsFilePath = filepath.replace(/\.js$/, '.ts');
+            if (fs.existsSync(tsFilePath)) {
+              fs.unlinkSync(filepath);
+            } else {
+              fs.renameSync(filepath, tsFilePath);
+            }
           } else if (path.basename(filepath) === 'jsconfig.json') {
             fs.renameSync(filepath, filepath.replace(/jsconfig\.json$/, 'tsconfig.json'));
           }
