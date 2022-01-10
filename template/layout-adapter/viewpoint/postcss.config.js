@@ -1,7 +1,7 @@
 module.exports = {
   plugins: {
     autoprefixer: {
-      overrideBrowserslist: ['Android 4.4', 'iOS 9.0', 'Chrome > 43', 'ff > 34', 'ie >= 10']
+      overrideBrowserslist: ['Android 5.0', 'iOS 9.0', 'Chrome > 43', 'ff > 34', 'ie >= 11']
     },
     'postcss-px-to-viewport': {
       unitToConvert: 'px', // 要转化的单位
