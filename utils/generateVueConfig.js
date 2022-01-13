@@ -1,9 +1,7 @@
 import ejs from 'ejs';
 
 // 模板字符串中需要 ${} 原样输出，需要对 $ 进行转义处理
-const vueConfig = `'use strict';
-
-const path = require('path');
+const vueConfig = `const path = require('path');
 const pkg = require('./package.json');
 const webpack = require('webpack');
 const { formatDate } = require('@winner-fed/cloud-utils');
