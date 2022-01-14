@@ -3,6 +3,6 @@ last 2 versions
 not dead
 Chrome > 43
 ff > 34
-ie >= 10
+ie >= 11
 iOS >= 9
-Android >= 4.4
+Android >= 5.0
