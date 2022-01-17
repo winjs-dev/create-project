@@ -13,6 +13,8 @@ module.exports = {
     subSidebar: 'auto',
     nav: [
       { text: 'Github', link: 'https://github.com/cloud-templates' },
-    ]
+      { text: 'Gitee', link: 'https://gitee.com/cloud-templates' },
+    ],
+    lastUpdated: '上次更新',
   }
 }
