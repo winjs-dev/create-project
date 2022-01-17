@@ -27,7 +27,7 @@ npm init @winner-fed/project my-project
 
 - AJAX: [axios](https://github.com/axios/axios)，做了一定的封装，详见 `src/services/request.js`
 
-- SVG 雪碧图：采用 `webpack` 插件 `svg-sprite-loader`,及 `svg` 精简压缩工具 `svgo`
+- SVG 雪碧图：采用 `vue-svgicon` 及 `svg` 精简压缩工具 `svgo`
 
 - 移动 web 的适配方案：目前提供了两种方案，`rem` 及 `vw`。分别引入了 `postcss-pxtorem` 及 `amfe-flexible` 和 `postcss-px-to-viewport`，可以自由地用 px 去开发
 
