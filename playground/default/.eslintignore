@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+public/
+src/assets/
+**/*.min.js
+**/*-min.js
+**/*.bundle.js
+RESTFULURL.js
+RESTFULURL.ts
+
