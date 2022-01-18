@@ -17,6 +17,3 @@ try {
     throw e
   }
 }
-
-await $`git tag -m "v${version}" v${version}`
-await $`git push --follow-tags`
