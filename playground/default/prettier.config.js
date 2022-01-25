@@ -35,7 +35,7 @@ module.exports = {
   rangeStart: 0,
   rangeEnd: Infinity,
   // 格式化内嵌代码
-  embeddedLanguageFormatting: 'auto',
+  embeddedLanguageFormatting: 'off',
   overrides: [
     {
       files: ['*.less', '*.css'],
