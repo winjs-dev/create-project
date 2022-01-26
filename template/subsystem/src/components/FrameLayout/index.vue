@@ -19,7 +19,7 @@
       <div class="main-container" :style="{ height: noFrame ? '100%' : responsive + 'px' }">
         <div class="h-navbar-wrapper"></div>
         <!-- 内容 -->
-        <div id="appMain" ref="appMain" class="app-main hws-child-equity_incentive2">
+        <div id="appMain" ref="appMain" class="app-main">
           <slot></slot>
         </div>
       </div>
