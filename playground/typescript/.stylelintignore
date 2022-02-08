@@ -2,6 +2,7 @@ node_modules/
 build/
 dist/
 src/assets/fonts/
+src/components/FrameLayout
 public/
 **/*.min.css
 **/*-min.css

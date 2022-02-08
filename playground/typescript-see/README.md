@@ -287,7 +287,7 @@ export default {
         "internal-ip": "^4.2.0",
         "less": "^3.0.4",
         "less-loader": "^7.3.0",
-        "postcss-pxtorem": "^4.0.1",
+        "postcss-pxtorem": "^5.1.1",
         "prettier": "^1.19.1",
         "qrcode-terminal": "^0.12.0",
         "rimraf": "^3.0.2",
