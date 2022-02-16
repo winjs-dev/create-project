@@ -254,6 +254,10 @@ async function init() {
             if (values.framework === 'v3') {
               return [
                 {
+                  title: yellow('WinUI'),
+                  value: 'wui'
+                },
+                {
                   title: green('Vant'),
                   value: 'vant'
                 }
