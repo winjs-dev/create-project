@@ -1,0 +1,38 @@
+{
+  "buildVersion": "V202101-00-000",
+  "scripts": {
+    "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
+    "prettier": "prettier --write \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+    "deploy": "npm run build && npm run zip",
+    "reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
+    "escheck": "es-check",
+    "zip": "node build/zip.js",
+    "f2elint-scan": "f2elint scan",
+    "f2elint-fix": "f2elint fix"
+  },
+  "dependencies": {
+    "@winner-fed/cloud-utils": "*",
+    "@winner-fed/magicless": "*",
+    "axios": "0.23.0",
+    "normalize.css": "8.0.1",
+    "qs": "^6.10.3"
+  },
+  "devDependencies": {
+    "@winner-fed/f2elint": "^1.0.4",
+    "archiver": "^3.0.0",
+    "chalk": "^2.4.1",
+    "less": "^4.1.2",
+    "rimraf": "^3.0.2",
+    "es-check": "^5.2.3",
+    "prettier": "^2.4.1",
+    "tasksfile": "^5.1.0"
+  },
+  "scripts-info": {
+    "serve": "运行开发服务器",
+    "build": "生产环境执行构建",
+    "analyz": "生产环境执行构建打包分析",
+    "deploy": "生产环境执行构建并压缩zip包",
+    "build:see": "生成 see 平台部署发布物",
+    "escheck": "检测是否含有 ES6+ 语法"
+  }
+}

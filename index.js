@@ -50,12 +50,13 @@ function emptyDir(dir) {
 // 1. 选择 使用框架 framework
 // 2. 选择 应用类型 application
 // 3. 是否支持使用 Typescript
-// 4. 选择 UI组件库 ui-framework
-// 5. 选择 布局适配方案 layout-adapter
-// 5. 选择 版本控制工具 version-control
-// 6. 是否使用公司镜像源 mirror-source
-// 7. 是否使用 see 命令输出包
-// 8. 是否支持子应用或微应用
+// 4. 选择打包构建工具 build-tools
+// 5. 选择 UI 组件库 ui-framework
+// 6. 选择 布局适配方案 layout-adapter
+// 7. 选择 版本控制工具 version-control
+// 8. 是否使用公司镜像源 mirror-source
+// 9. 是否使用 see 命令输出包
+// 10. 是否支持子应用或微应用
 async function init() {
   console.log(`\n${banner}\n`);
 
@@ -114,6 +115,7 @@ async function init() {
     // - Framework: default(vue2) / vue3 / miniprogram
     // - Application: default(mobile) / pc / offline
     // - Add Typescript Support? no
+    // - BuildTools: default(bundle(webpack)) / bundleless(vite)
     // - UI Framework: default(wui) / vant / hui / element-ui / ant-design-vue ...
     // - Layout Adapter: default(rem) / vw
     // - Version Control: default(git) / svn
@@ -176,17 +178,6 @@ async function init() {
           initial: 0
         },
         {
-          name: 'needsTypeScript',
-          type: (prev, values) => {
-            if (isFeatureFlagsUsed) return null;
-            return values.framework !== 'mini' ? 'toggle' : null;
-          },
-          message: 'Add TypeScript?',
-          initial: false,
-          active: 'Yes',
-          inactive: 'No'
-        },
-        {
           name: 'application',
           type: (prev, values) => {
             if (isFeatureFlagsUsed) return null;
@@ -235,6 +226,36 @@ async function init() {
               ? true
               : '请输入1-10位的中英文字符或数字';
           }
+        },
+        {
+          name: 'needsTypeScript',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'toggle' : null;
+          },
+          message: 'Add TypeScript?',
+          initial: false,
+          active: 'Yes',
+          inactive: 'No'
+        },
+        {
+          name: 'buildTools',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'select' : null;
+          },
+          message: 'Choose whether your build tools is bundle(webpack) or bundless(vite)?',
+          choices: [
+            {
+              title: yellow('bundle(webpack)'),
+              value: 'bundle'
+            },
+            {
+              title: cyan('bundleless(vite)'),
+              value: 'bundleless'
+            }
+          ],
+          initial: 0
         },
         {
           name: 'uiFramework',
@@ -343,7 +364,9 @@ async function init() {
           name: 'needsSubsystem',
           type: (prev, values) => {
             if (isFeatureFlagsUsed) return null;
-            return values.framework !== 'mini' && values.needsMirrorSource === true
+            return values.framework !== 'mini' &&
+              values.buildTools === 'bundle' &&
+              values.needsMirrorSource === true
               ? 'toggle'
               : null;
           },
@@ -373,6 +396,7 @@ async function init() {
     application = argv.application,
     offlineId = argv.offlineId,
     offlineName = argv.offlineName,
+    buildTools = argv.buildTools,
     uiFramework = argv.uiFramework,
     layoutAdapter = argv.layoutAdapter,
     versionControl = argv.versionControl,
@@ -405,6 +429,7 @@ async function init() {
     application,
     offlineId,
     offlineName,
+    buildTools,
     uiFramework,
     layoutAdapter,
     versionControl
@@ -461,6 +486,13 @@ async function init() {
       }
     }
 
+    // buildTools
+    if (buildTools === 'bundle') {
+      render('build-tools/bundle');
+    } else {
+      render('build-tools/bundleless');
+    }
+
     // ui-framework
     if (uiFramework === 'vant') {
       if (framework === 'v2') {
@@ -484,7 +516,11 @@ async function init() {
       }
     } else {
       // default
-      render('ui-framework/default');
+      if (framework === 'v2') {
+        render('ui-framework/default/v2');
+      } else {
+        render('ui-framework/default/v3');
+      }
     }
 
     // version-control
@@ -523,17 +559,20 @@ async function init() {
     }
     fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent);
 
-    // vue.config.js
-    fs.writeFileSync(
-      path.resolve(root, 'vue.config.js'),
-      generateVueConfig({
-        framework,
-        application,
-        uiFramework,
-        needsTypeScript,
-        versionControl
-      })
-    );
+    // webpack
+    if (buildTools === 'bundle') {
+      // vue.config.js
+      fs.writeFileSync(
+        path.resolve(root, 'vue.config.js'),
+        generateVueConfig({
+          framework,
+          application,
+          uiFramework,
+          needsTypeScript,
+          versionControl
+        })
+      );
+    }
 
     // router.interceptor.js
     fs.writeFileSync(

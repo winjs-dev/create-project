@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta content="telephone=no" name="format-detection" />
     <meta content="email=no" name="format-detection" />
-    <title>projectName</title>
+    <title><%- title %></title>
     <style>
       html,
       body,
@@ -136,7 +136,6 @@
         </div>
       </div>
     </div>
-    <script src="/src/main.js"></script>
     <script>
       document.write(
         unescape(
@@ -146,6 +145,7 @@
         )
       );
     </script>
+    <%- injectScript %>
     <script>
       Object.freeze(window.LOCAL_CONFIG);
       Object.defineProperty(window, 'LOCAL_CONFIG', {
