@@ -14,7 +14,6 @@
     "@vitejs/plugin-legacy": "^1.6.3",
     "@vue/runtime-dom": "^3.2.22",
     "cross-env": "^7.0.3",
-    "esno": "^0.14.1",
     "rollup-plugin-visualizer": "^4.2.0",
     "unplugin-vue2-script-setup": "^0.7.1",
     "vite": "^2.6.14",

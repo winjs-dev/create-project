@@ -19,25 +19,6 @@ const merge = require('webpack-merge');
 <%_ if (versionControl === 'svn') { _%>
 const svnInfo = require('svn-info');
 <%_ } _%>
-<%_ if (buildTools) { _%>
-const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
-const { genHtmlOptions } = require('./build/utils');
-
-const indexPath = path.resolve(__dirname, './index.html');
-const tmpDir = path.resolve(__dirname, 'node_modules/.tmp/build');
-/**
- * 创建文件夹
- * @param {String} pathStr 文件夹路径
- */
-function mkdirSyncRecursive(pathStr) {
-  if (existsSync(pathStr)) return true;
-  mkdirSync(pathStr, {
-    recursive: true
-  });
-}
-
-mkdirSyncRecursive(tmpDir);
-<%_ } _%>
 <%_ if (framework === 'v3') { _%>
 const svgFilePath = ['src/icons/svg'].map((v) => path.resolve(v));
 <%_ } _%>
@@ -322,35 +303,6 @@ module.exports = {
     config
       .plugin('html')
       .tap((args) => {
-      <%_ if (buildTools) { _%>
-          const htmlOptions = genHtmlOptions();
-          const htmlStr = readFileSync(indexPath).toString();
-          const tmpHtmlPath = path.resolve(tmpDir, './index.html');
-
-          writeFileSync(tmpHtmlPath, htmlStr);
-
-          args[0].template = tmpHtmlPath;
-          args[0].title = htmlOptions.title;
-
-          args[0].filename = './index.html';
-          args[0].templateParameters = (
-            compilation,
-            assets,
-            assetTags,
-            options
-          ) => {
-            return {
-              compilation,
-              webpackConfig: compilation.options,
-              htmlWebpackPlugin: {
-                tags: assetTags,
-                files: assets,
-                options,
-              },
-              ...htmlOptions,
-            };
-          };
-        <%_ } _%>
         args[0].minify = {
           removeComments: true,
           collapseWhitespace: true,
@@ -427,15 +379,13 @@ export default function generateVueConfig({
   application,
   versionControl,
   needsTypeScript,
-  uiFramework,
-  buildTools = false
+  uiFramework
 }) {
   return ejs.render(vueConfig, {
     framework,
     application,
     versionControl,
     needsTypeScript,
-    uiFramework,
-    buildTools
+    uiFramework
   });
 }

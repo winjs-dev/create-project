@@ -20,6 +20,8 @@ import getCommand from './utils/getCommand.js';
 import generateOfflinePackage from './utils/generateOfflinePackage.js';
 import generateRouterInterceptor from './utils/generateRouterInterceptor.js';
 import banner from './utils/banner.js';
+import generateBabelConfig from './utils/generateBabelConfig';
+import generateViteStyleImport from './utils/generateViteStyleImport';
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
@@ -547,7 +549,8 @@ async function init() {
       application,
       uiFramework,
       layoutAdapter,
-      needsTypeScript
+      needsTypeScript,
+      buildTools
     });
     if (framework === 'v3') {
       mainContent = generateMainV3({
@@ -571,6 +574,17 @@ async function init() {
           needsTypeScript,
           versionControl
         })
+      );
+
+      // babel.config.js
+      fs.writeFileSync(path.resolve(root, 'babel.config.js'), generateBabelConfig({ uiFramework }));
+    } else {
+      // vite
+
+      // build/vite/plugin/styleImport.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/vite/plugin/styleImport.js'),
+        generateViteStyleImport({ uiFramework })
       );
     }
 

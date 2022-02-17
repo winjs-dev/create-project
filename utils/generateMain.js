@@ -15,7 +15,9 @@ import './router/router.interceptor';
 <%_ if (!needsTypeScript) { _%>
 import './components/global';
 <%_ } _%>
+<%_ if (buildTools === 'bundle') { _%>
 import './icons';
+<%_ } _%>
 import './filters';
 import './services';
 <%_ if (uiFramework === 'element-ui') { _%>
@@ -44,7 +46,9 @@ Component.registerHooks([
   'beforeRouteUpdate'
 ]);
 <%_ } _%>
-
+<%_ if (buildTools === 'bundleless') { _%>
+import 'virtual:svg-icons-register'
+<%_ } _%>
 /* eslint-disable */
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 
@@ -81,11 +85,18 @@ new Vue({
 <%_ } _%>
 `;
 
-export default function generateMain({ application, uiFramework, layoutAdapter, needsTypeScript }) {
+export default function generateMain({
+  application,
+  uiFramework,
+  layoutAdapter,
+  needsTypeScript,
+  buildTools
+}) {
   return ejs.render(mainV2, {
     application,
     layoutAdapter,
     uiFramework,
-    needsTypeScript
+    needsTypeScript,
+    buildTools
   });
 }
