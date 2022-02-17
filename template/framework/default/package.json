@@ -1,13 +1,10 @@
 {
-  "scripts": {
-    "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6"
-  },
   "dependencies": {
     "vue": "^2.6.14",
-    "vue-router": "^3.5.3",
-    "vue-svgicon": "3.2.6"
+    "vue-router": "^3.5.3"
   },
   "devDependencies": {
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "svg-sprite-loader": "^6.0.11"
   }
 }

@@ -25,7 +25,8 @@
     width: 1em;
     height: 1em;
     fill: currentColor;
-    vertical-align: middle;
+    vertical-align: -0.15em;
+    overflow: hidden;
     position: relative;
   }
 </style>

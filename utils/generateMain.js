@@ -1,7 +1,8 @@
 import ejs from 'ejs';
 
-const mainV2 = `import 'core-js/stable';
+const mainV2 = `<%_ if (buildTools === 'bundle') { _%>import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+<%_ } _%>
 <%_ if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') { _%>
 import 'amfe-flexible';
 <%_ } _%>

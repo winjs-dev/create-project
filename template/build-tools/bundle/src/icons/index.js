@@ -1,10 +1,13 @@
-import Vue from 'vue';
-import SvgIcon from 'vue-svgicon';
-import './svg-icon.less';
-import './components';
+const req = require.context('./svg', false, /\.svg$/);
+const requireAll = (requireContext) => requireContext.keys();
 
-Vue.use(SvgIcon, {
-  tagName: 'svg-icon',
-  defaultWidth: '1em',
-  defaultHeight: '1em'
+// 提供页面使用
+requireAll(req).map(req);
+
+const re = /\.\/(.*)\.svg/;
+
+const icons = requireAll(req).map((i) => {
+  return i.match(re)[1];
 });
+
+export default icons;
