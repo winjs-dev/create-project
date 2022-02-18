@@ -1,7 +1,8 @@
 import ejs from 'ejs';
 
 // 模板字符串中需要 ${} 原样输出，需要对 $ 进行转义处理
-const vueConfig = `const path = require('path');
+const vueConfig = `const { defineConfig } = require('@vue/cli-service');
+const path = require('path');
 const pkg = require('./package.json');
 const webpack = require('webpack');
 const { formatDate } = require('@winner-fed/cloud-utils');
@@ -119,7 +120,7 @@ const getOptimization = () => {
   return optimization;
 };
 
-module.exports = {
+module.exports = defineConfig({
   /**
    * You can set by yourself according to actual condition
    * You will need to set this if you plan to deploy your site under a sub path,
@@ -259,24 +260,16 @@ module.exports = {
 
     config
       .when(process.env.NODE_ENV === 'development',
-        config => config.devtool('cheap-eval-source-map')
+        config => config.devtool('cheap-source-map')
       );
 
     // plugin
-
+    
     // preload
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+    // 移除 preload 插件
     config
-      .plugin('preload')
-      .tap(() => [
-      {
-        rel: 'preload',
-        // to ignore runtime.js
-        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-        fileBlacklist: [/\\.map$/, /hot-update\\.js$/, /runtime\\..*\\.js$/],
-        include: 'initial'
-      }
-    ]);
+      .plugins
+      .delete('preload');
 
     // when there are many pages, it will cause too many meaningless requests
     config
@@ -348,6 +341,14 @@ module.exports = {
                 }
               }
             });
+          config.cache({
+            // 将缓存类型设置为文件系统,默认是memory
+            type: 'filesystem',
+            buildDependencies: {
+              // 更改配置文件时，重新缓存
+              config: [__filename]
+            }
+          });  
           config.optimization.runtimeChunk('single');
         }
       );
