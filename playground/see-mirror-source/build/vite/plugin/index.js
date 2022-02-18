@@ -1,6 +1,4 @@
 import legacy from '@vitejs/plugin-legacy';
-import { createVuePlugin as vue2 } from 'vite-plugin-vue2';
-import scriptSetup from 'unplugin-vue2-script-setup/vite';
 import svgLoader from 'vite-svg-loader';
 
 import { configHtmlPlugin } from './html';
@@ -19,10 +17,6 @@ export function createVitePlugins(viteEnv, isBuild) {
   } = viteEnv;
 
   const vitePlugins = [
-    vue2({
-      jsx: true
-    }),
-    scriptSetup(),
     svgLoader()
   ];
 

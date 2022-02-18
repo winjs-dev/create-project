@@ -11,6 +11,8 @@ import axios from 'axios';
 import autoMatchBaseUrl from './autoMatchBaseUrl';
 import { TIMEOUT } from '@/constant';
 
+export const requestInstance = axios.create({});
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -31,20 +33,14 @@ const codeMessage = {
 
 function responseLog(response) {
   if (process.env.NODE_ENV === 'development') {
-    const randomColor = `rgba(${Math.round(Math.random() * 255)},${Math.round(
+    const randomColor = `rgba(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(
       Math.random() * 255
-    )},${Math.round(Math.random() * 255)})`;
-    console.log(
-      '%c┍------------------------------------------------------------------┑',
-      `color:${randomColor};`
-    );
+    )})`;
+    console.log('%c┍------------------------------------------------------------------┑', `color:${randomColor};`);
     console.log('| 请求地址：', response.config.url);
     console.log('| 请求参数：', Qs.parse(response.config.data));
     console.log('| 返回数据：', response.data);
-    console.log(
-      '%c┕------------------------------------------------------------------┙',
-      `color:${randomColor};`
-    );
+    console.log('%c┕------------------------------------------------------------------┙', `color:${randomColor};`);
   } else {
     console.log('| 请求地址：', response.config.url);
     console.log('| 请求参数：', Qs.parse(response.config.data));
@@ -73,7 +69,7 @@ function checkStatus(response) {
 }
 
 /**
- * 全局请求扩展配置
+ * requestInstance 实例全局请求扩展配置
  * 添加一个请求拦截器 （于transformRequest之前处理）
  */
 const axiosRequest = {
@@ -81,8 +77,7 @@ const axiosRequest = {
     // 以下代码，鉴权token,可根据具体业务增删。
     // demo示例:
     if (config['url'].indexOf('operatorQry') !== -1) {
-      config.headers['accessToken'] =
-        'de4738c67e1bb450be71b660f0716aa4675860cec1ff9bc23d800efb40519cf3';
+      config.headers['accessToken'] = 'de4738c67e1bb450be71b660f0716aa4675860cec1ff9bc23d800efb40519cf3';
     }
     return config;
   },
@@ -90,7 +85,7 @@ const axiosRequest = {
 };
 
 /**
- * 全局请求响应处理
+ * requestInstance 实例全局请求响应处理
  * 添加一个返回拦截器 （于transformResponse之后处理）
  * 返回的数据类型默认是json，若是其他类型（text）就会出现问题，因此用try,catch捕获异常
  */
@@ -120,8 +115,8 @@ const axiosResponse = {
   }
 };
 
-axios.interceptors.request.use(axiosRequest.success, axiosRequest.error);
-axios.interceptors.response.use(axiosResponse.success, axiosResponse.error);
+requestInstance.interceptors.request.use(axiosRequest.success, axiosRequest.error);
+requestInstance.interceptors.response.use(axiosResponse.success, axiosResponse.error);
 
 /**
  * 基于axios ajax请求
@@ -156,15 +151,15 @@ export default function request(
     responseType: dataType,
     // 这里将 response.data 为 string 做了 JSON.parse 的转换处理
     transformResponse: axios.defaults.transformResponse.concat(function (data) {
-      let copyData = data;
       if (typeof data === 'string' && data.length) {
         try {
-          copyData = JSON.parse(data);
+          return JSON.parse(data);
         } catch (e) {
           console.error(e);
+          return {};
         }
       }
-      return copyData;
+      return data;
     })
   };
 
@@ -191,7 +186,7 @@ export default function request(
     }
   }
 
-  return axios(defaultConfig);
+  return requestInstance(defaultConfig);
 }
 
 // 上传文件封装

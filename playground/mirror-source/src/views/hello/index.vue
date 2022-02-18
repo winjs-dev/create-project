@@ -5,6 +5,7 @@
       <img src="@/assets/img/logo.png" />
       <h1 v-text="msg"></h1>
       <h2 v-text="message"></h2>
+      <svg-icon icon-name="dog"></svg-icon>
       <div class="demo">
         <h3>方法示例</h3>
         <pre>

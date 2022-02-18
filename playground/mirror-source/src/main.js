@@ -6,6 +6,7 @@ import './components/global';
 import './filters';
 import './services';
 import './assets/style/app.less';
+
 /* eslint-disable */
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 

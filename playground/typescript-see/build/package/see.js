@@ -33,21 +33,17 @@ async function init() {
           ...seePackageOptions,
           seePackageType: 'web',
           configName,
-          seePackageName: seePackageName.replace('-docker', ''),
-          scriptsType: 'bash'
-        });
+          seePackageName: seePackageName.replace('-docker', '')        });
       }
     );
 
     return;
   }
-
+  
   generateSeePackageZip({
     ...seePackageOptions,
     configName,
-    seePackageName,
-    scriptsType: 'bash'
-  });
+    seePackageName  });
 }
 
 init().catch((e) => {
