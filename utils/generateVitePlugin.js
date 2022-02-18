@@ -5,7 +5,7 @@ const viteConfig = `import legacy from '@vitejs/plugin-legacy';
 <%_ if (framework === 'v2') { _%>
 import { createVuePlugin as vue2 } from 'vite-plugin-vue2';
 // @ts-ignore
-import vueTemplateBabelCompiler from 'vue-template-babel-compiler'
+import vueTemplateBabelCompiler from 'vue-template-babel-compiler';
 import scriptSetup from 'unplugin-vue2-script-setup/vite';
 <%_ } _%>
 <%_ if (framework === 'v3') { _%>
