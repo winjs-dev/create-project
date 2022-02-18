@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "prepare": "npm run prettier"
+  },
   "devDependencies": {
     "svn-info": "^1.0.0"
   }
