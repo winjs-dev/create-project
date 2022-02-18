@@ -13,8 +13,7 @@ import {
   postOrderDirectoryTraverse,
   preOrderDirectoryTraverse
 } from './utils/directoryTraverse.js';
-import generateMain from './utils/generateMain.js';
-import generateMainV3 from './utils/generateMainV3.js';
+import { generateMain, generateMainV3 } from './utils/generateMain.js';
 import generateVueConfig from './utils/generateVueConfig.js';
 import getCommand from './utils/getCommand.js';
 import generateOfflinePackage from './utils/generateOfflinePackage.js';
@@ -22,6 +21,9 @@ import generateRouterInterceptor from './utils/generateRouterInterceptor.js';
 import banner from './utils/banner.js';
 import generateBabelConfig from './utils/generateBabelConfig';
 import generateViteStyleImport from './utils/generateViteStyleImport';
+import generateSeeScriptsConfig from './utils/generateSeeScripts';
+import generateRegisterGlobalComponent from './utils/generateRegisterGlobalComponent';
+import generateVitePlugin from './utils/generateVitePlugin';
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
@@ -49,13 +51,13 @@ function emptyDir(dir) {
 }
 
 // 步骤
-// 1. 选择 使用框架 framework
-// 2. 选择 应用类型 application
+// 1. 选择使用框架 framework
+// 2. 选择应用类型 application
 // 3. 是否支持使用 Typescript
 // 4. 选择打包构建工具 build-tools
 // 5. 选择 UI 组件库 ui-framework
-// 6. 选择 布局适配方案 layout-adapter
-// 7. 选择 版本控制工具 version-control
+// 6. 选择布局适配方案 layout-adapter
+// 7. 选择版本控制工具 version-control
 // 8. 是否使用公司镜像源 mirror-source
 // 9. 是否使用 see 命令输出包
 // 10. 是否支持子应用或微应用
@@ -493,6 +495,13 @@ async function init() {
       render('build-tools/bundle');
     } else {
       render('build-tools/bundleless');
+
+      // package.json
+      if (framework === 'v2') {
+        render('config/bundleless/v2');
+      } else {
+        render('config/bundleless/v3');
+      }
     }
 
     // ui-framework
@@ -538,6 +547,14 @@ async function init() {
 
     if (needsSeePackage) {
       render('see-package');
+
+      // build/package/see.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/package/see.js'),
+        generateSeeScriptsConfig({
+          buildTools
+        })
+      );
     }
 
     if (needsSubsystem) {
@@ -557,7 +574,8 @@ async function init() {
         application,
         uiFramework,
         layoutAdapter,
-        needsTypeScript
+        needsTypeScript,
+        buildTools
       });
     }
     fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent);
@@ -586,6 +604,12 @@ async function init() {
         path.resolve(root, 'build/vite/plugin/styleImport.js'),
         generateViteStyleImport({ uiFramework })
       );
+
+      // build/vite/plugin/index.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/vite/plugin/index.js'),
+        generateVitePlugin({ framework })
+      );
     }
 
     // router.interceptor.js
@@ -606,6 +630,15 @@ async function init() {
         })
       );
     }
+
+    // src/components/global/index.js
+    fs.writeFileSync(
+      path.resolve(root, 'src/components/global/index.js'),
+      generateRegisterGlobalComponent({
+        buildTools,
+        framework
+      })
+    );
 
     // Cleanup.
 

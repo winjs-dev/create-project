@@ -19,9 +19,6 @@ const merge = require('webpack-merge');
 <%_ if (versionControl === 'svn') { _%>
 const svnInfo = require('svn-info');
 <%_ } _%>
-<%_ if (framework === 'v3') { _%>
-const svgFilePath = ['src/icons/svg'].map((v) => path.resolve(v));
-<%_ } _%>
 const N = '\\n';
 const resolve = (dir) => {
   return path.join(__dirname, './', dir);
@@ -217,22 +214,7 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: (config) => {
     // module
-  <%_ if (framework === 'v3') { _%>
-    // svg icon
-    config.module
-      .rule('vue-svgicon')
-      .include.add(svgFilePath)
-      .end()
-      .test(/\\.svg$/)
-      .use('svgicon')
-      .loader('@winner-fed/svgicon-loader')
-      .options({
-        svgFilePath
-      });
-      config.module.rule('svg').exclude.add(svgFilePath).end();
-      config.resolve.alias.set('@icon', svgFilePath[0]);
-    <%_ } _%>
-    <%_ if (framework === 'v2') { _%>
+   
     // svg
     // exclude icons
     config.module
@@ -250,7 +232,6 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end();
-    <%_ } _%>
   <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
     config.module
       .rule('ts')

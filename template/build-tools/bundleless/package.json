@@ -7,24 +7,17 @@
     "report": "cross-env REPORT=true npm run build",
     "lint": "npm run f2elint-scan"
   },
-  "dependencies": {
-    "@vue/composition-api": "^1.4.0"
-  },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^1.6.3",
     "@vue/runtime-dom": "^3.2.22",
     "cross-env": "^7.0.3",
     "rollup-plugin-visualizer": "^4.2.0",
-    "unplugin-vue2-script-setup": "^0.7.1",
-    "vite": "^2.6.14",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-html": "^3.0.6",
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-vue2": "^1.9.0",
-    "vite-svg-loader": "^3.1.2",
-    "vue-template-compiler": "^2.6.14"
+    "vite-svg-loader": "^3.1.2"
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china",

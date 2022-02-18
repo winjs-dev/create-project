@@ -33,7 +33,8 @@ async function init() {
           ...seePackageOptions,
           seePackageType: 'web',
           configName,
-          seePackageName: seePackageName.replace('-docker', '')
+          seePackageName: seePackageName.replace('-docker', ''),
+          scriptsType: 'bash'
         });
       }
     );
@@ -44,7 +45,8 @@ async function init() {
   generateSeePackageZip({
     ...seePackageOptions,
     configName,
-    seePackageName
+    seePackageName,
+    scriptsType: 'bash'
   });
 }
 

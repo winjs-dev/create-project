@@ -1,6 +1,6 @@
 import ejs from 'ejs';
 
-const babelConfig = `/**
+const styleImportConfig = `/**
  * Introduces component library styles on demand.
  * https://github.com/anncwb/vite-plugin-style-import
  */
@@ -14,7 +14,7 @@ export function configStyleImportPlugin() {
         libraryName: '@winner-fed/win-ui',
         esModule: true,
         resolveStyle: (name) => {
-          return '@winner-fed/win-ui/es/' + name + '/style';
+          return \`@winner-fed/win-ui/es/\${name}/style\`;
         }
       }
     ]
@@ -34,7 +34,7 @@ export function configStyleImportPlugin() {
 `;
 
 export default function generateViteStyleImport({ uiFramework }) {
-  return ejs.render(babelConfig, {
+  return ejs.render(styleImportConfig, {
     uiFramework
   });
 }
