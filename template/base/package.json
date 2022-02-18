@@ -1,6 +1,7 @@
 {
   "buildVersion": "V202101-00-000",
   "scripts": {
+    "prepare": "npm run prettier",
     "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
     "prettier": "prettier --write \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
     "deploy": "npm run build && npm run zip",
