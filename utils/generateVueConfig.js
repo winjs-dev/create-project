@@ -136,14 +136,13 @@ module.exports = defineConfig({
   productionSourceMap: false,
   // webpack-dev-server 相关配置
   devServer: {
-    open: process.platform === 'darwin',
-    host: '0.0.0.0',
     port: 3000,
     https: false,
-    hotOnly: false,
-    overlay: {
-      warnings: false,
-      errors: true
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true
+      }
     }
     // 代理示例 https://webpack.docschina.org/configuration/dev-server/#devserver-proxy
     // proxy: {
@@ -357,7 +356,7 @@ module.exports = defineConfig({
     lintStyleOnBuild: true,
     stylelint: {}
   }
-};
+});
 `;
 
 export default function generateVueConfig({
