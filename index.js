@@ -484,7 +484,11 @@ async function init() {
       }
     } else {
       // default
-      render('ui-framework/default');
+      if (framework === 'v2') {
+        render('ui-framework/default/v2');
+      } else {
+        render('ui-framework/default/v3');
+      }
     }
 
     // version-control
