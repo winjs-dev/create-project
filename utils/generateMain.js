@@ -30,7 +30,7 @@ import './vendor/vant';
 <%_ } else if (uiFramework === 'wui') { _%>
 import './vendor/wui';
 <%_ } _%>
-import './composition.js';
+import './plugins/composition.js';
 <%_ if (buildTools === 'bundleless') { _%>
 import 'virtual:svg-icons-register';
 <%_ } _%>
@@ -40,8 +40,6 @@ import LightSDK from 'light-sdk/dist/index.umd';
 
 window.LightSDK = LightSDK;
 <%_ } _%>
-
-
 import './assets/style/app.less';
 <%_ if (needsTypeScript) { _%>
 // 注册钩子函数

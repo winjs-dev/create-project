@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "unplugin-vue2-script-setup": "^0.9.3",
-    "vite-plugin-vue2": "^1.9.3"
-  }
-}

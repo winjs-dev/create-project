@@ -2,7 +2,6 @@
   "scripts": {
     "dev": "npm run serve",
     "serve": "vite",
-    "build": "vite build",
     "preview": "vite preview --port 5050",
     "report": "cross-env REPORT=true npm run build",
     "lint": "npm run f2elint-scan"

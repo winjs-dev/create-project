@@ -2,7 +2,7 @@
   "buildVersion": "V202101-00-000",
   "scripts": {
     "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
-    "prettier": "prettier --write \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+    "prettier": "prettier --write \"src/**/*.{js,jsx,json,ts,tsx,css,less,scss,vue,html,md}\"",
     "deploy": "npm run build && npm run zip",
     "reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
     "escheck": "es-check",
@@ -13,14 +13,15 @@
   "dependencies": {
     "@winner-fed/cloud-utils": "*",
     "@winner-fed/magicless": "*",
-    "axios": "0.23.0",
-    "normalize.css": "8.0.1",
+    "axios": "^0.26.0",
+    "normalize.css": "^8.0.1",
     "qs": "^6.10.3"
   },
   "devDependencies": {
     "@winner-fed/f2elint": "^1.0.4",
     "archiver": "^3.0.0",
     "chalk": "^2.4.1",
+    "fs-extra": "^10.0.0",
     "less": "^4.1.2",
     "rimraf": "^3.0.2",
     "es-check": "^5.2.3",

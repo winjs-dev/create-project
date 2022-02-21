@@ -13,8 +13,10 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+<%_ if (framework === 'v2') { _%>
 // https://github.com/antfu/unplugin-vue2-script-setup
 const ScriptSetup = require('unplugin-vue2-script-setup/webpack').default;
+<%_ } _%>
 <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
 const tsImportPluginFactory = require('ts-import-plugin');
 const merge = require('webpack-merge');
@@ -41,8 +43,8 @@ const getSvnInfo = () => {
 <%_ } _%>
 const genPlugins = () => {
   const plugins = [
-    new WebpackBar(),
-    ScriptSetup({})<%_ if (application !== 'pc') { _%>,
+    new WebpackBar()<%_ if (framework === 'v2') { _%>,
+    ScriptSetup({})<%_ } _%><%_ if (application !== 'pc') { _%>,
     // 为静态资源文件添加 hash，防止缓存
     new AddAssetHtmlPlugin([
       {

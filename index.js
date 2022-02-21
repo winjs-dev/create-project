@@ -493,19 +493,32 @@ async function init() {
     // buildTools
     if (buildTools === 'bundle') {
       render('build-tools/bundle');
+
+      if (needsTypeScript) {
+        render('config/bundle/typescript');
+
+        if (uiFramework === 'vant') {
+          render('config/bundle/vant');
+        }
+      }
     } else {
       render('build-tools/bundleless');
 
       // package.json
-      if (framework === 'v2') {
-        render('config/bundleless/v2');
-      } else {
-        render('config/bundleless/v3');
+      if (needsTypeScript) {
+        if (framework === 'v2') {
+          render('config/bundleless/typescript/v2');
+        } else {
+          render('config/bundleless/typescript/v3');
+        }
       }
     }
 
     // ui-framework
     if (uiFramework === 'vant') {
+      if (buildTools === 'bundle') {
+        render('config/bundle/default');
+      }
       if (framework === 'v2') {
         render('ui-framework/vant/v2');
       } else {
@@ -527,6 +540,9 @@ async function init() {
       }
     } else {
       // default
+      if (buildTools === 'bundle') {
+        render('config/bundle/default');
+      }
       if (framework === 'v2') {
         render('ui-framework/default/v2');
       } else {
@@ -663,7 +679,12 @@ async function init() {
       );
 
       // Rename entry in `index.html`
-      const indexHtmlPath = path.resolve(root, 'public/index.html');
+      let indexHtmlPath = '';
+      if (buildTools === 'bundle') {
+        indexHtmlPath = path.resolve(root, 'public/index.html');
+      } else {
+        indexHtmlPath = path.resolve(root, 'index.html');
+      }
       const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
       fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
     }
@@ -673,11 +694,8 @@ async function init() {
   // Supported package managers: pnpm > yarn > npm
   // Note: until <https://github.com/pnpm/pnpm/issues/3505> is resolved,
   // it is not possible to tell if the command is called by `pnpm init`.
-  const packageManager = /pnpm/.test(process.env.npm_execpath)
-    ? 'pnpm'
-    : /yarn/.test(process.env.npm_execpath)
-    ? 'yarn'
-    : 'npm';
+  const userAgent = process.env.npm_config_user_agent ?? '';
+  const packageManager = /pnpm/.test(userAgent) ? 'pnpm' : /yarn/.test(userAgent) ? 'yarn' : 'npm';
 
   console.log(`\nDone. Now run:\n`);
   if (root !== cwd) {

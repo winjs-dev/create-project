@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "vue-tsc --noEmit && node build/index.js",
+    "typecheck": "vue-tsc --noEmit"
+  },
   "devDependencies": {
     "@types/node": "^10.14.17",
     "@types/webpack-env": "^1.14.0",

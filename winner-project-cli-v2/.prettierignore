@@ -1,0 +1,8 @@
+**/*.svg
+package.json
+output.js
+src/assets/
+dist/**
+public/**
+src/services/RESTFULLURL.js
+src/icons
