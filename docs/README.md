@@ -4,7 +4,10 @@ author: 文博
 date: '2022-02-21'
 ---
 
-## 首先下载 vue 项目模板
+## 脚手架功能概览图
+<img src="https://gitee.com/cklwblove/win-ui-resource/raw/master/img/create-project.png"/>
+
+## 创建 vue 项目
 ```bash
 npm init @winner-fed/project my-project
 ```
@@ -18,7 +21,7 @@ npm init @winner-fed/project my-project
 - 支持 Vue 2.x 与 3.x
   - 2.x 支持 `composition-api` 及 `<script setup>` 
   - 3.x 不支持 ie11
-
+ 
 - 支持常用的 UI 组件库
    - 移动端 H5，离线包：WinUI（鲸腾自研） 和 Vant
        - Vue 2.x 使用 WinUI 1.x，Vue 3.x 使用 WinUI 2.x
