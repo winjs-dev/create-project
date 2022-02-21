@@ -2,7 +2,7 @@
 last 2 versions
 not dead
 not ie 11
-Chrome > 43
+Chrome >= 49
 ff > 34
 iOS >= 10
-Android >= 5.0
+Android >= 6.0
