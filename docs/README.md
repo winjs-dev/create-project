@@ -1,33 +1,55 @@
 ---
 title: create-project
 author: 文博
-date: '2021-12-29'
+date: '2022-02-21'
 ---
 
-## 一、首先全局安装 vue-cli
+## 首先下载 vue 项目模板
 ```bash
-npm install -g @vue/cli
-```
-检测是否安装成功，有版本号输出则说明安装成功
-```bash
-vue --version
-```
-## 二、下载 vue 项目模板
-```bash
-vue create --preset cloud-templates/vue-preset my-project
-```
-**或跳过1，2步骤，直接使用更为方便快捷的命令，如下：**
-```vue
 npm init @winner-fed/project my-project
 ```
 
 ## 特性
 
+- 支持创建常用的项目场景类型模板，移动端 H5，离线包，PC web 和 小程序
+  - 小程序使用 taro 作为跨端开发框架
+  - 离线包：公司自研 GMU 平台
+
+- 支持 Vue 2.x 与 3.x
+  - 2.x 支持 `composition-api` 及 `<script setup>` 
+  - 3.x 不支持 ie11
+
+- 支持常用的 UI 组件库
+   - 移动端 H5，离线包：WinUI（鲸腾自研） 和 Vant
+       - Vue 2.x 使用 WinUI 1.x，Vue 3.x 使用 WinUI 2.x
+       - Vue 2.x 使用 Vant 2.x，Vue 3.x 使用 Vant 3.x
+   - PC web：hui（公司自研），element-ui，ant-design-vue
+       - Hui 只适配 Vue 2.x
+       - Vue 2.x 使用 element-ui，Vue 3.x 使用 element-plus
+       - Vue 2.x 使用 ant-design-vue 1.x，Vue 3.x 使用 ant-design-vue 3.x
+
+- 支持 bundle 与 bundleless 构建工具的选择，比如 webpack 以及 vite
+   - vue-cli 升级了最新的 5.x，其中 webpack 版本为 5.x
+   - vite 使用 2.x
+
+- 支持 TS
+
+- 支持一键生成 See 平台 web 发布物 和 docker 发布物
+
+- 支持生成 Hui pro 1.x 的子系统，可以运行在以操作员中心或者财富中台作为外框架的主系统中
+   - Vite 作为构建工具的时候，不支持生成 Hui pro 1.x 的子系统
+
+- 支持移动端常用的布局单位，rem 和 viewpoint
+   - 分别引入了 postcss-pxtorem 及 amfe-flexible 和 postcss-px-to-viewport，可以自由地用 px 去开发
+   - 相关配置在 postcss.config.js
+
+- 支持 svg icons（svg 雪碧图）
+   - bundle 使用 svg-sprite-loader
+   - bundleless 使用 vite-plugin-svg-icons/vite-svg-loader
+   
 - CSS 预编译语言：[Less](http://lesscss.org/)
 
-- AJAX: [axios](https://github.com/axios/axios)，做了一定的封装，详见 `src/services/request.js`
-
-- SVG 雪碧图：采用 `vue-svgicon` 及 `svg` 精简压缩工具 `svgo`
+- Ajax(网络请求库): [axios](https://github.com/axios/axios)，做了一定的封装，详见 `src/services/request.js`
 
 - 移动 web 的适配方案：目前提供了两种方案，`rem` 及 `vw`。分别引入了 `postcss-pxtorem` 及 `amfe-flexible` 和 `postcss-px-to-viewport`，可以自由地用 px 去开发
 
@@ -35,9 +57,12 @@ npm init @winner-fed/project my-project
 
 - 常用的 Less 的 mixins 集合：[magicless](https://github.com/cklwblove/magicless)
 
-- 支持**开发模式**下，终端打印入口页面地址及生成二维码，**依赖Wifi热点，手机设备和PC必须处在同一局域网**([vue-cli-plugin-qrcode](https://github.com/cklwblove/vue-cli-plugin-qrcode))
-  
 - 接入编码规范 `eslint-config-win`，`stylelint-config-win`
+
+> 注意点：使用 vue 3.x 需要考虑更多的兼容性，其中 
+    <br>bundle(webpack) + vue3.x 不支持 ie11
+    <br>bundleless(vite) 不支持 ie11
+    <br>vue3.x 不兼容安卓6以下 webview 的 Chrome 版本
 
 ## 目录介绍
 
@@ -58,7 +83,6 @@ npm init @winner-fed/project my-project
     │   └── global
     ├── filters
     ├── icons
-    │   ├── components
     │   └── svg
     ├── models
     ├── router
@@ -80,7 +104,7 @@ npm init @winner-fed/project my-project
         - js - 不经过 npm 或 Yarn 下载的第三方依赖包。（扩展出来的文件）
     - components - 组件目录，统一采用大驼峰拼接，如 SendCode
     - filters - 过滤器，过滤器是 vue2 的叫法，在 vue3 是不存在的。vue3 可以理解成是函数库
-    - icons - 放置 svg 相关的图标。用 [vue-svgicon](https://github.com/MMF-FE/svgicon) 实现。可以作为 iconfont 的替代品，因为 iconfont 只支持单色。项目里推荐使用这种方式。
+    - icons - 放置 svg 相关的图标。可以作为 iconfont 的替代品，因为 iconfont 只支持单色。项目里推荐使用这种方式。
     - models - 数据生产者。可以按照前端领域模型来组织。项目中的数据来源，主要是后端接口（HTTP 协议的接口），及混合式开发时，壳子这边提供的桥接接口。或者是接入的第三方插件提供的数据。
         - 复用，解耦，使用方便。
         - 注释清晰，遵循 jsdoc 的注释规范，利用 `npm scripts`里的 `gen:docs`生成可视化的前端接口文档。
@@ -202,7 +226,7 @@ export default {
     // 中台与前端做的协定
     // 特殊 999999999 价格，不做界面展示
     const SPECIAL_PRICE = 999999999;
-    
+
     export {
       ...
       SPECIAL_PRICE
@@ -273,13 +297,12 @@ export default {
     "dependencies": {
         "@winner-fed/cloud-utils": "*",
         "@winner-fed/magicless": "*",
-        "axios": "0.23.0",
+        "axios": "^0.26.0",
         "core-js": "^3.6.5",
         "amfe-flexible": "0.3.2",
         "normalize.css": "8.0.1",
         "vue": "^2.6.11",
-        "vue-router": "3.5.1",
-        "vue-svgicon": "3.2.6"
+        "vue-router": "^3.5.1"
     }
     ```
 
@@ -305,7 +328,6 @@ export default {
         "docdash": "^1.2.0",
         "es-check": "^5.2.3",
         "eslint": "^7.6.0",
-        "internal-ip": "^4.2.0",
         "less": "^3.0.4",
         "less-loader": "^7.3.0",
         "postcss-pxtorem": "^4.0.1",
@@ -365,13 +387,13 @@ yarn run zip
 # 构建普通的包，并产生 dist 目录。
 npm run build
 # 构建带时间串和gitcommitid的包
-npm run build:see 
+npm run build:see
 #eg
 npm run build:see - 构建结果是
  hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 
 # 构建无时间戳的包，包名上的微服务版本取 buildVersion
-npm run build:see prod 
+npm run build:see prod
 # eg：
 npm run build:see prod - 构建结果是hscs-company-web-V202101-00-000.zip
 
@@ -405,34 +427,21 @@ npm run build:see:child prod - 构建结果是
 # 构建支持 docker 容器化部署的SEE发布物，注意：在 package 目录下，会同时创建两个压缩包，一个是 docker 的，一个是 see 的
 npm run build:see:child -dockerSeePack=true
 # eg
-npm run build:see:child -dockerSeePack=true - 构建结果是 
- hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip 
+npm run build:see:child -dockerSeePack=true - 构建结果是
+ hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
  hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
 
 npm run build:see:child prod -dockerSeePack=true - 构建结果是
  hscs-company-web-docker-V202101-00-000.zip
  hscs-company-web-V202101-00-000.zip
-   
+
 其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
 ```
 
 ## 其他
 
 ```shell
-# --svgo svg精简压缩
-yarn run svgo
-
-# --analyz 基于 webpack-bundle-analyzer 插件分析打包的文件构成及大小
-yarn run analyz
-
 # --report 生成静态报告文件
 yarn run report
 
 ```
-
-## 相关链接
-
-- [vue-cli4 官方文档](https://cli.vuejs.org/zh/)
-- [vue-cli4.0 配置](https://blog.csdn.net/qq_35844177/article/details/81099492)
-- [chainWebpack](https://github.com/neutrinojs/webpack-chain#getting-started)
-- [[Vue CLI 4] 配置 webpack-bundle-analyzer 插件](https://segmentfault.com/a/1190000016247872)
