@@ -47,9 +47,9 @@ exports.getGitHash = function getGitHash() {
 
 exports.transformTime = function transformTime() {
   if (exports.isGitSync(process.cwd())) {
-    return `${formatDate(Date.now(), 'yyyyMMddhhmmss')}.${exports.getGitHash().substring(0, 8)}`;
+    return `${formatDate(Date.now(), 'yyyyMMddHHmmss')}.${exports.getGitHash().substring(0, 8)}`;
   } else {
-    return `${formatDate(Date.now(), 'yyyyMMddhhmmss')}.${generateGUID().slice(0, 8)}`;
+    return `${formatDate(Date.now(), 'yyyyMMddHHmmss')}.${generateGUID().slice(0, 8)}`;
   }
 };
 
