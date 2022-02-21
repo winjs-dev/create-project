@@ -13,6 +13,8 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+// https://github.com/antfu/unplugin-vue2-script-setup
+const ScriptSetup = require('unplugin-vue2-script-setup/webpack').default;
 <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
 const tsImportPluginFactory = require('ts-import-plugin');
 const merge = require('webpack-merge');
@@ -39,7 +41,8 @@ const getSvnInfo = () => {
 <%_ } _%>
 const genPlugins = () => {
   const plugins = [
-    new WebpackBar()<%_ if (application !== 'pc') { _%>,
+    new WebpackBar(),
+    ScriptSetup({})<%_ if (application !== 'pc') { _%>,
     // 为静态资源文件添加 hash，防止缓存
     new AddAssetHtmlPlugin([
       {
@@ -182,6 +185,8 @@ module.exports = defineConfig({
       }
     }
   },
+  // disable thread-loader, which is not compactible with this plugin
+  parallel: false,  
   configureWebpack: () => ({
     name: \`\${pkg.name}\`,
     resolve: {
@@ -256,7 +261,11 @@ module.exports = defineConfig({
       })
       .end();
     <%_ } _%>
-
+    
+    <%_ if (needsTypeScript) { _%>
+    // disable type check and let \`vue-tsc\` handles it
+    config.plugins.delete('fork-ts-checker');
+    <%_ } _%>
     config
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
