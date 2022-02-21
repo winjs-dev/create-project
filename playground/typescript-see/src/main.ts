@@ -1,13 +1,12 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import App from './App.vue';
 import router from './router';
 import './router/router.interceptor';
-import './icons';
+import './components/global';
 import './filters';
 import './services';
+import './plugins/composition.js';
 import './assets/style/app.less';
 // 注册钩子函数
 Component.registerHooks([

@@ -1,3 +1,33 @@
+<script lang="ts" setup>
+  /**
+   * 以下仅为事例代码，可以随意扩展修改
+   */
+  // 工具类
+  import { formatDate } from 'utils';
+  import { ref } from 'vue';
+  import services from '@/services';
+
+  const msg = ref('Welcome to Your Vue.js App.This a composition-api and setup demo');
+  const message = ref('现在时间是：' + formatDate(Date.now()));
+
+  function movieComingSoon() {
+    const data = {};
+    services
+      .octocat({
+        method: 'get',
+        data
+      })
+      .then((res) => {
+        console.log('接口请求成功：' + JSON.stringify(res, null, 2));
+      })
+      .catch((err) => {
+        console.log('接口请求异常：' + err);
+      });
+  }
+
+  movieComingSoon();
+</script>
+
 <template>
   <div class="page page-hello">
     <div class="page-content">
@@ -5,96 +35,62 @@
       <img src="@/assets/img/logo.png" />
       <h1 v-text="msg"></h1>
       <h2 v-text="message"></h2>
-      <svg-icon :data="cat"></svg-icon>
+      <svg-icon icon-name="dog"></svg-icon>
       <div class="demo">
         <h3>方法示例</h3>
         <pre>
-          &lt;template&gt;
-            &lt;div class=&quot;page page-hello&quot;&gt;
-              &lt;!-- 静态资源路径写法事例 --&gt;
-              &lt;img src=&quot;~@assets/images/copyfiles/logo.png&quot;&gt;
-              &lt;p v-text=&quot;msg&quot;&gt;&lt;/p&gt;
-            &lt;/div&gt;
-          &lt;/template&gt;
-
-          &lt;script lang=&quot;ts&quot;&gt;
+          &lt;script lang=&quot;ts&quot; setup&gt;
             /**
              * 以下仅为事例代码，可以随意扩展修改
              */
-            import {Component, Vue} from &#x27;vue-property-decorator&#x27;;
             // 工具类
-            import {formatDate} from &#x27;utils&#x27;;
+            import { formatDate } from &#x27;utils&#x27;;
 
-            @Component
-            export default class Hello extends Vue {
-              private msg: string = &#x27;Welcome to Your Vue.js + TypeScript App&#x27;;
-              private message: string = &#x60;现在时间是：${formatDate(Date.now())}&#x60;;
+            import { formatDate } from &#x27;utils&#x27;;
+            import { ref } from &#x27;vue&#x27;;
+            import services from &#x27;@/services&#x27;;
 
-              private created() {
-                this.movieComingSoon();
-              }
+            const msg = ref(&#x27;Welcome to Your Vue.js App.This a composition-api and setup demo&#x27;);
+            const message = ref(&#x27;现在时间是：&#x27; + formatDate(Date.now()));
 
-              private movieComingSoon() {
-                const data = {};
-                this.$services.octocat({
-                  method: &#x27;get&#x27;,
-                  data
-                }).then((res) =&gt; {
-                  console.log(&#x27;接口请求成功：&#x27; + JSON.stringify(res, null, 2));
-                }).catch((err) =&gt; {
-                  console.log(&#x27;接口请求异常：&#x27; + err);
-                });
-              }
-
+            function movieComingSoon () {
+              const data = {};
+              services
+                  .octocat({
+                    method: &#x27;get&#x27;,
+                    data
+                  })
+                  .then((res) =&gt; {
+                    console.log(&#x27;接口请求成功：&#x27; + JSON.stringify(res, null, 2));
+                  })
+                  .catch((err) =&gt; {
+                    console.log(&#x27;接口请求异常：&#x27; + err);
+                  });
             }
+
+            movieComingSoon();
           &lt;/script&gt;
 
-          &lt;style lang=&quot;less&quot; rel=&quot;stylesheet/less&quot;&gt;
-            @import &quot;./style.less&quot;;
-          &lt;/style&gt;
+          &lt;template&gt;
+            &lt;div class=&quot;page page-hello&quot;&gt;
+              &lt;div class=&quot;page-content&quot;&gt;
+                &lt;!-- 静态资源路径写法事例 --&gt;
+                &lt;img src=&quot;@/assets/img/logo.png&quot; /&gt;
+                &lt;h1 v-text=&quot;msg&quot;&gt;&lt;/h1&gt;
+                &lt;h2 v-text=&quot;message&quot;&gt;&lt;/h2&gt;
+                &lt;svg-icon icon-name=&quot;dog&quot;&gt;&lt;/svg-icon&gt;
+                &lt;div class=&quot;demo&quot;&gt;
+                  &lt;h3&gt;方法示例&lt;/h3&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/template&gt;
+
+          &lt;style lang=&quot;less&quot; scoped src=&quot;./style.less&quot;&gt;&lt;/style&gt;
         </pre>
       </div>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-  /**
-   * 以下仅为事例代码，可以随意扩展修改
-   */
-  import { defineComponent } from 'vue';
-  // 工具类
-  import { formatDate } from 'utils';
-  import cat from '@icon/cat.svg';
-
-  export default defineComponent({
-    data() {
-      return {
-        cat,
-        msg: 'Welcome to Your Vue.js + TypeScript App',
-        message: `现在时间是：${formatDate(Date.now())}`
-      };
-    },
-    mounted() {
-      this.movieComingSoon();
-    },
-    methods: {
-      movieComingSoon() {
-        const data = {};
-        this.$services
-          .octocat({
-            method: 'get',
-            data
-          })
-          .then((res) => {
-            console.log('接口请求成功：' + JSON.stringify(res, null, 2));
-          })
-          .catch((err) => {
-            console.log('接口请求异常：' + err);
-          });
-      }
-    }
-  });
-</script>
 
 <style lang="less" scoped src="./style.less"></style>

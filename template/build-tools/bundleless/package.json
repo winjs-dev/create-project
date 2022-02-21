@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "dev": "npm run serve",
+    "serve": "vite",
+    "preview": "vite preview --port 5050",
+    "report": "cross-env REPORT=true npm run build",
+    "lint": "npm run f2elint-scan"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^1.6.3",
+    "@vue/runtime-dom": "^3.2.22",
+    "cross-env": "^7.0.3",
+    "rollup-plugin-visualizer": "^4.2.0",
+    "vite": "^2.8.3",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-html": "^3.0.6",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-style-import": "^2.0.0",
+    "vite-plugin-svg-icons": "^2.0.1",
+    "vite-svg-loader": "^3.1.2"
+  },
+  "resolutions": {
+    "bin-wrapper": "npm:bin-wrapper-china",
+    "rollup": "^2.56.3",
+    "gifsicle": "5.2.0"
+  },
+  "engines": {
+    "node": "^12 || >=14"
+  }
+}

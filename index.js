@@ -13,13 +13,17 @@ import {
   postOrderDirectoryTraverse,
   preOrderDirectoryTraverse
 } from './utils/directoryTraverse.js';
-import generateMain from './utils/generateMain.js';
-import generateMainV3 from './utils/generateMainV3.js';
+import { generateMain, generateMainV3 } from './utils/generateMain.js';
 import generateVueConfig from './utils/generateVueConfig.js';
 import getCommand from './utils/getCommand.js';
 import generateOfflinePackage from './utils/generateOfflinePackage.js';
 import generateRouterInterceptor from './utils/generateRouterInterceptor.js';
 import banner from './utils/banner.js';
+import generateBabelConfig from './utils/generateBabelConfig';
+import generateViteStyleImport from './utils/generateViteStyleImport';
+import generateSeeScriptsConfig from './utils/generateSeeScripts';
+import generateRegisterGlobalComponent from './utils/generateRegisterGlobalComponent';
+import generateVitePlugin from './utils/generateVitePlugin';
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
@@ -47,15 +51,16 @@ function emptyDir(dir) {
 }
 
 // 步骤
-// 1. 选择 使用框架 framework
-// 2. 选择 应用类型 application
+// 1. 选择使用框架 framework
+// 2. 选择应用类型 application
 // 3. 是否支持使用 Typescript
-// 4. 选择 UI组件库 ui-framework
-// 5. 选择 布局适配方案 layout-adapter
-// 5. 选择 版本控制工具 version-control
-// 6. 是否使用公司镜像源 mirror-source
-// 7. 是否使用 see 命令输出包
-// 8. 是否支持子应用或微应用
+// 4. 选择打包构建工具 build-tools
+// 5. 选择 UI 组件库 ui-framework
+// 6. 选择布局适配方案 layout-adapter
+// 7. 选择版本控制工具 version-control
+// 8. 是否使用公司镜像源 mirror-source
+// 9. 是否使用 see 命令输出包
+// 10. 是否支持子应用或微应用
 async function init() {
   console.log(`\n${banner}\n`);
 
@@ -114,6 +119,7 @@ async function init() {
     // - Framework: default(vue2) / vue3 / miniprogram
     // - Application: default(mobile) / pc / offline
     // - Add Typescript Support? no
+    // - BuildTools: default(bundle(webpack)) / bundleless(vite)
     // - UI Framework: default(wui) / vant / hui / element-ui / ant-design-vue ...
     // - Layout Adapter: default(rem) / vw
     // - Version Control: default(git) / svn
@@ -176,17 +182,6 @@ async function init() {
           initial: 0
         },
         {
-          name: 'needsTypeScript',
-          type: (prev, values) => {
-            if (isFeatureFlagsUsed) return null;
-            return values.framework !== 'mini' ? 'toggle' : null;
-          },
-          message: 'Add TypeScript?',
-          initial: false,
-          active: 'Yes',
-          inactive: 'No'
-        },
-        {
           name: 'application',
           type: (prev, values) => {
             if (isFeatureFlagsUsed) return null;
@@ -235,6 +230,36 @@ async function init() {
               ? true
               : '请输入1-10位的中英文字符或数字';
           }
+        },
+        {
+          name: 'needsTypeScript',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'toggle' : null;
+          },
+          message: 'Add TypeScript?',
+          initial: false,
+          active: 'Yes',
+          inactive: 'No'
+        },
+        {
+          name: 'buildTools',
+          type: (prev, values) => {
+            if (isFeatureFlagsUsed) return null;
+            return values.framework !== 'mini' ? 'select' : null;
+          },
+          message: 'Choose whether your build tools is bundle(webpack) or bundless(vite)?',
+          choices: [
+            {
+              title: yellow('bundle(webpack)'),
+              value: 'bundle'
+            },
+            {
+              title: cyan('bundleless(vite)'),
+              value: 'bundleless'
+            }
+          ],
+          initial: 0
         },
         {
           name: 'uiFramework',
@@ -343,7 +368,9 @@ async function init() {
           name: 'needsSubsystem',
           type: (prev, values) => {
             if (isFeatureFlagsUsed) return null;
-            return values.framework !== 'mini' && values.needsMirrorSource === true
+            return values.framework !== 'mini' &&
+              values.buildTools === 'bundle' &&
+              values.needsMirrorSource === true
               ? 'toggle'
               : null;
           },
@@ -373,6 +400,7 @@ async function init() {
     application = argv.application,
     offlineId = argv.offlineId,
     offlineName = argv.offlineName,
+    buildTools = argv.buildTools,
     uiFramework = argv.uiFramework,
     layoutAdapter = argv.layoutAdapter,
     versionControl = argv.versionControl,
@@ -405,6 +433,7 @@ async function init() {
     application,
     offlineId,
     offlineName,
+    buildTools,
     uiFramework,
     layoutAdapter,
     versionControl
@@ -461,8 +490,35 @@ async function init() {
       }
     }
 
+    // buildTools
+    if (buildTools === 'bundle') {
+      render('build-tools/bundle');
+
+      if (needsTypeScript) {
+        render('config/bundle/typescript');
+
+        if (uiFramework === 'vant') {
+          render('config/bundle/vant');
+        }
+      }
+    } else {
+      render('build-tools/bundleless');
+
+      // package.json
+      if (needsTypeScript) {
+        if (framework === 'v2') {
+          render('config/bundleless/typescript/v2');
+        } else {
+          render('config/bundleless/typescript/v3');
+        }
+      }
+    }
+
     // ui-framework
     if (uiFramework === 'vant') {
+      if (buildTools === 'bundle') {
+        render('config/bundle/default');
+      }
       if (framework === 'v2') {
         render('ui-framework/vant/v2');
       } else {
@@ -484,6 +540,9 @@ async function init() {
       }
     } else {
       // default
+      if (buildTools === 'bundle') {
+        render('config/bundle/default');
+      }
       if (framework === 'v2') {
         render('ui-framework/default/v2');
       } else {
@@ -504,6 +563,14 @@ async function init() {
 
     if (needsSeePackage) {
       render('see-package');
+
+      // build/package/see.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/package/see.js'),
+        generateSeeScriptsConfig({
+          buildTools
+        })
+      );
     }
 
     if (needsSubsystem) {
@@ -515,29 +582,51 @@ async function init() {
       application,
       uiFramework,
       layoutAdapter,
-      needsTypeScript
+      needsTypeScript,
+      buildTools
     });
     if (framework === 'v3') {
       mainContent = generateMainV3({
         application,
         uiFramework,
         layoutAdapter,
-        needsTypeScript
+        needsTypeScript,
+        buildTools
       });
     }
     fs.writeFileSync(path.resolve(root, 'src/main.js'), mainContent);
 
-    // vue.config.js
-    fs.writeFileSync(
-      path.resolve(root, 'vue.config.js'),
-      generateVueConfig({
-        framework,
-        application,
-        uiFramework,
-        needsTypeScript,
-        versionControl
-      })
-    );
+    // webpack
+    if (buildTools === 'bundle') {
+      // vue.config.js
+      fs.writeFileSync(
+        path.resolve(root, 'vue.config.js'),
+        generateVueConfig({
+          framework,
+          application,
+          uiFramework,
+          needsTypeScript,
+          versionControl
+        })
+      );
+
+      // babel.config.js
+      fs.writeFileSync(path.resolve(root, 'babel.config.js'), generateBabelConfig({ uiFramework }));
+    } else {
+      // vite
+
+      // build/vite/plugin/styleImport.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/vite/plugin/styleImport.js'),
+        generateViteStyleImport({ uiFramework })
+      );
+
+      // build/vite/plugin/index.js
+      fs.writeFileSync(
+        path.resolve(root, 'build/vite/plugin/index.js'),
+        generateVitePlugin({ framework })
+      );
+    }
 
     // router.interceptor.js
     fs.writeFileSync(
@@ -557,6 +646,15 @@ async function init() {
         })
       );
     }
+
+    // src/components/global/index.js
+    fs.writeFileSync(
+      path.resolve(root, 'src/components/global/index.js'),
+      generateRegisterGlobalComponent({
+        buildTools,
+        framework
+      })
+    );
 
     // Cleanup.
 
@@ -581,7 +679,12 @@ async function init() {
       );
 
       // Rename entry in `index.html`
-      const indexHtmlPath = path.resolve(root, 'public/index.html');
+      let indexHtmlPath = '';
+      if (buildTools === 'bundle') {
+        indexHtmlPath = path.resolve(root, 'public/index.html');
+      } else {
+        indexHtmlPath = path.resolve(root, 'index.html');
+      }
       const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
       fs.writeFileSync(indexHtmlPath, indexHtmlContent.replace('src/main.js', 'src/main.ts'));
     }
@@ -591,11 +694,8 @@ async function init() {
   // Supported package managers: pnpm > yarn > npm
   // Note: until <https://github.com/pnpm/pnpm/issues/3505> is resolved,
   // it is not possible to tell if the command is called by `pnpm init`.
-  const packageManager = /pnpm/.test(process.env.npm_execpath)
-    ? 'pnpm'
-    : /yarn/.test(process.env.npm_execpath)
-    ? 'yarn'
-    : 'npm';
+  const userAgent = process.env.npm_config_user_agent ?? '';
+  const packageManager = /pnpm/.test(userAgent) ? 'pnpm' : /yarn/.test(userAgent) ? 'yarn' : 'npm';
 
   console.log(`\nDone. Now run:\n`);
   if (root !== cwd) {

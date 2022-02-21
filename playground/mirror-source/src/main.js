@@ -1,13 +1,11 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import './router/router.interceptor';
 import './components/global';
-import './icons';
 import './filters';
 import './services';
+import './plugins/composition.js';
 import './assets/style/app.less';
 
 /* eslint-disable */

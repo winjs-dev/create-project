@@ -5,53 +5,57 @@
       <img src="@/assets/img/logo.png" />
       <h1 v-text="msg"></h1>
       <h2 v-text="message"></h2>
-      <svg-icon icon-class="cat"></svg-icon>
+      <svg-icon icon-name="cat"></svg-icon>
       <div class="demo">
         <h3>方法示例</h3>
         <pre>
           &lt;template&gt;
-            &lt;div class=&quot;page page-hello&quot;&gt;
+          &lt;div class=&quot;page page-hello&quot;&gt;
+            &lt;div class=&quot;page-content&quot;&gt;
               &lt;!-- 静态资源路径写法事例 --&gt;
-              &lt;img src=&quot;~@assets/images/copyfiles/logo.png&quot;&gt;
-              &lt;p v-text=&quot;msg&quot;&gt;&lt;/p&gt;
+              &lt;img src=&quot;@/assets/img/logo.png&quot; /&gt;
+              &lt;h1 v-text=&quot;msg&quot;&gt;&lt;/h1&gt;
+              &lt;h2 v-text=&quot;message&quot;&gt;&lt;/h2&gt;
+              &lt;svg-icon icon-name=&quot;cat&quot;&gt;&lt;/svg-icon&gt;
             &lt;/div&gt;
-          &lt;/template&gt;
+          &lt;/div&gt;
+        &lt;/template&gt;
 
-          &lt;script lang=&quot;ts&quot;&gt;
-            /**
-             * 以下仅为事例代码，可以随意扩展修改
-             */
-            import {Component, Vue} from &#x27;vue-property-decorator&#x27;;
-            // 工具类
-            import {formatDate} from &#x27;utils&#x27;;
+        &lt;script lang=&quot;ts&quot;&gt;
+          /**
+           * 以下仅为事例代码，可以随意扩展修改
+           */
+          import { Component, Vue } from &#x27;vue-property-decorator&#x27;;
+          // 工具类
+          import { formatDate } from &#x27;utils&#x27;;
 
-            @Component
-            export default class Hello extends Vue {
-              private msg: string = &#x27;Welcome to Your Vue.js + TypeScript App&#x27;;
-              private message: string = &#x60;现在时间是：${formatDate(Date.now())}&#x60;;
+          @Component
+          export default class Hello extends Vue {
+            private msg: string = &#x27;Welcome to Your Vue.js + TypeScript App&#x27;;
+            private message: string = &#x60;现在时间是：${formatDate(Date.now())}&#x60;;
 
-              private created() {
-                this.movieComingSoon();
-              }
+            private created() {
+              this.movieComingSoon();
+            }
 
-              private movieComingSoon() {
-                const data = {};
-                this.$services.octocat({
+            private movieComingSoon() {
+              const data = {};
+              this.$services
+                .octocat({
                   method: &#x27;get&#x27;,
                   data
-                }).then((res) =&gt; {
+                })
+                .then((res) =&gt; {
                   console.log(&#x27;接口请求成功：&#x27; + JSON.stringify(res, null, 2));
-                }).catch((err) =&gt; {
+                })
+                .catch((err) =&gt; {
                   console.log(&#x27;接口请求异常：&#x27; + err);
                 });
-              }
-
             }
-          &lt;/script&gt;
+          }
+        &lt;/script&gt;
 
-          &lt;style lang=&quot;less&quot; rel=&quot;stylesheet/less&quot;&gt;
-            @import &quot;./style.less&quot;;
-          &lt;/style&gt;
+        &lt;style lang=&quot;less&quot; scoped src=&quot;./style.less&quot;&gt;&lt;/style&gt;
         </pre>
       </div>
     </div>

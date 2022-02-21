@@ -1,12 +1,6 @@
 {
   "dependencies": {
-    "@yzfe/svgicon": "1.0.1",
-    "@yzfe/vue3-svgicon": "1.0.1",
-    "vue": "^3.2.20",
+    "vue": "^3.2.29",
     "vue-router": "^4.0.3"
-  },
-  "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0",
-    "@winner-fed/svgicon-loader": "^1.0.0"
   }
 }

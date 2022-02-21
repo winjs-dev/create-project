@@ -1,7 +1,8 @@
 import ejs from 'ejs';
 
-const mainV2 = `import 'core-js/stable';
+const mainV2 = `<%_ if (buildTools === 'bundle') { _%>import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+<%_ } _%>
 <%_ if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') { _%>
 import 'amfe-flexible';
 <%_ } _%>
@@ -12,10 +13,10 @@ import Component from 'vue-class-component';
 import App from './App.vue';
 import router from './router';
 import './router/router.interceptor';
-<%_ if (!needsTypeScript) { _%>
 import './components/global';
-<%_ } _%>
+<%_ if (buildTools === 'bundle') { _%>
 import './icons';
+<%_ } _%>
 import './filters';
 import './services';
 <%_ if (uiFramework === 'element-ui') { _%>
@@ -28,6 +29,10 @@ import './vendor/hui';
 import './vendor/vant';
 <%_ } else if (uiFramework === 'wui') { _%>
 import './vendor/wui';
+<%_ } _%>
+import './plugins/composition.js';
+<%_ if (buildTools === 'bundleless') { _%>
+import 'virtual:svg-icons-register';
 <%_ } _%>
 <%_ if (application === 'offline') { _%>
 import {isLightOS, nativeReady} from '@winner-fed/native-bridge-methods';
@@ -81,11 +86,102 @@ new Vue({
 <%_ } _%>
 `;
 
-export default function generateMain({ application, uiFramework, layoutAdapter, needsTypeScript }) {
+const mainV3 = `<%_ if (buildTools === 'bundle') { _%>import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+<%_ } _%>
+<%_ if ((application === 'mobile' || application === 'offline') && layoutAdapter !== 'vw') { _%>
+import 'amfe-flexible';
+<%_ } _%>
+import { createApp } from 'vue';
+import App from './App.vue';
+import router, { setupRouter } from './router';
+import './router/router.interceptor';
+import { setGlobalProperties } from '@/services';
+<%_ if (buildTools === 'bundle') { _%>
+import './icons';
+<%_ } _%>
+import setupGlobalComponent from '@/components/global';
+import { setApp } from './useApp';
+<%_ if (uiFramework === 'element-ui') { _%>
+import setupVendor from './vendor/element';
+<%_ } else if (uiFramework === 'ant') { _%>
+import setupVendor from './vendor/ant';
+<%_ } else if (uiFramework === 'vant') { _%>
+import setupVendor from './vendor/vant';
+<%_ } else if (uiFramework === 'wui') { _%>
+import setupVendor from './vendor/wui';
+<%_ } _%>
+<%_ if (buildTools === 'bundleless') { _%>
+import 'virtual:svg-icons-register';
+<%_ } _%>
+<%_ if (application === 'offline') { _%>
+import {isLightOS, nativeReady} from '@winner-fed/native-bridge-methods';
+import LightSDK from 'light-sdk/dist/index.umd';
+
+window.LightSDK = LightSDK;
+<%_ } _%>
+import './assets/style/app.less';
+
+async function bootstrap() {
+  const app = createApp(App);
+
+  setupGlobalComponent(app);
+  setGlobalProperties(app);
+<%_ if (uiFramework === 'element-ui' || uiFramework === 'ant' || uiFramework === 'vant' || uiFramework === 'wui') { _%>
+  setupVendor(app);
+<%_ } _%>
+  setupRouter(app);
+
+  // Mount when the route is ready
+  // https://next.router.vuejs.org/api/#isready
+  await router.isReady();
+<%_ if (application === 'offline') { _%>
+  if (isLightOS()) {
+    nativeReady().then(() => {
+      app.mount('#app');
+    });
+  } else {
+    app.mount('#app', true);
+  }
+<%_ } else { _%>
+  app.mount('#app', true);
+<%_ } _%>
+
+  setApp(app);
+}
+
+bootstrap();
+
+`;
+
+export function generateMain({
+  application,
+  uiFramework,
+  layoutAdapter,
+  needsTypeScript,
+  buildTools
+}) {
   return ejs.render(mainV2, {
     application,
     layoutAdapter,
     uiFramework,
-    needsTypeScript
+    needsTypeScript,
+    buildTools
+  });
+}
+
+export function generateMainV3({
+  application,
+  uiFramework,
+  layoutAdapter,
+  needsTypeScript,
+  buildTools
+}) {
+  return ejs.render(mainV3, {
+    application,
+    layoutAdapter,
+    uiFramework,
+    needsTypeScript,
+    buildTools
   });
 }

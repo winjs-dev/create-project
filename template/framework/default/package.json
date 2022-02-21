@@ -1,13 +1,13 @@
 {
-  "scripts": {
-    "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6"
-  },
   "dependencies": {
-    "vue": "^2.6.11",
-    "vue-router": "3.5.1",
-    "vue-svgicon": "3.2.6"
+    "@vue/composition-api": "^1.4.6",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.3"
   },
   "devDependencies": {
-    "vue-template-compiler": "^2.6.11"
+    "@vue/runtime-dom": "^3.2.31",
+    "unplugin-vue2-script-setup": "^0.9.3",
+    "vue-template-babel-compiler": "1.1.3",
+    "vue-template-compiler": "^2.6.14"
   }
 }

@@ -5,51 +5,59 @@
       <img src="@/assets/img/logo.png" />
       <h1 v-text="msg"></h1>
       <h2 v-text="message"></h2>
+      <svg-icon icon-name="dog"></svg-icon>
       <div class="demo">
         <h3>方法示例</h3>
         <pre>
           &lt;template&gt;
-            &lt;div class=&quot;page page-hello&quot;&gt;
-              &lt;!-- 静态资源路径写法事例 --&gt;
-              &lt;img src=&quot;~@assets/images/copyfiles/logo.png&quot;&gt;
-              &lt;p v-text=&quot;msg&quot;&gt;&lt;/p&gt;
+             &lt;div class=&quot;page page-hello&quot;&gt;
+              &lt;div class=&quot;page-content&quot;&gt;
+                &lt;!-- 静态资源路径写法事例 --&gt;
+                &lt;img src=&quot;@/assets/img/logo.png&quot; /&gt;
+                &lt;h1 v-text=&quot;msg&quot;&gt;&lt;/h1&gt;
+                &lt;h2 v-text=&quot;message&quot;&gt;&lt;/h2&gt;
+                &lt;svg-icon icon-name=&quot;dog&quot;&gt;&lt;/svg-icon&gt;
+              &lt;/div&gt;
             &lt;/div&gt;
           &lt;/template&gt;
           &lt;script&gt;
             /**
-            * 以下仅为事例代码，可以随意扩展修改
-            */
-
+             * 以下仅为事例代码，可以随意扩展修改
+             */
             // 工具类
-            import {formatDate} from &#x27;utils&#x27;;
+            import { formatDate } from &#x27;utils&#x27;;
 
             export default {
               data() {
                 return {
                   msg: &#x27;Welcome to Your Vue.js App&#x27;,
-                  start: false
-                }
+                  message: &#x27;现在时间是：&#x27; + formatDate(Date.now())
+                };
               },
+
               created() {
                 this.movieComingSoon();
               },
+
               methods: {
-                getTenantInfo() {
-                  // 接口请求示例
+                movieComingSoon() {
                   const data = {};
-                  this.$services.comingSoon({data}).then((res) =&gt; {
-                    console.log(&#x27;接口请求成功：&#x27; + JSON.stringify(res, null, 2));
-                  }).catch((err) => {
-                    console.log(&#x27;接口请求异常：&#x27; + err);
-                  });
+                  this.$services
+                      .octocat({
+                        method: &#x27;get&#x27;,
+                        data
+                      })
+                      .then((res) =&gt; {
+                        console.log(&#x27;接口请求成功：&#x27; + JSON.stringify(res, null, 2));
+                      })
+                      .catch((err) =&gt; {
+                        console.log(&#x27;接口请求异常：&#x27; + err);
+                      });
                 }
               }
-            }
+            };
           &lt;/script&gt;
-
-          &lt;style lang=&quot;less&quot; rel=&quot;stylesheet/less&quot;&gt;
-            @import &quot;./style.less&quot;;
-          &lt;/style&gt;
+          &lt;style lang=&quot;less&quot; scoped src=&quot;./style.less&quot;&gt;&lt;/style&gt;
         </pre>
       </div>
     </div>

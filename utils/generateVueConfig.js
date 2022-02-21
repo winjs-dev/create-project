@@ -1,7 +1,8 @@
 import ejs from 'ejs';
 
 // 模板字符串中需要 ${} 原样输出，需要对 $ 进行转义处理
-const vueConfig = `const path = require('path');
+const vueConfig = `const { defineConfig } = require('@vue/cli-service');
+const path = require('path');
 const pkg = require('./package.json');
 const webpack = require('webpack');
 const { formatDate } = require('@winner-fed/cloud-utils');
@@ -12,34 +13,16 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+<%_ if (framework === 'v2') { _%>
+// https://github.com/antfu/unplugin-vue2-script-setup
+const ScriptSetup = require('unplugin-vue2-script-setup/webpack').default;
+<%_ } _%>
 <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
 const tsImportPluginFactory = require('ts-import-plugin');
 const merge = require('webpack-merge');
 <%_ } _%>
 <%_ if (versionControl === 'svn') { _%>
 const svnInfo = require('svn-info');
-<%_ } _%>
-<%_ if (buildTools) { _%>
-const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
-const { genHtmlOptions } = require('./build/utils');
-
-const indexPath = path.resolve(__dirname, './index.html');
-const tmpDir = path.resolve(__dirname, 'node_modules/.tmp/build');
-/**
- * 创建文件夹
- * @param {String} pathStr 文件夹路径
- */
-function mkdirSyncRecursive(pathStr) {
-  if (existsSync(pathStr)) return true;
-  mkdirSync(pathStr, {
-    recursive: true
-  });
-}
-
-mkdirSyncRecursive(tmpDir);
-<%_ } _%>
-<%_ if (framework === 'v3') { _%>
-const svgFilePath = ['src/icons/svg'].map((v) => path.resolve(v));
 <%_ } _%>
 const N = '\\n';
 const resolve = (dir) => {
@@ -60,7 +43,8 @@ const getSvnInfo = () => {
 <%_ } _%>
 const genPlugins = () => {
   const plugins = [
-    new WebpackBar()<%_ if (application !== 'pc') { _%>,
+    new WebpackBar()<%_ if (framework === 'v2') { _%>,
+    ScriptSetup({})<%_ } _%><%_ if (application !== 'pc') { _%>,
     // 为静态资源文件添加 hash，防止缓存
     new AddAssetHtmlPlugin([
       {
@@ -141,7 +125,7 @@ const getOptimization = () => {
   return optimization;
 };
 
-module.exports = {
+module.exports = defineConfig({
   /**
    * You can set by yourself according to actual condition
    * You will need to set this if you plan to deploy your site under a sub path,
@@ -157,14 +141,13 @@ module.exports = {
   productionSourceMap: false,
   // webpack-dev-server 相关配置
   devServer: {
-    open: process.platform === 'darwin',
-    host: '0.0.0.0',
     port: 3000,
     https: false,
-    hotOnly: false,
-    overlay: {
-      warnings: false,
-      errors: true
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true
+      }
     }
     // 代理示例 https://webpack.docschina.org/configuration/dev-server/#devserver-proxy
     // proxy: {
@@ -204,6 +187,8 @@ module.exports = {
       }
     }
   },
+  // disable thread-loader, which is not compactible with this plugin
+  parallel: false,  
   configureWebpack: () => ({
     name: \`\${pkg.name}\`,
     resolve: {
@@ -236,22 +221,7 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: (config) => {
     // module
-  <%_ if (framework === 'v3') { _%>
-    // svg icon
-    config.module
-      .rule('vue-svgicon')
-      .include.add(svgFilePath)
-      .end()
-      .test(/\\.svg$/)
-      .use('svgicon')
-      .loader('@winner-fed/svgicon-loader')
-      .options({
-        svgFilePath
-      });
-      config.module.rule('svg').exclude.add(svgFilePath).end();
-      config.resolve.alias.set('@icon', svgFilePath[0]);
-    <%_ } _%>
-    <%_ if (framework === 'v2') { _%>
+   
     // svg
     // exclude icons
     config.module
@@ -263,10 +233,12 @@ module.exports = {
       .test(/\\.svg$/)
       .include.add(resolve('src/icons'))
       .end()
-      .use('url-loader')
-      .loader('url-loader')
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
       .end();
-    <%_ } _%>
   <%_ if (needsTypeScript && uiFramework === 'vant') { _%>
     config.module
       .rule('ts')
@@ -291,27 +263,23 @@ module.exports = {
       })
       .end();
     <%_ } _%>
-
+    
+    <%_ if (needsTypeScript) { _%>
+    // disable type check and let \`vue-tsc\` handles it
+    config.plugins.delete('fork-ts-checker');
+    <%_ } _%>
     config
       .when(process.env.NODE_ENV === 'development',
-        config => config.devtool('cheap-eval-source-map')
+        config => config.devtool('cheap-source-map')
       );
 
     // plugin
-
+    
     // preload
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+    // 移除 preload 插件
     config
-      .plugin('preload')
-      .tap(() => [
-      {
-        rel: 'preload',
-        // to ignore runtime.js
-        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-        fileBlacklist: [/\\.map$/, /hot-update\\.js$/, /runtime\\..*\\.js$/],
-        include: 'initial'
-      }
-    ]);
+      .plugins
+      .delete('preload');
 
     // when there are many pages, it will cause too many meaningless requests
     config
@@ -322,35 +290,6 @@ module.exports = {
     config
       .plugin('html')
       .tap((args) => {
-      <%_ if (buildTools) { _%>
-          const htmlOptions = genHtmlOptions();
-          const htmlStr = readFileSync(indexPath).toString();
-          const tmpHtmlPath = path.resolve(tmpDir, './index.html');
-
-          writeFileSync(tmpHtmlPath, htmlStr);
-
-          args[0].template = tmpHtmlPath;
-          args[0].title = htmlOptions.title;
-
-          args[0].filename = './index.html';
-          args[0].templateParameters = (
-            compilation,
-            assets,
-            assetTags,
-            options
-          ) => {
-            return {
-              compilation,
-              webpackConfig: compilation.options,
-              htmlWebpackPlugin: {
-                tags: assetTags,
-                files: assets,
-                options,
-              },
-              ...htmlOptions,
-            };
-          };
-        <%_ } _%>
         args[0].minify = {
           removeComments: true,
           collapseWhitespace: true,
@@ -374,6 +313,7 @@ module.exports = {
       .loader('vue-loader')
       .tap((options) => {
         options.compilerOptions.preserveWhitespace = true;
+        options.compiler = require('vue-template-babel-compiler');
         return options;
       })
       .end();
@@ -411,6 +351,14 @@ module.exports = {
                 }
               }
             });
+          config.cache({
+            // 将缓存类型设置为文件系统,默认是memory
+            type: 'filesystem',
+            buildDependencies: {
+              // 更改配置文件时，重新缓存
+              config: [__filename]
+            }
+          });  
           config.optimization.runtimeChunk('single');
         }
       );
@@ -419,7 +367,7 @@ module.exports = {
     lintStyleOnBuild: true,
     stylelint: {}
   }
-};
+});
 `;
 
 export default function generateVueConfig({
@@ -427,15 +375,13 @@ export default function generateVueConfig({
   application,
   versionControl,
   needsTypeScript,
-  uiFramework,
-  buildTools = false
+  uiFramework
 }) {
   return ejs.render(vueConfig, {
     framework,
     application,
     versionControl,
     needsTypeScript,
-    uiFramework,
-    buildTools
+    uiFramework
   });
 }

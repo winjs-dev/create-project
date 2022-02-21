@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "devDependencies": {
+    "vite-plugin-vue2": "^1.9.3"
+  }
+}
