@@ -54,8 +54,6 @@ npm init @winner-fed/project my-project
 
 - Ajax(网络请求库): [axios](https://github.com/axios/axios)，做了一定的封装，详见 `src/services/request.js`
 
-- 移动 web 的适配方案：目前提供了两种方案，`rem` 及 `vw`。分别引入了 `postcss-pxtorem` 及 `amfe-flexible` 和 `postcss-px-to-viewport`，可以自由地用 px 去开发
-
 - 常用的 js 工具类： [cloud-utils](https://cklwblove.github.io/cloud-utils/)
 
 - 常用的 Less 的 mixins 集合：[magicless](https://github.com/cklwblove/magicless)
@@ -254,15 +252,15 @@ export default {
         # 开发调试，基于 webpack
         "serve": "vue-cli-service serve",
         # 构建打包
-        "build": "node build/index.js",
+        "build": "node build/index.js --no-module",
         # .js、.vue、.jsx 文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-eslint 实现
         "lint": "vue-cli-service lint",
         # 生成部署包，并且压缩成 zip 包
         "deploy": "npm run build && npm run zip",
         # 初始化安装依赖包
         "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
-        # 开发调试，基于 vite
-        "dev": "vite",
+        # 开发调试
+        "dev": "npm run serve",
         # 针对 dist 包进行 ES6+ 的检测。目标是生成 ES5 的代码
         "escheck": "es-check",
         # 审查项目的 webpack 相关配置
@@ -276,7 +274,6 @@ export default {
         "prettier": "node ./scripts/prettier.js",
         # 重新安装
         "reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
-        "release": "sh build/release.sh",
         # 会根据构建统计生成报告，生成的 report.html 文件，它会帮助你分析包中包含的模块们的大小。
         "report": "vue-cli-service build --report",
         # 一键生成 SEE平台发布物，构建带时间串和 gitcommitid 的包
@@ -284,9 +281,7 @@ export default {
         # 负责构建子系统的包
         "child": "node --max_old_space_size=4096 build/child/build.child.js",
         # 负责构建做为子系统的 see 包
-        "build:see:child": "npm run child && node build/package/see.child.js"
-        # 一键生成 SVG 图标组件
-        "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext js --es6",
+        "build:see:child": "npm run child && node build/package/see.child.js",
         # 将 dist 文件夹，压缩成 zip 包
         "zip": "node build/zip.js",
         # 根据文件夹 models 相关的前端领域模型，生成对应的文档说明
@@ -294,18 +289,21 @@ export default {
     }
     ```
 
-    - dependencies - 脚手架标配的依赖包如下所示：
+    - dependencies - 脚手架标配的依赖包(以 vue-cli5 + vue2 为例说明)如下所示：
 
     ```json
     "dependencies": {
+        "@vue/composition-api": "^1.4.6",
         "@winner-fed/cloud-utils": "*",
         "@winner-fed/magicless": "*",
         "axios": "^0.26.0",
-        "core-js": "^3.6.5",
-        "amfe-flexible": "0.3.2",
-        "normalize.css": "8.0.1",
-        "vue": "^2.6.11",
-        "vue-router": "^3.5.1"
+        "core-js": "^3.8.3",
+        "h_ui": "^1.29.1",
+        "js-cookie": "^3.0.1",
+        "normalize.css": "^8.0.1",
+        "qs": "^6.10.3",
+        "vue": "^2.6.14",
+        "vue-router": "^3.5.3"
     }
     ```
 
@@ -313,38 +311,42 @@ export default {
 
     ```json
     "devDependencies": {
-        "@vue/cli-plugin-babel": "~4.5.0",
-        "@vue/cli-service": "~4.5.0",
-        "@vue/eslint-config-prettier": "^6.0.0",
-        "@winner-fed/eslint-config-win": "^1.0.2",
-        "@winner-fed/stylelint-config-win": "^0.1.0",
-        "@winner-fed/vue-cli-plugin-eslint": "^1.0.2",
-        "@winner-fed/vue-cli-plugin-stylelint": "^1.0.2",
-        "@winner-fed/vue-router-invoke-webpack-plugin": "^1.0.0",
-        "@winner-fed/winner-deploy": "^3.0.0",
-        "add-asset-html-webpack-plugin": "^3.1.3",
-        "archiver": "^3.0.0",
-        "babel-eslint": "^10.0.1",
-        "chalk": "^2.4.2",
-        "check-prettier": "^1.0.3",
-        "compression-webpack-plugin": "^3.0.0",
-        "docdash": "^1.2.0",
-        "es-check": "^5.2.3",
-        "eslint": "^7.6.0",
-        "less": "^3.0.4",
-        "less-loader": "^7.3.0",
-        "postcss-pxtorem": "^4.0.1",
-        "prettier": "^1.19.1",
-        "qrcode-terminal": "^0.12.0",
-        "rimraf": "^3.0.2",
-        "script-ext-html-webpack-plugin": "^2.1.3",
-        "stylelint": "^13.6.1",
-        "svn-info": "^1.0.0",
-        "tasksfile": "^5.1.0",
-        "vue-cli-plugin-qrcode": "*",
-        "vue-template-compiler": "^2.6.11",
-        "webpack-manifest-plugin": "^3.0.0",
-        "webpackbar": "^4.0.0"
+       "@babel/core": "^7.12.16",
+       "@ls-lint/ls-lint": "^1.9.2",
+       "@vue/cli-plugin-babel": "~5.0.0",
+       "@vue/cli-plugin-eslint": "~5.0.0",
+       "@vue/cli-plugin-router": "~5.0.0",
+       "@vue/cli-service": "~5.0.0",
+       "@vue/compiler-sfc": "^3.2.31",
+       "@vue/runtime-dom": "^3.2.31",
+       "@winner-fed/f2elint": "^1.0.4",
+       "@winner-fed/vue-cli-plugin-eslint": "^1.0.2",
+       "@winner-fed/vue-cli-plugin-stylelint": "^1.0.2",
+       "@winner-fed/winner-deploy": "^3.0.0",
+       "add-asset-html-webpack-plugin": "^3.1.3",
+       "archiver": "^3.0.0",
+       "babel-eslint": "^10.1.0",
+       "chalk": "^2.4.1",
+       "compression-webpack-plugin": "^9.2.0",
+       "conventional-changelog-cli": "^2.1.1",
+       "es-check": "^5.2.3",
+       "eslint-config-prettier": "^8.3.0",
+       "eslint-plugin-prettier": "^4.0.0",
+       "fs-extra": "^10.0.0",
+       "less": "^4.1.2",
+       "less-loader": "^8.0.0",
+       "lint-staged": "^11.2.6",
+       "prettier": "^2.4.1",
+       "replace-in-file": "^6.2.0",
+       "rimraf": "^3.0.2",
+       "script-ext-html-webpack-plugin": "^2.1.3",
+       "svg-sprite-loader": "^6.0.11",
+       "tasksfile": "^5.1.0",
+       "unplugin-vue2-script-setup": "^0.9.3",
+       "vue-template-babel-compiler": "1.1.3",
+       "vue-template-compiler": "^2.6.14",
+       "webpack-manifest-plugin": "^4.1.1",
+       "webpackbar": "^5.0.2"
     }
     ```
 
@@ -353,7 +355,7 @@ export default {
 - .escheckrc - 使用简单的 shell 命令检查 JavaScript 文件中使用的 ES 版本。构建的前端包（dist 包）需要支持安卓 4.4 及 iOS9.0 机型，所以为了避免包里出现 ES6 语法，增加了新的 npm scripts 命令: escheck。执行完 npm run build 之后，可以使用 npm run escheck 进行检测。
 - JSON - 详见 [https://segmentfault.com/a/1190000018013282](https://segmentfault.com/a/1190000018013282)
 - postcss.config.js - postcss 配置文件，集成了 autoprefixer ，px2rem 等插件
-- .prettierrc - prettier 配置文件，用于代码格式化，如 .Less 等文件
+- prettier.config.js - prettier 配置文件，用于代码格式化，如 .Less 等文件
 - stylelint.config.js - 样式编码规范
 - .eslintrc.js - JavaScript 编码规范
 - vue.config.js - vue-cli 的可选配置文件，底层是针对 webpack 进行了封装。脚手架做了一些常用的额外配置
@@ -446,5 +448,4 @@ npm run build:see:child prod -dockerSeePack=true - 构建结果是
 ```shell
 # --report 生成静态报告文件
 yarn run report
-
 ```
