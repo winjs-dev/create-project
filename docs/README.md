@@ -1,451 +1,83 @@
----
-title: create-project
-author: 文博
-date: '2022-02-21'
----
+# 介绍
+ <a href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank">
+  <img src="https://img.shields.io/npm/v/@winner-fed/create-project" />
+</a>
 
-## 脚手架功能概览图
+鲸腾前端团队快速从"零"搭建 Web、小程序、H5、离线包应用程序的前端项目脚手架。
+
+## 功能概览图
 <img src="https://gitee.com/cklwblove/win-ui-resource/raw/master/img/create-project.png"/>
 
-## 创建 vue 项目
-```bash
-npm init @winner-fed/project my-project
-```
+## 简介
+**create-project** 基于 [`vue`](https://vuejs.org/)，使用 `vite` 或者 `webpack` 构建项目，支持众多的开箱即用的功能和针对项目进行了不同程度的优化。它的宗旨是快速创建一套**纯净**却具备强大基础功能的模板，协助开发者自由发挥快速搭建任何类型的项目。
 
+::: tip 基础
+在使用此脚手架前，请确保你对以下的技术有足够的知识储备：
+
+- [Vue](https://vuejs.org/)
+- [VueRouter](https://router.vuejs.org/zh/)
+- [Pinia](https://pinia.esm.dev/)
+- [Vuex](https://vuex.vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Vue CLI](https://cli.vuejs.org/)
+- [Webpack](https://webpack.js.org/)
+  :::
+  
 ## 特性
+脚手架可以快速帮你创建一份空白模板，提供了许多通用的功能：
 
-- 支持创建常用的项目场景类型模板，移动端 H5，离线包，PC web 和 小程序
-  - 小程序使用 taro 作为跨端开发框架
-  - 离线包：公司自研 GMU 平台
+### 应用
 
-- 支持 Vue 2.x 与 3.x
-  - 2.x 支持 `composition-api` 及 `<script setup>` 
-  - 3.x 不支持 ie11
- 
-- 支持常用的 UI 组件库
-   - 移动端 H5，离线包：WinUI（鲸腾自研） 和 Vant
-       - Vue 2.x 使用 WinUI 1.x，Vue 3.x 使用 WinUI 2.x
-       - Vue 2.x 使用 Vant 2.x，Vue 3.x 使用 Vant 3.x
-   - PC web：hui（公司自研），element-ui，ant-design-vue
-       - Hui 只适配 Vue 2.x
-       - Vue 2.x 使用 element-ui，Vue 3.x 使用 element-plus
-       - Vue 2.x 使用 ant-design-vue 1.x，Vue 3.x 使用 ant-design-vue 3.x
+- 使用 CSS 预编译语言 [Less](http://lesscss.org/)
+- 移动 web 的适配方案：目前提供了两种方案，`rem` 及 `vw`。分别引入了 `postcss-pxtorem` 及 `amfe-flexible` 和 `postcss-px-to-viewport`，可以自由地用 px 去开发
+- 常用的 js 工具类： [cloud-utils](https://cloud-templates.github.io/cloud-utils/)
+- 常用的 Less 的 mixins 集合：[magicless](https://github.com/cloud-templates/magicless)
+- 提供`环境变量`：开发环境、预生产环境、生产环境
+- 基于 `axios` 异步请求封装
+- 基于环境变量的静态资源组件
+- 自动加载 `SVG` 的图标组件，雪碧图打包
+- 页面缓存（基于 `keep-alive` 实现）
+- 支持 `gzip`
 
-- 支持 bundle 与 bundleless 构建工具的选择，比如 webpack 以及 vite
-   - vue-cli 升级了最新的 5.x，其中 webpack 版本为 5.x
-   - vite 使用 2.x
+## 浏览器支持
 
-- 支持 TS
+本地开发：推荐使用 <Badge text="Chrome" vertical="middle" /> 最新版浏览器。
 
-- 支持一键生成 See 平台 web 发布物 和 docker 发布物
+生产环境： Web 及 H5 支持现代浏览器，
+其中 `Vue3` **不支持 <Badge type="danger" text="IE" vertical="middle" />**。
 
-- 支持生成 Hui pro 1.x 的子系统，可以运行在以操作员中心或者财富中台作为外框架的主系统中
-   - Vite 作为构建工具的时候，不支持生成 Hui pro 1.x 的子系统
-
-- 支持移动端常用的布局单位，rem 和 viewpoint
-   - 分别引入了 postcss-pxtorem 及 amfe-flexible 和 postcss-px-to-viewport，可以自由地用 px 去开发
-   - 相关配置在 postcss.config.js
-
-- 支持 svg icons（svg 雪碧图）
-   - bundle 使用 svg-sprite-loader
-   - bundleless 使用 vite-plugin-svg-icons/vite-svg-loader
+::: tip 注意
+使用 Vue 3.x 需要考虑更多的兼容性
+1. bundle(webpack) + Vue3.x 不支持 ie11
+2. bundleless(vite) 不支持 ie11
+3. Vue3.x 不兼容安卓6以下 webview 的 Chrome 版本
+:::
    
-- CSS 预编译语言：[Less](http://lesscss.org/)
+具体如下：
+- Vue3
+    - Web
+    
+    | IE          | Edge            | Firefox         | Chrome          | Safari          |
+    | ----------- | --------------- | --------------- | --------------- | --------------- |
+    | not support | last 2 versions | last 2 versions | last 2 versions、>=51 | last 2 versions |
 
-- Ajax(网络请求库): [axios](https://github.com/axios/axios)，做了一定的封装，详见 `src/services/request.js`
+    - 移动端 H5
+    
+    | Android          | iOS            |
+    | ----------- | --------------- |
+    | >= 6.0 | >= 10.0 |
 
-- 常用的 js 工具类： [cloud-utils](https://cklwblove.github.io/cloud-utils/)
+- Vue2
+    - Web 端
+    
+    | IE          | Edge            | Firefox         | Chrome          | Safari          |
+    | ----------- | --------------- | --------------- | --------------- | --------------- |
+    | >= 11 | last 2 versions | last 2 versions、>= 34 | last 2 versions、>=51 | last 2 versions |
+    
+    - 移动端 H5
+    
+    | Android          | iOS            |
+    | ----------- | --------------- | 
+    | >= 5.0 | >= 9.0 |
 
-- 常用的 Less 的 mixins 集合：[magicless](https://github.com/cklwblove/magicless)
-
-- 接入编码规范 `eslint-config-win`，`stylelint-config-win`
-
-> 注意点：使用 vue 3.x 需要考虑更多的兼容性，其中 
-    <br>bundle(webpack) + vue3.x 不支持 ie11
-    <br>bundleless(vite) 不支持 ie11
-    <br>vue3.x 不兼容安卓6以下 webview 的 Chrome 版本
-
-## 目录介绍
-
-```bash
-.
-├── build
-├── docs
-├── public
-├── scripts
-└── src
-    ├── assets
-    │   ├── fonts
-    │   ├── img
-    │   └── style
-    ├── components
-    │   ├── NetworkBroken
-    │   ├── SendCode
-    │   └── global
-    ├── filters
-    ├── icons
-    │   └── svg
-    ├── models
-    ├── router
-    ├── services
-    ├── vendor
-    └── views
-        └── hello
-```
-
-- build - 构建工具（如 webpack） 及 node 命令行工具相关配置
-    - index.js - 利用 tasksfile 插件，自定义打包构建之后的异常，便于捕获。
-    - zip.js - 将构建的 dist 包压缩成 zip 格式。
-- public - 目录下的文件不会被构建工具（webpack）处理，构建的包最终是原样输出。而其他的静态资源都会被构建工具（webpack）当做模块处理
-- src - 源码目录
-    - assets - 静态资源文件，作用于全局
-        - fonts - font 字体图标，默认是 [iconfont.cn](https://www.iconfont.cn/) 生成的全部文件
-        - img - 图片资源文件
-        - style - CSS 相关样式文件，`reset` 样式文件及全局定义的 `less` 变量文件，自定义的 `mixins` 函数库，换肤文件等
-        - js - 不经过 npm 或 Yarn 下载的第三方依赖包。（扩展出来的文件）
-    - components - 组件目录，统一采用大驼峰拼接，如 SendCode
-    - filters - 过滤器，过滤器是 vue2 的叫法，在 vue3 是不存在的。vue3 可以理解成是函数库
-    - icons - 放置 svg 相关的图标。可以作为 iconfont 的替代品，因为 iconfont 只支持单色。项目里推荐使用这种方式。
-    - models - 数据生产者。可以按照前端领域模型来组织。项目中的数据来源，主要是后端接口（HTTP 协议的接口），及混合式开发时，壳子这边提供的桥接接口。或者是接入的第三方插件提供的数据。
-        - 复用，解耦，使用方便。
-        - 注释清晰，遵循 jsdoc 的注释规范，利用 `npm scripts`里的 `gen:docs`生成可视化的前端接口文档。
-        - 纯前端的 BFF 层，视图和业务逻辑的胶水层。
-    - router - 路由及路由拦截器
-    - services - 网络请求库的封装。对 HTTP 协议接口做的封装。
-        - autoMatchBaseUrl.js - 项目中若存在多个服务端接口的对接，则需要在 config.local.js 里定义多个接口请求路径，此文件就是针对配置不同的 prefix，做自动适配的。可参考下面一段示例： _autoMatchBaseUrl 与 config.local.js 配合使用_
-        - pending.js - 在开发中，经常会遇到接口重复请求导致的各种问题。无论从用户体验或者从业务严谨方面来说，取消无用的请求确实是需要避免的。
-        - 对于重复的 get 请求，会导致页面更新多次，发生页面抖动的现象，影响用户体验。
-        - 对于重复的 post 请求，会导致在服务端生成两次记录（例如生成两条订单记录）。
-        - 如果当前页面请求还未响应完成，就切换到了下一个路由，那么这些请求直到响应返回才会中止。
-        - request.js - 针对 axios 的封装，主要函数是 URL, URL, formData)
-        - RESTFULURL.js - 所有服务端接口的映射表，对应的 value 值不建议添加接口具体的 path，可参考下面一段示例： _RESTFULURL.js_ 示例， 如标准的 URL `http://xx.com/v1/func_get_user_info`
-            - HTTP 协议路径 [http://xx.com/](http://xx.com/)
-            - path 路径：v1/
-            - 接口名：`[func_get_user_info](http://xx.com/v1/func_get_user_info)`
-            - 因为有时候开发环境和生产环境接口对应 path 会有修改，所以在配置 API_HOME 的时候，尽量是 HTTP 协议路径 + path 路径。
-
-```javascript
-// autoMatchBaseUrl与config.local.js配合使用
-// config.local.js
-window.LOCAL_CONFIG = {
-  API_HOME: 'http://api.github.com/',
-  CLINET_API_HOME: 'http://client.github.com/',
-  MALL_API_HOME: 'http://mall.github.com/'
-};
-
-// constant.js
-const QUOTE_PREFIX = 'v1/';
-const CLIENT_PREFIX = 'client/';
-const MALL_PREFIX = 'shop/';
-export { QUOTE_PREFIX, CLIENT_PREFIX, MALL_PREFIX };
-
-// autoMatchBaseUrl.js
-export default function autoMatchBaseUrl(prefix) {
-  const options = {};
-  switch (prefix) {
-    case QUOTE_PREFIX:
-      options.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-      options.baseUrl = window.LOCAL_CONFIG.QUOTE_HOME + QUOTE_PREFIX;
-      break;
-    case CLIENT_PREFIX:
-      options.data = {
-        user_token: store.getters.clientToken
-      };
-      options.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-      options.baseUrl = window.LOCAL_CONFIG.IFS_API_HOME + CLIENT_PREFIX;
-      break;
-    case MALL_PREFIX:
-      options.data = {
-        fansToken: encrypt.encrypt(store.getters.userInfo.fundAccount)
-      };
-      options.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-      options.baseUrl = window.LOCAL_CONFIG.MALL_API_HOME + MALL_PREFIX;
-      break;
-    default:
-      // 默认
-      options.data = {
-        user_token: store.getters.apiToken
-      };
-      options.headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      };
-      options.baseUrl = window.LOCAL_CONFIG.API_HOME + HOME_PREFIX;
-  }
-
-  return options;
-}
-```
-
-```javascript
-// RESTFULURL.js
-export default {
-  ....
-  getUserInfo: 'func_get_user_info',
-  ...
-}
-```
-
-- views - 视图层，数据的消费者。尽可能的让视图层更“轻”。
-    - 统一采用小驼峰（切记），如 helloWorld
-- constant.js - 定义常量（大驼峰，单词之间以下划线连接）。编写业务程序时，会有一些所需要的常量值，比如订单状态，1,2,3...。一般情况下，这些值都是固定不变的。如果直接将这些值硬编码到代码里，就可以理解成“魔法值”。魔法值的存在，从语法上来说是合理的，但是从业务上却让人无法理解其中 0，1，2，3 的含义。对于这些魔法值，我们往往需要通过上下文推断出来逻辑，如果是非常复杂的业务或者 10 年前的代码那就更惨了，搞不好连文档注释也没有。为了可读性，所以我们要尽量避免出现魔法值。
-  举个例子，如下
-    ```vue
-    <!-- 服务期限 -->
-    <div class="card-subscription viability-info">
-      <div class="header">
-        <span>服务期限</span>
-      </div>
-      <div class="content">
-        <div v-if="+combinePrice.farePerMonth !== 999999999"
-             class="viability-box"
-             :class="{active: viability === '1' }"
-             @click="viability = '1'">
-          <p>1个月</p>
-          <p class="price"><b>￥</b>{{combinePrice.farePerMonth}}</p>
-        </div>
-        <div v-if="+combinePrice.farePerQuarter !== 999999999"
-             class="viability-box"
-             :class="{active: viability === '3' }"
-             @click="viability = '3'">
-          <p>3个月</p>
-          <p class="price"><b>￥</b>{{combinePrice.farePerQuarter}}</p>
-        </div>
-        <div v-if="+combinePrice.farePerHalfyear !== 999999999"
-             class="viability-box"
-             :class="{active: viability === '6' }"
-             @click="viability = '6'">
-          <p>6个月</p>
-          <p class="price"><b>￥</b>{{combinePrice.farePerHalfyear}}</p>
-        </div>
-    </div>
-    ```
-    `999999999` 是什么玩意。。。
-    ```javascript
-    // constant.js
-    ...
-    // 中台与前端做的协定
-    // 特殊 999999999 价格，不做界面展示
-    const SPECIAL_PRICE = 999999999;
-
-    export {
-      ...
-      SPECIAL_PRICE
-    };
-    ```
-
-- HTML - 遵循于 [EJS](https://ejs.co/) 嵌入式 JavaScript 模板引擎语法，比如 `<%% EJS %%>`。可以动态设置并解析所定义的变量，借助于 html-webpack-plugin
-    - 配置文件 config.local.js 的引用方式这里做下说明，由于之前生产环境上遇到过，更改配置文件并上传服务器更新后，有缓存的问题，因此用了 `document.write` 方式实现，用于清除此文件的缓存
-
-```javascript
-<script>
-  document.write(unescape('%3Cscript src=\'./config.local.js?_t=' + Math.random() + '\'
-  type=\'text/javascript\'%3E%3C/script%3E'));
-</script>
-```
-
-- JSON - 重点关注几个属性就行
-    - scripts
-
-    ```json
-      "scripts": {
-        # 开发调试，基于 webpack
-        "serve": "vue-cli-service serve",
-        # 构建打包
-        "build": "node build/index.js --no-module",
-        # .js、.vue、.jsx 文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-eslint 实现
-        "lint": "vue-cli-service lint",
-        # 生成部署包，并且压缩成 zip 包
-        "deploy": "npm run build && npm run zip",
-        # 初始化安装依赖包
-        "bootstrap": "yarn --registry https://registry.npm.taobao.org || npm install --registry https://registry.npm.taobao.org || cnpm install",
-        # 开发调试
-        "dev": "npm run serve",
-        # 针对 dist 包进行 ES6+ 的检测。目标是生成 ES5 的代码
-        "escheck": "es-check",
-        # 审查项目的 webpack 相关配置
-        # 详见 https://cli.vuejs.org/zh/guide/webpack.html#%E4%BF%AE%E6%94%B9%E6%8F%92%E4%BB%B6%E9%80%89%E9%A1%B9
-        "inspect": "vue inspect > output.js --verbose",
-        # 文件格式化是以 prettier 实现
-        "lint:prettier": "check-prettier lint",
-        # .css、.less、.sass 等文件的编码规范检测，自带修复。基于 @winner-fed/vue-cli-plugin-stylelint 实现
-        "lint:style": "vue-cli-service lint:style",
-        # .js、.vue、.md 等文件格式化，依赖于 prettier
-        "prettier": "node ./scripts/prettier.js",
-        # 重新安装
-        "reinstall": "rimraf node_modules && rimraf yarn.lock && rimraf package.lock.json && npm run bootstrap",
-        # 会根据构建统计生成报告，生成的 report.html 文件，它会帮助你分析包中包含的模块们的大小。
-        "report": "vue-cli-service build --report",
-        # 一键生成 SEE平台发布物，构建带时间串和 gitcommitid 的包
-        "build:see": "npm run build && node build/package/see.js",
-        # 负责构建子系统的包
-        "child": "node --max_old_space_size=4096 build/child/build.child.js",
-        # 负责构建做为子系统的 see 包
-        "build:see:child": "npm run child && node build/package/see.child.js",
-        # 将 dist 文件夹，压缩成 zip 包
-        "zip": "node build/zip.js",
-        # 根据文件夹 models 相关的前端领域模型，生成对应的文档说明
-        "gen:docs": "./node_modules/.bin/jsdoc -c jsdoc.json"
-    }
-    ```
-
-    - dependencies - 脚手架标配的依赖包(以 vue-cli5 + vue2 为例说明)如下所示：
-
-    ```json
-    "dependencies": {
-        "@vue/composition-api": "^1.4.6",
-        "@winner-fed/cloud-utils": "*",
-        "@winner-fed/magicless": "*",
-        "axios": "^0.26.0",
-        "core-js": "^3.8.3",
-        "h_ui": "^1.29.1",
-        "js-cookie": "^3.0.1",
-        "normalize.css": "^8.0.1",
-        "qs": "^6.10.3",
-        "vue": "^2.6.14",
-        "vue-router": "^3.5.3"
-    }
-    ```
-
-    - devDependencies
-
-    ```json
-    "devDependencies": {
-       "@babel/core": "^7.12.16",
-       "@ls-lint/ls-lint": "^1.9.2",
-       "@vue/cli-plugin-babel": "~5.0.0",
-       "@vue/cli-plugin-eslint": "~5.0.0",
-       "@vue/cli-plugin-router": "~5.0.0",
-       "@vue/cli-service": "~5.0.0",
-       "@vue/compiler-sfc": "^3.2.31",
-       "@vue/runtime-dom": "^3.2.31",
-       "@winner-fed/f2elint": "^1.0.4",
-       "@winner-fed/vue-cli-plugin-eslint": "^1.0.2",
-       "@winner-fed/vue-cli-plugin-stylelint": "^1.0.2",
-       "@winner-fed/winner-deploy": "^3.0.0",
-       "add-asset-html-webpack-plugin": "^3.1.3",
-       "archiver": "^3.0.0",
-       "babel-eslint": "^10.1.0",
-       "chalk": "^2.4.1",
-       "compression-webpack-plugin": "^9.2.0",
-       "conventional-changelog-cli": "^2.1.1",
-       "es-check": "^5.2.3",
-       "eslint-config-prettier": "^8.3.0",
-       "eslint-plugin-prettier": "^4.0.0",
-       "fs-extra": "^10.0.0",
-       "less": "^4.1.2",
-       "less-loader": "^8.0.0",
-       "lint-staged": "^11.2.6",
-       "prettier": "^2.4.1",
-       "replace-in-file": "^6.2.0",
-       "rimraf": "^3.0.2",
-       "script-ext-html-webpack-plugin": "^2.1.3",
-       "svg-sprite-loader": "^6.0.11",
-       "tasksfile": "^5.1.0",
-       "unplugin-vue2-script-setup": "^0.9.3",
-       "vue-template-babel-compiler": "1.1.3",
-       "vue-template-compiler": "^2.6.14",
-       "webpack-manifest-plugin": "^4.1.1",
-       "webpackbar": "^5.0.2"
-    }
-    ```
-
-- .browserslistrc - 是在不同的前端工具之间共用目标浏览器和 node 版本的配置文件。主要用于 Autoprefixer Babel 等，详细可见 [https://juejin.cn/post/6844903669524086797](https://juejin.cn/post/6844903669524086797)
-- .editorconfig - 是一套用于统一代码格式的解决方案，可以帮助开发者在不同的编辑器和 IDE 之间定义和维护一致的代码风格。常见的 IDE 如 WebStorm 都可以配置。详见 [http://www.alloyteam.com/2014/12/editor-config/](http://www.alloyteam.com/2014/12/editor-config/)
-- .escheckrc - 使用简单的 shell 命令检查 JavaScript 文件中使用的 ES 版本。构建的前端包（dist 包）需要支持安卓 4.4 及 iOS9.0 机型，所以为了避免包里出现 ES6 语法，增加了新的 npm scripts 命令: escheck。执行完 npm run build 之后，可以使用 npm run escheck 进行检测。
-- JSON - 详见 [https://segmentfault.com/a/1190000018013282](https://segmentfault.com/a/1190000018013282)
-- postcss.config.js - postcss 配置文件，集成了 autoprefixer ，px2rem 等插件
-- prettier.config.js - prettier 配置文件，用于代码格式化，如 .Less 等文件
-- stylelint.config.js - 样式编码规范
-- .eslintrc.js - JavaScript 编码规范
-- vue.config.js - vue-cli 的可选配置文件，底层是针对 webpack 进行了封装。脚手架做了一些常用的额外配置
-    - [compression-webpack-plugin](https://www.npmjs.com/package/compression-webpack-plugin) - 提供带 Content-Encoding 编码的压缩版的资源。启用静态资源（CSS）的 gz 压缩。
-    - [add-asset-html-webpack-plugin](https://www.npmjs.com/package/add-asset-html-webpack-plugin) - 可以针对打包后，通过 script 或 link 标签，在 html 文件中插入特定的 JavaScript 或 CSS 资源引用。
-    - [terser-webpack-plugin](https://webpack.docschina.org/plugins/terser-webpack-plugin/) - 由于 uglifyjs 不支持 ES6 语法，因此官方推荐使用此插件。该插件使用 terser 来压缩 JavaScript。
-    - [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) - 静态资源的映射表。用于生成静态资源清单的插件，主要是生成 see 包需要此插件生成的 JSON，用于上传服务器生成对应的文件路径。
-
-## 开发调试
-
-```shell
-# 安装依赖
-yarn install
-
-# 可以通过如下操作解决 yarn 下载速度慢的问题
-yarn install --registry=https://registry.npm.taobao.org
-
-# 启动服务
-## vue-cli
-yarn run serve
-## vite
-yarn run dev
-
-# 压缩 dist 文件夹，生成 zip 包
-yarn run zip
-```
-
-浏览器访问 <http://localhost:3000>
-
-## 构建发布
-```shell
-# 用于构建普通的包，注意：不是运行在主框架里
-
-# 构建普通的包，并产生 dist 目录。
-npm run build
-# 构建带时间串和gitcommitid的包
-npm run build:see
-#eg
-npm run build:see - 构建结果是
- hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
-
-# 构建无时间戳的包，包名上的微服务版本取 buildVersion
-npm run build:see prod
-# eg：
-npm run build:see prod - 构建结果是hscs-company-web-V202101-00-000.zip
-
-# 构建支持容器化部署的SEE发布物
-npm run build:see -dockerSeePack=true
-# eg
-npm run build:see -dockerSeePack=true - 构建结果是
- hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
- hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
-
-npm run build:see prod -dockerSeePack=true - 构建结果是
- hscs-company-web-docker-V202101-00-000.zip
- hscs-company-web-V202101-00-000.zip
-
-###################### 我是分隔符 ######################
-
-# 用于构建子系统的包，注意是：运行在主框架里
-
-# 构建子系统的包，产生 dist 目录
-npm run child
-
-# 构建作为子系统的 see 包，产品 package 目录
-npm run build:see:child
-# eg
-npm run build:see:child - 构建结果是
- hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
-
-npm run build:see:child prod - 构建结果是
- hscs-company-web-docker-V202101-00-000.zip
-
-# 构建支持 docker 容器化部署的SEE发布物，注意：在 package 目录下，会同时创建两个压缩包，一个是 docker 的，一个是 see 的
-npm run build:see:child -dockerSeePack=true
-# eg
-npm run build:see:child -dockerSeePack=true - 构建结果是
- hscs-company-web-docker-V202101-00-000-20211201092557.ea48d3ef.zip
- hscs-company-web-V202101-00-000-20211201092557.ea48d3ef.zip
-
-npm run build:see:child prod -dockerSeePack=true - 构建结果是
- hscs-company-web-docker-V202101-00-000.zip
- hscs-company-web-V202101-00-000.zip
-
-其中 V202101-00-000 来自 package.json 的"buildVersion": "V202101-00-000"
-```
-
-## 其他
-
-```shell
-# --report 生成静态报告文件
-yarn run report
-```
