@@ -1,4 +1,5 @@
 const { path } = require('@vuepress/utils');
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   title: '前端项目开发指引与规范',
@@ -34,7 +35,16 @@ module.exports = {
     ],
     [
       '@vuepress/plugin-search'
-    ]
+    ],
+    // only enable shiki plugin in production mode
+    [
+      '@vuepress/plugin-shiki',
+      isProd
+        ? {
+          theme: 'dark-plus',
+        }
+        : false,
+    ],
   ],
   themeConfig: {
     navbar: [
@@ -47,9 +57,26 @@ module.exports = {
     ],
     editLinks: true,
     lastUpdated: true,
-    lastUpdatedText: '上次更新',
     smoothScroll: true,
+
+    // page meta
+    editLinkText: '在 GitHub 上编辑此页',
+    lastUpdatedText: '上次更新',
     contributorsText: '贡献者',
+
+    tip: '提示',
+    warning: '注意',
+    danger: '警告',
+
+    // 404 page
+    notFound: [
+      '这里什么都没有',
+      '我们怎么到这来了？',
+      '这是一个 404 页面',
+      '看起来我们进入了错误的链接',
+    ],
+    backToHome: '返回首页',
+
     sidebar: {
       '/': [
         {
@@ -68,6 +95,13 @@ module.exports = {
           ]
         }
       ]
-    }
+    },
+
+    themePlugins: {
+      // only enable git plugin in production mode
+      git: isProd,
+      // use shiki plugin in production mode instead
+      prismjs: !isProd,
+    },
   }
 };

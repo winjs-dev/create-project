@@ -5,7 +5,7 @@
 <CodeGroup>
   <CodeGroupItem title="生产环境">
 
-```bash:no-line-numbers
+```bash
 npm run build
 ```
 
@@ -30,7 +30,7 @@ serve -s dist
 <CodeGroup>
   <CodeGroupItem title="本地预览">
 
-```bash:no-line-numbers
+```bash
 npm run preview
 ```
 
@@ -43,7 +43,7 @@ npm run preview
 <CodeGroup>
   <CodeGroupItem title="zip">
 
-```bash:no-line-numbers
+```bash
 npm run zip
 ```
 
@@ -55,7 +55,7 @@ npm run zip
 <CodeGroup>
   <CodeGroupItem title="测试包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see 
 ```
 
@@ -63,7 +63,7 @@ npm run build:see
 
  <CodeGroupItem title="生产包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see prod
 # or（兼容财富中台前端构建的命令）
 npm run build:see yes
@@ -90,7 +90,7 @@ npm run build:see yes
 <CodeGroup>
   <CodeGroupItem title="测试包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see -dockerSeePack=true
 ```
 
@@ -98,7 +98,7 @@ npm run build:see -dockerSeePack=true
 
  <CodeGroupItem title="生产包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see prod -dockerSeePack=true
 # or（兼容财富中台前端构建的命令）
 npm run build:see yes -dockerSeePack=true
@@ -124,7 +124,7 @@ npm run build:see yes -dockerSeePack=true
 <CodeGroup>
   <CodeGroupItem title="子包">
 
-```bash:no-line-numbers
+```bash
 npm run child
 ```
 
@@ -132,7 +132,7 @@ npm run child
 
  <CodeGroupItem title="SEE 包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see:child
 ```
 
@@ -140,7 +140,7 @@ npm run build:see:child
 
  <CodeGroupItem title="Docker 包">
 
-```bash:no-line-numbers
+```bash
 npm run build:see:child -dockerSeePack=true
 ```
 

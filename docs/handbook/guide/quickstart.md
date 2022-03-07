@@ -20,7 +20,7 @@
 <CodeGroup>
   <CodeGroupItem title="命令">
 
-```bash:no-line-numbers
+```bash
 npm init @winner-fed/create-project@2 [project-name]
 ```
 
@@ -156,7 +156,7 @@ npm init @winner-fed/create-project@2 [project-name]
 <CodeGroup>
   <CodeGroupItem title="安装依赖">
 
-```bash:no-line-numbers
+```bash
 npm run bootstrap
 ```
 
@@ -164,7 +164,7 @@ npm run bootstrap
 
   <CodeGroupItem title="开发环境">
 
-```bash:no-line-numbers
+```bash
 npm run dev
 #
 npm run serve
@@ -174,14 +174,14 @@ npm run serve
 
   <CodeGroupItem title="ESLint">
 
-```bash:no-line-numbers
+```bash
 npm run lint
 ```
 
   </CodeGroupItem>
   <CodeGroupItem title="Stylelint">
 
-```bash:no-line-numbers
+```bash
 npm run stylelint
 ```
 
@@ -189,7 +189,7 @@ npm run stylelint
 
   <CodeGroupItem title="包分析工具">
 
-```bash:no-line-numbers
+```bash
 npm run report
 ```
 
