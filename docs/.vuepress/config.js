@@ -2,7 +2,7 @@ const { path } = require('@vuepress/utils');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  title: '前端项目开发指引与规范',
+  title: 'create-project',
   description: '鲸腾前端团队项目模板开发指引和规范说明',
   base: '/create-project/',
   head: [
