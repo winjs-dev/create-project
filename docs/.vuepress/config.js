@@ -91,8 +91,9 @@ module.exports = {
         {
           text: '进阶',
           children: [
-            '/handbook/advanced/specification.md',
             '/handbook/advanced/build-tools.md',
+            '/handbook/advanced/env-and-mode.md',
+            '/handbook/advanced/specification.md',
           ]
         }
       ]
