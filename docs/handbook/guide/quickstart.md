@@ -27,6 +27,10 @@ npm init @winner-fed/create-project@2 [project-name]
   </CodeGroupItem>
 </CodeGroup>
 
+::: warning 注意
+版本号(@2)不能被省略，否则 npm 可能解析为包的缓存版本和过期版本。
+:::
+
 ### 选择特性
 
 使用创建命令会提示一系列问题，根据实际的项目需求做出选择：

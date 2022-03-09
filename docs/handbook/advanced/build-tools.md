@@ -8,53 +8,6 @@
 
 是基于官方提供的命令行工具 [vue-cli](https://cli.vuejs.org/zh/) 进行搭建的。参考了里面的一些配置，并在 `vue.config.js` 文件里扩展了一些常用的功能。
 
-### 多环境变量
-
-可以通过在 `package.json` 的 `scripts` 命令后，添加 `--mode xx` 来指定程序运行时的不同环境模式，默认为 production。例如，你想在g构建命令中指使用开发环境变量：
-
-```bash
-vue-cli-service build --mode development
-```
-
-所有的环境变量都会从对应的[环境文件](https://cli.vuejs.org/zh/guide/mode-and-env.html#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)中载入。并且在这些环境文件中，只有以 `VUE_APP_*`
-开头的变量会被 [webpack.DefinePlugin](https://webpack.docschina.org/plugins/define-plugin/)（允许在**编译时**将你代码中的变量替换为其他值或表达式） 静态嵌入到开发侧的包中。然后，在代码中可以通过 `process.env.VUE_APP_PAGE_TITLE` 访问到。例如，
-
-```vue
-
-<template>
-  <div class="pages">
-    <div class="pages-content">
-      <!-- template中使用环境变量 -->
-      <div>{{ pageTitle }}</div>
-    </div>
-  </div>
-</template>
-
-<script>
-  export default {
-    data () {
-      return {
-        pageTitle: process.env.VUE_APP_PAGE_TITLE
-      };
-    },
-    created () {
-      // js 代码中使用环境变量
-      console.log('BASE_URL: ', process.env.BASE_URL);
-      console.log('NODE_ENV: ', process.env.NODE_ENV);
-    }
-  };
-</script>
-```
-
-在构建过程中，`process.env.VUE_APP_PAGE_TITLE` 将会被相应的值所取代。在 `VUE_APP_PAGE_TITLE=hello` 的情况下，它会被替换为 "hello"。
-
-除了 `VUE_APP_*` 变量之外，在你的应用代码中始终可用的还有两个特殊的变量:
-
-- `NODE_ENV` - 会是 "development"、"production" 或 "test" 中的一个。具体的值取决于应用运行的模式。
-- `BASE_URL` - 会和 vue.config.js 中的 publicPath 选项相符，即你的应用会部署到的基础路径。
-
-具体配置，可以参考项目根目录下的 `.env`、`.env.development`、`.env.production`。
-
 ### vue.config.js 基础配置
 
 ```javascript
@@ -68,7 +21,6 @@ module.exports = defineConfig({
    * then assetsPublicPath should be set to "/bar/".
    * In most cases please use '/' !!!
    * Detail https://cli.vuejs.org/config/#publicPath
-   *  publicPath: process.env.NODE_ENV === 'production' ? `${pkg.name}` : './'
    */
   publicPath: './',
   assetsDir: 'static',
@@ -118,14 +70,10 @@ module.exports = defineConfig({
 
 ```javascript
 <script>
-import axios from "axios";
-export default {
-  created() {
+    import axios from "axios";
     axios.get("/api/getPetId").then(res => {
       console.log('getPetId:', res);
     });
-  }
-};
 </script>
 ```
  
@@ -295,7 +243,8 @@ module.exports = defineConfig({
 })
 ```
 
-### 支持 gzip，生成 manifest.json，setup 写法
+### 支持 gzip 压缩
+
 ```javascript
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
@@ -304,11 +253,6 @@ const { formatDate } = require('@winner-fed/cloud-utils');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-// https://github.com/antfu/unplugin-vue2-script-setup
-const ScriptSetup = require('unplugin-vue2-script-setup/webpack').default;
-
-const N = '\n';
 
 const isProd = () => {
   return process.env.NODE_ENV === 'production';
@@ -317,7 +261,6 @@ const isProd = () => {
 const genPlugins = () => {
   const plugins = [
     new WebpackBar(),
-    ScriptSetup({}),
     // 为静态资源文件添加 hash，防止缓存
     new AddAssetHtmlPlugin([
       {
@@ -335,23 +278,6 @@ const genPlugins = () => {
           `@author: Whale FE${
             N}@version: ${pkg.version}${
             N}@description: Build time ${formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss')}          `
-      }),
-      new WebpackManifestPlugin({
-        fileName: path.resolve(
-          __dirname,
-          'dist',
-          `manifest.${Date.now()}.json`
-        ),
-        filter: ({name, path}) => !name.includes('runtime'),
-        generate (seed, files, entries) {
-          return files.reduce((manifest, {name, path: manifestFilePath}) => {
-            const {root, dir, base} = path.parse(manifestFilePath);
-            return {
-              ...manifest,
-              [name + '-' + base]: {path: manifestFilePath, root, dir}
-            };
-          }, seed);
-        }
       }),
       new CompressionWebpackPlugin({
         filename: '[path][base].gz[query]',
@@ -377,4 +303,526 @@ module.exports = defineConfig({
 })
 ```
 
+### 生成 manifest.json
+
+```javascript
+const { defineConfig } = require('@vue/cli-service');
+const path = require('path');
+const pkg = require('./package.json');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
+const isProd = () => {
+  return process.env.NODE_ENV === 'production';
+};
+
+const genPlugins = () => {
+  const plugins = [];
+
+  if (isProd()) {
+    plugins.push(
+      new WebpackManifestPlugin({
+        fileName: path.resolve(
+          __dirname,
+          'dist',
+          `manifest.${Date.now()}.json`
+        ),
+        filter: ({name, path}) => !name.includes('runtime'),
+        generate (seed, files, entries) {
+          return files.reduce((manifest, {name, path: manifestFilePath}) => {
+            const {root, dir, base} = path.parse(manifestFilePath);
+            return {
+              ...manifest,
+              [name + '-' + base]: {path: manifestFilePath, root, dir}
+            };
+          }, seed);
+        }
+      }),
+    );
+  }
+
+  return plugins;
+};
+
+module.exports = defineConfig({
+  configureWebpack: () => ({
+    plugins: genPlugins(),
+  }) 
+})
+```
+
+### Vue2 支持 composition-api/setup 写法
+
+```javascript
+const { defineConfig } = require('@vue/cli-service');
+const ScriptSetup = require('unplugin-vue2-script-setup/webpack').default;
+
+const isProd = () => {
+  return process.env.NODE_ENV === 'production';
+};
+
+const genPlugins = () => {
+  const plugins = [
+    ScriptSetup({})
+  ];
+
+  return plugins;
+};
+
+module.exports = defineConfig({
+  configureWebpack: () => ({
+    plugins: genPlugins(),
+  }) 
+})
+```
+`package.json` 添加相关依赖
+
+```json
+{
+  "dependencies": {
+    "@vue/composition-api": "^1.4.6"
+  },
+  "devDependencies": {
+    "@vue/runtime-dom": "^3.2.31",
+    "unplugin-vue2-script-setup": "^0.9.3"
+  }
+}
+```
+
+::: warning 注意
+
+[@vue/composition-api](https://github.com/vuejs/composition-api/blob/main/README.zh-CN.md) 是用于提供组合式 API 的 Vue 2 插件。支持所有现代浏览器以及IE11+。对于更低版本的 IE 浏览器你需要安装 WeakMap polyfill (例如使用 core-js库)
+
+:::
+
 ## bundleless
+
+### 配置路径别名 alias
+
+`vite.config.js` 相关配置：
+
+```javascript
+import { defineConfig, loadEnv } from 'vite';
+import { wrapperEnv } from './build/vite/utils';
+import { resolve } from 'path';
+
+function pathResolve(dir) {
+  return resolve(__dirname, '.', dir);
+}
+
+export default defineConfig(({ command, mode }) => {
+  const root = process.cwd();
+
+  const env = loadEnv(mode, root);
+
+  // The boolean type read by loadEnv is a string. This function can be converted to boolean type
+  const viteEnv = wrapperEnv(env);
+
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_LEGACY } = viteEnv;
+  
+  return {
+    resolve: {
+      alias: [
+        {
+          // @/xxxx  =>  src/xxx
+          find: /^@\//,
+          replacement: pathResolve('./src') + '/'
+        },
+        // #/xxxx => types/xxxx
+        {
+          find: /#\//,
+          replacement: pathResolve('./types') + '/'
+        },
+        {
+          find: /^utils/,
+          replacement: pathResolve('node_modules/@winner-fed/cloud-utils/dist/cloud-utils.esm')
+        }
+      ]
+    },
+  }
+});
+
+```
+
+### 配置代理 Proxy，本地解决跨域问题
+`vite.config.js` 相关配置：
+
+```javascript
+import { defineConfig, loadEnv } from 'vite';
+import { wrapperEnv } from './build/vite/utils';
+import { createProxy } from './build/vite/proxy';
+import { resolve } from 'path';
+
+function pathResolve(dir) {
+  return resolve(__dirname, '.', dir);
+}
+
+export default defineConfig(({ command, mode }) => {
+  const root = process.cwd();
+
+  const env = loadEnv(mode, root);
+
+  // The boolean type read by loadEnv is a string. This function can be converted to boolean type
+  const viteEnv = wrapperEnv(env);
+
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_LEGACY } = viteEnv;
+  
+  return {
+    server: {
+      host: '0.0.0.0',
+      port: VITE_PORT,
+      // Load proxy configuration from .env
+      proxy: createProxy(VITE_PROXY),
+      hmr: {
+        overlay: true
+      }
+    },
+  }
+});
+```
+
+其中，`/build/vite/` 目录的 proxy.js 代码如下：
+
+```javascript
+// proxy.ts
+
+const httpsRE = /^https:\/\//;
+
+/**
+ * Generate proxy
+ * @param list
+ */
+export function createProxy(list) {
+  const ret = {};
+  if (Array.isArray(list) && list.length) {
+    for (const [prefix, target] of list) {
+      const isHttps = httpsRE.test(target);
+
+      // https://github.com/http-party/node-http-proxy#options
+      ret[prefix] = {
+        target: target,
+        changeOrigin: true,
+        ws: true,
+        rewrite: (path) => path.replace(new RegExp(`^${prefix}`), ''),
+        // https is require secure=false
+        ...(isHttps ? { secure: false } : {})
+      };
+    }
+  }
+
+  return ret;
+}
+```
+`VITE_PROXY` 是在根目录下的 `.env.development` 里定义的，如下： 
+
+```bash 
+# Cross-domain proxy, you can configure multiple
+VITE_PROXY=[["/api","http://localhost:3000"],["/upload","http://localhost:3001/upload"]]
+```
+  
+### 使用 JSX或TSX
+[@vitejs/plugin-vue-jsx](https://www.npmjs.com/package/@vitejs/plugin-vue-jsx) 通过 HMR 提供 Vue 3 JSX 和 TSX 支持。
+
+`vite.config.js` 配置
+
+```javascript
+import { defineConfig, loadEnv } from 'vite';
+import { resolve } from 'path';
+import { createVitePlugins } from './build/vite/plugin';
+import { createProxy } from './build/vite/proxy';
+import { wrapperEnv } from './build/vite/utils';
+
+function pathResolve(dir) {
+  return resolve(__dirname, '.', dir);
+}
+
+// https://vitejs.dev/config/
+export default defineConfig(({ command, mode }) => {
+  const root = process.cwd();
+
+  const env = loadEnv(mode, root);
+
+  // The boolean type read by loadEnv is a string. This function can be converted to boolean type
+  const viteEnv = wrapperEnv(env);
+
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_LEGACY } = viteEnv;
+
+  const isBuild = command === 'build';
+  
+  return {
+    // The vite plugin used by the project. The quantity is large, so it is separately extracted and managed
+    plugins: createVitePlugins(viteEnv, isBuild),
+  }
+})
+
+```
+其中，在使用 Vue3 时，`build/vite/plugin/` 目录的 index.js
+
+```javascript
+// build/vite/index.js
+
+import legacy from '@vitejs/plugin-legacy';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import svgLoader from 'vite-svg-loader';
+
+export function createVitePlugins(viteEnv, isBuild) {
+  const {
+    VITE_USE_IMAGEMIN,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE
+  } = viteEnv;
+
+  const vitePlugins = [
+    vue(),
+    vueJsx(),
+    svgLoader()
+  ];
+
+  // @vitejs/plugin-legacy
+  VITE_LEGACY &&
+  isBuild &&
+  vitePlugins.push(
+    legacy({
+      targets: ['ie >= 11'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+    })
+  );
+  
+  return vitePlugins;
+}
+
+```
+
+在使用 Vue2 时，`build/vite/plugin/` 目录的 index.js
+
+```javascript
+import legacy from '@vitejs/plugin-legacy';
+import { createVuePlugin as vue2 } from 'vite-plugin-vue2';
+// @ts-ignore
+import vueTemplateBabelCompiler from 'vue-template-babel-compiler';
+import scriptSetup from 'unplugin-vue2-script-setup/vite';
+import svgLoader from 'vite-svg-loader';
+
+export function createVitePlugins(viteEnv, isBuild) {
+  const {
+    VITE_USE_IMAGEMIN,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE
+  } = viteEnv;
+
+  const vitePlugins = [
+    vue2({
+      jsx: true,
+      vueTemplateOptions: {
+        compiler: vueTemplateBabelCompiler
+      }
+    }),
+    scriptSetup(),
+    svgLoader()
+  ];
+
+  // @vitejs/plugin-legacy
+  VITE_LEGACY &&
+    isBuild &&
+    vitePlugins.push(
+      legacy({
+        targets: ['ie >= 11'],
+        additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+      })
+    );
+
+  return vitePlugins;
+}
+
+```
+ 
+### Less 全局注入变量及函数
+
+`vite.config.js` 配置如下：
+
+```javascript
+import { defineConfig, loadEnv } from 'vite';
+
+// https://vitejs.dev/config/
+export default defineConfig(({ command, mode }) => {
+  return {
+    css: {
+      preprocessorOptions: {
+        less: {
+          additionalData: `@import "@/assets/style/variable.less";@import "@winner-fed/magicless/magicless.less";`,
+          modifyVars: {
+            // Used for global import to avoid the need to import each style file separately
+            // reference:  Avoid repeated references
+          },
+          javascriptEnabled: true
+        }
+      }
+    }
+  };
+});
+
+```
+
+### 支持 gzip 压缩
+
+使用 [vite-plugin-compression](https://github.com/vbenjs/vite-plugin-compression) 插件实现。       
+
+`build/vite/plugin/index.js` 配置如下:
+
+```javascript
+import { configCompressPlugin } from './compress';
+
+export function createVitePlugins(viteEnv, isBuild) {
+  const {
+    VITE_USE_IMAGEMIN,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE
+  } = viteEnv;
+
+  const vitePlugins = [];
+
+
+  // The following plugins only work in the production environment
+  if (isBuild) {
+    // rollup-plugin-gzip
+    vitePlugins.push(
+      configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE)
+    );
+  }
+
+  return vitePlugins;
+}
+```
+
+`build/vite/plugin/compress.js` 如下：
+
+```javascript
+/**
+ * Used to package and output gzip. Note that this does not work properly in Vite, the specific reason is still being investigated
+ */
+import compressPlugin from 'vite-plugin-compression';
+
+export function configCompressPlugin(
+  // 'gzip' | 'brotli' | 'none'
+  compress,
+  deleteOriginFile = false
+) {
+  const compressList = compress.split(',');
+
+  const plugins = [];
+
+  if (compressList.includes('gzip')) {
+    plugins.push(
+      compressPlugin({
+        ext: '.gz',
+        deleteOriginFile
+      })
+    );
+  }
+  if (compressList.includes('brotli')) {
+    plugins.push(
+      compressPlugin({
+        ext: '.br',
+        algorithm: 'brotliCompress',
+        deleteOriginFile
+      })
+    );
+  }
+  return plugins;
+}
+
+```
+
+### 构建包依赖分析
+
+使用 [rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer) 插件实现。   
+
+```javascript
+import { configVisualizerConfig } from './visualizer';
+
+export function createVitePlugins(viteEnv, isBuild) {
+  const {
+    VITE_USE_IMAGEMIN,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE
+  } = viteEnv;
+
+  const vitePlugins = [];
+  
+  // vite-plugin-svg-icons
+  vitePlugins.push(configVisualizerConfig(isBuild));
+  
+  return vitePlugins;
+}
+```
+
+`build/vite/plugin/visualizer.js` 如下：
+
+```javascript
+/**
+ * Package file volume analysis
+ */
+import { visualizer } from 'rollup-plugin-visualizer';
+import { isReportMode } from '../utils';
+
+export function configVisualizerConfig() {
+  if (isReportMode()) {
+    return visualizer({
+      filename: './node_modules/.cache/visualizer/stats.html',
+      open: true
+    });
+  }
+  return [];
+}
+
+```
+
+### SVG 雪碧图
+使用 [vite-plugin-svg-icons](https://github.com/vbenjs/vite-plugin-svg-icons) 插件实现。
+
+```javascript
+import { configSvgIconsPlugin } from './svgSprite';
+
+export function createVitePlugins(viteEnv, isBuild) {
+  const {
+    VITE_USE_IMAGEMIN,
+    VITE_LEGACY,
+    VITE_BUILD_COMPRESS,
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE
+  } = viteEnv;
+
+  const vitePlugins = [];
+  
+  // vite-plugin-svg-icons
+  vitePlugins.push(configSvgIconsPlugin(isBuild));
+  
+  return vitePlugins;
+}
+```
+
+`build/vite/plugin/svgSprite.js` 如下：
+
+```javascript
+/**
+ * Vite Plugin for fast creating SVG sprites.
+ * https://github.com/vbenjs/vite-plugin-svg-icons
+ */
+
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import path from 'path';
+
+export function configSvgIconsPlugin(isBuild) {
+  const svgIconsPlugin = createSvgIconsPlugin({
+    iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')],
+    svgoOptions: isBuild,
+    // default
+    symbolId: 'icon-[dir]-[name]'
+  });
+  return svgIconsPlugin;
+}
+
+```

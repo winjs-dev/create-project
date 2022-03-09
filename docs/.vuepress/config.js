@@ -3,7 +3,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   title: 'create-project',
-  description: '鲸腾前端团队项目模板开发指引和规范说明',
+  description: '🛠️ 鲸腾FE工程开发的标准工具',
   base: '/create-project/',
   head: [
     ['meta', { name: 'application-name', content: 'VuePress' }],
@@ -50,7 +50,7 @@ module.exports = {
     navbar: [
       {
         text: '指南',
-        link: '/README.md'
+        link: '/handbook/guide/README.md'
       },
       { text: 'Github', link: 'https://github.com/cloud-templates' },
       { text: 'Gitee', link: 'https://gitee.com/cloud-templates' }
@@ -82,7 +82,7 @@ module.exports = {
         {
           text: '指南',
           children: [
-            '/',
+            '/handbook/guide/README.md',
             '/handbook/guide/quickstart.md',
             '/handbook/guide/deploy.md',
             '/handbook/guide/structure.md',
