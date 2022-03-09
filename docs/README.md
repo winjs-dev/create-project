@@ -16,7 +16,11 @@ features:
     - title: 生态丰富
       details: 可以选择 JavaScript 作为开发语言，也支持 TypeScript，同时提供常用的 UI 组件库支持。
     - title: 构建打包工具
-      details: 默认的打包工具是 Vite ，也同样支持 Webpack 。
+      details: 默认的打包工具是 Vite ，也同样支持 Webpack。
+    - title: 开箱即用
+      details: 内置了路由、请求、移动端适配等，仅需安装依赖即可上手开发。内涵丰富的功能，可满足日常 80% 的开发需求。
+    - title: 面向未来
+      details: 在满足需求的同时，我们也不会停止对新技术的探索。比如跨端、微前端、webpack@5、bundle less 等等。
 footer: MIT Licensed | Copyright © 2018-present WhaleFE
 ---
 
