@@ -1,6 +1,6 @@
 # 内置功能
 
-脚手架为开发者内置了一些方便快捷的功能，解放开发者的双手，不用手动 import 组件，Vue hooks 等。基于构建工具 webpack 或者 vite，集成了一些常用的插件。
+「天下武功，唯快不破」。只有快速完成需求，才有时间去学习更多、或在关键点上作一些优化。因此，脚手架为开发者内置了一些方便快捷的功能，解放开发者的双手，不用手动 import 组件，Vue hooks 等。基于构建工具 webpack 或者 vite，集成了一些常用的插件。
 
 ## 自动导入自定义的组件
 直接在 template 写组件名即可，插件会帮你引入进来。**注意别重名**。借助 [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components) 来实现，该插件支持 Vue2 和 Vue3。

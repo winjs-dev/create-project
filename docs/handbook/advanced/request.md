@@ -1,5 +1,7 @@
 # 接口请求
 
+我们需要使用更为优雅的方式，来处理 HTTP 相关的请求。使其能够支持链式调用，同时对返回数据统一处理，精简返回内容，使得在获取到最终结果处，可以尽可能简单和优雅。
+
 ## 接口请求封装
 
 推荐使用 `src/services/request.js` 发送服务端接口的相关请求。`request.js` 是基于 [axios](https://github.com/axios/axios) 的封装，便于统一处理 POST，GET 等请求参数，请求头，以及错误提示信息等。具体可以参看 request.js. 它封装了全局 request 拦截器、response 拦截器、统一的错误处理、baseURL 设置等。
