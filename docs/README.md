@@ -10,7 +10,7 @@ actions:
       link: /handbook/guide/
       type: secondary
 features:
-    - title: 简洁至上
+    - title: 大道至简
       details: 以 Vue 为基础框架，纯净的空白模板，强大的基础功能。
     - title: 功能丰富
       details: 一键创建 Web、小程序、H5、离线包应用程序，快捷开发，开箱即用。
