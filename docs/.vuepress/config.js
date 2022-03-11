@@ -86,8 +86,8 @@ module.exports = {
         text: '指南',
         link: '/handbook/guide/README.md'
       },
-      { text: 'Github', link: 'https://github.com/cloud-templates' },
-      { text: 'Gitee', link: 'https://gitee.com/cloud-templates' }
+      { text: 'Github', link: 'https://github.com/cloud-templates/create-project' },
+      { text: 'Gitee', link: 'https://gitee.com/cloud-templates/create-project' }
     ],
     editLinks: true,
     lastUpdated: true,
