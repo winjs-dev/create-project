@@ -11,7 +11,7 @@ actions:
       type: secondary
 features:
     - title: 大道至简
-      details: 以 Vue 为基础框架，纯净的空白模板，强大的基础功能。
+      details: 以 Vue 为基础框架，纯净的空白模板，塑造更便捷的前端开发环境。
     - title: 功能丰富
       details: 一键创建 Web、小程序、H5、离线包应用程序，快捷开发，开箱即用。
     - title: 生态丰富
@@ -19,7 +19,7 @@ features:
     - title: 构建打包工具
       details: 默认的打包工具是 Vite ，也同样可以选择 Webpack。
     - title: 开箱即用
-      details: 内置了路由、请求、移动端适配等，仅需安装依赖即可上手开发。内涵丰富的功能，可满足日常 80% 的开发需求。
+      details: 内置了路由、请求、移动端适配等，仅需安装依赖即可上手开发。内含丰富的功能，可满足日常 80% 的开发需求。
     - title: 面向未来
       details: 在满足需求的同时，我们也不会停止对新技术的探索。比如跨端、微前端、webpack@5、bundle less 等等。
 footer: MIT Licensed | Copyright © 2016-present WhaleFE
