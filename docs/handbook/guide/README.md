@@ -2,11 +2,9 @@
 
 <NpmBadge package="@winner-fed/create-project" />
 
-<a href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank">
-  <img src="https://badgen.net/npm/dw/@winner-fed/create-project" />
+<a href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank" rel="noopener noreferrer">
+    <img src="https://badgen.net/npm/dw/@winner-fed/create-project" />
 </a>
-
-
 
 鲸腾前端团队快速从"零"搭建 Web、小程序、H5、离线包应用程序的前端项目脚手架。
 
