@@ -154,15 +154,27 @@ export default defineComponent({
 </script>
 ```
 
-可以借助社区的 [vite-plugin-vue-setup-extend](https://github.com/vbenjs/vite-plugin-vue-setup-extend) 来实现。
+可以借助 [unplugin-vue-setup-extend](https://github.com/cklwblove/unplugin-vue-setup-extend) 来实现。
  
+### VueCLI
+
+```javascript
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      require('@winner-fed/unplugin-vue-setup-extend/webpack').default({ /* options */ }),
+    ],
+  },
+}
+```
+
 ### Vite
 
 ```javascript
 // vite.config.js
 import { defineConfig, Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueSetupExtend from 'vite-plugin-vue-setup-extend'
+import vueSetupExtend from '@winner-fed/unplugin-vue-setup-extend'
 
 export default defineConfig({
   plugins: [vue(), vueSetupExtend()],
