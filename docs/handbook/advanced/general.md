@@ -180,6 +180,8 @@ export default defineConfig({
   plugins: [vue(), vueSetupExtend()],
 })
 ```
+ 
+### 使用方式
 
 ```vue
 <template>
