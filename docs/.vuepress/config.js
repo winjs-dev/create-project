@@ -118,6 +118,7 @@ module.exports = {
           children: [
             '/handbook/guide/README.md',
             '/handbook/guide/quickstart.md',
+            '/handbook/guide/environment.md',
             '/handbook/guide/deploy.md',
             '/handbook/guide/structure.md',
           ]
