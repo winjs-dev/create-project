@@ -15,9 +15,9 @@
 
 ## Node & npm
 
-目前，几乎所有用于现代 JavaScript 项目的工具都基于 [Node.js](https://nodejs.org/zh-cn/) 。该[下载页面](https://nodejs.org/en/download/)已预构建的安装包适用于所有平台。我们建议选择 LTS 版本以确保最佳兼容性。
+目前，几乎所有用于现代 JavaScript 项目的工具都基于 [Node.js](https://nodejs.org/zh-cn/) ，已经是前端开发不可或缺的组成部分。该[下载页面](https://nodejs.org/en/download/)已预构建的安装包适用于所有平台。我们建议选择 LTS 版本以确保最佳兼容性。
 
-Node 捆绑安装了 npm，这是一个 JavaScript 的包管理器。
+`npm` 则是 Node.js 默认的，以 JavaScript 编写的软件包管理系统。
 
 要验证安装成功，请打开一个新的终端窗口并运行：
 

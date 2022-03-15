@@ -32,13 +32,12 @@
 
 ### 应用
 
-- 使用 CSS 预编译语言 [Less](http://lesscss.org/)
+- 使用 CSS 预编译语言 [Less](http://lesscss.org/)，并内置了部分变量，以及常用混合方法，使得可以轻松开启样式编写、复用、修改等
 - 移动 web 的适配方案：目前提供了两种方案，`rem` 及 `vw`。分别引入了 `postcss-pxtorem` 及 `amfe-flexible` 和 `postcss-px-to-viewport`，可以自由地用 px 去开发
 - 常用的 js 工具类： [cloud-utils](https://cloud-templates.github.io/cloud-utils/)
 - 常用的 Less 的 mixins 集合：[magicless](https://github.com/cloud-templates/magicless)
 - 提供`环境变量`：开发环境、预生产环境、生产环境
-- 基于 `axios` 异步请求封装
-- 基于环境变量的静态资源组件
+- 基于 `axios` 异步请求封装，让处理数据请求变得更为优雅
 - 自动加载 `SVG` 的图标组件，雪碧图打包
 - 页面缓存（基于 `keep-alive` 实现）
 - 支持 `gzip`
