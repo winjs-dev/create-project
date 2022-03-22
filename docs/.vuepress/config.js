@@ -7,13 +7,20 @@ module.exports = {
   base: '/create-project/',
   head: [
     [
+      'script',
+      {
+        type: 'text/javascript',
+        src: '/analytics.js'
+      }
+    ],
+    [
       'link',
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        href: `/images/icons/favicon-16x16.png`,
-      },
+        href: `/images/icons/favicon-16x16.png`
+      }
     ],
     [
       'link',
@@ -21,30 +28,30 @@ module.exports = {
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        href: `/images/icons/favicon-32x32.png`,
-      },
+        href: `/images/icons/favicon-32x32.png`
+      }
     ],
     ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
     ['meta', { name: 'application-name', content: 'create-project' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: 'create-project' }],
     [
       'meta',
-      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }
     ],
     [
       'link',
-      { rel: 'apple-touch-icon', href: `/images/icons/apple-touch-icon.png` },
+      { rel: 'apple-touch-icon', href: `/images/icons/apple-touch-icon.png` }
     ],
     [
       'link',
       {
         rel: 'mask-icon',
         href: '/images/icons/safari-pinned-tab.svg',
-        color: '#3eaf7c',
-      },
+        color: '#3eaf7c'
+      }
     ],
     ['meta', { name: 'msapplication-TileColor', content: '#3eaf7c' }],
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'theme-color', content: '#3eaf7c' }]
   ],
   theme: '@vuepress/theme-default',
   repo: 'vuepress/vuepress-next',
@@ -72,10 +79,10 @@ module.exports = {
       '@vuepress/plugin-shiki',
       isProd
         ? {
-          theme: 'dark-plus',
+          theme: 'dark-plus'
         }
-        : false,
-    ],
+        : false
+    ]
   ],
   themeConfig: {
     logo: '/images/hero.png',
@@ -107,7 +114,7 @@ module.exports = {
       '这里什么都没有',
       '我们怎么到这来了？',
       '这是一个 404 页面',
-      '看起来我们进入了错误的链接',
+      '看起来我们进入了错误的链接'
     ],
     backToHome: '返回首页',
 
@@ -120,7 +127,7 @@ module.exports = {
             '/handbook/guide/quickstart.md',
             '/handbook/guide/environment.md',
             '/handbook/guide/deploy.md',
-            '/handbook/guide/structure.md',
+            '/handbook/guide/structure.md'
           ]
         },
         {
@@ -131,7 +138,7 @@ module.exports = {
             '/handbook/advanced/env-and-mode.md',
             '/handbook/advanced/assets.md',
             '/handbook/advanced/request.md',
-            '/handbook/advanced/specification.md',
+            '/handbook/advanced/specification.md'
           ]
         }
       ]
@@ -141,7 +148,7 @@ module.exports = {
       // only enable git plugin in production mode
       git: isProd,
       // use shiki plugin in production mode instead
-      prismjs: !isProd,
-    },
+      prismjs: !isProd
+    }
   }
 };
