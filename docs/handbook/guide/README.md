@@ -2,8 +2,16 @@
 
 <NpmBadge package="@winner-fed/create-project" />
 
-<a href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank" rel="noopener noreferrer">
+<a class="npm-badge" href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank" rel="noopener noreferrer">
     <img src="https://badgen.net/npm/dw/@winner-fed/create-project" />
+</a>
+
+<a class="npm-badge" href="http://nodejs.org/download/" target="blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/node.js-%3E=_14.13.1-green.svg?style=flat" />
+</a>
+
+<a class="npm-badge" href="https://www.npmjs.com/package/@winner-fed/create-project" target="blank" rel="noopener noreferrer">
+    <img src="https://badgen.net/npm/license/@winner-fed/create-project" />
 </a>
 
 鲸腾前端团队快速从"零"搭建 Web、小程序、H5、离线包应用程序的前端项目脚手架。

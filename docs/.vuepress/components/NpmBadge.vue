@@ -43,7 +43,7 @@ const badgeImg = computed(
   </a>
 </template>
 
-<style scoped>
+<style>
 .npm-badge {
   margin-right: 0.5rem;
 }
