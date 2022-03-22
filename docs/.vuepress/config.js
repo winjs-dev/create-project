@@ -10,7 +10,7 @@ module.exports = {
       'script',
       {
         type: 'text/javascript',
-        src: '/analytics.js'
+        src: '/create-project/analytics.js'
       }
     ],
     [
@@ -19,7 +19,7 @@ module.exports = {
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        href: `/images/icons/favicon-16x16.png`
+        href: `/create-project/images/icons/favicon-16x16.png`
       }
     ],
     [
@@ -28,10 +28,10 @@ module.exports = {
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        href: `/images/icons/favicon-32x32.png`
+        href: `/create-project/images/icons/favicon-32x32.png`
       }
     ],
-    ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
+    ['link', { rel: 'manifest', href: '/create-project/manifest.webmanifest' }],
     ['meta', { name: 'application-name', content: 'create-project' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: 'create-project' }],
     [
@@ -40,13 +40,13 @@ module.exports = {
     ],
     [
       'link',
-      { rel: 'apple-touch-icon', href: `/images/icons/apple-touch-icon.png` }
+      { rel: 'apple-touch-icon', href: `/create-project/images/icons/apple-touch-icon.png` }
     ],
     [
       'link',
       {
         rel: 'mask-icon',
-        href: '/images/icons/safari-pinned-tab.svg',
+        href: '/create-project/images/icons/safari-pinned-tab.svg',
         color: '#3eaf7c'
       }
     ],
