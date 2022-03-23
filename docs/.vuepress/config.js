@@ -1,4 +1,6 @@
 const { path } = require('@vuepress/utils');
+const { copyCode } = require('vuepress-plugin-copy-code2');
+
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -6,6 +8,7 @@ module.exports = {
   description: '🛠️ 鲸腾FE工程开发的标准工具',
   base: '/create-project/',
   head: [
+    ['meta', { name: 'keywords', content: '鲸腾FE工程开发的标准工具' }],
     [
       'script',
       {
@@ -71,6 +74,7 @@ module.exports = {
     [
       '@vuepress/plugin-nprogress'
     ],
+    copyCode({}),
     [
       '@vuepress/plugin-search'
     ],
