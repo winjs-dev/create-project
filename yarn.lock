@@ -301,7 +301,7 @@
     vue "^3.2.28"
     vue-router "^4.0.12"
 
-"@vuepress/plugin-back-to-top@2.0.0-beta.36":
+"@vuepress/plugin-back-to-top@2.0.0-beta.36", "@vuepress/plugin-back-to-top@^2.0.0-beta.36":
   version "2.0.0-beta.36"
   resolved "https://registry.npmmirror.com/@vuepress/plugin-back-to-top/-/plugin-back-to-top-2.0.0-beta.36.tgz#33b310e0b73e281aa0afcb16e261c180f2761f0a"
   integrity sha512-BwWa/EeKvboG22m4HmnCEfs/RcPtQ5pL5uVss8+POLgDSICKDGhuHrQiH/DtgqbceXZCryNlJhLkNXQ6TxcR+A==
@@ -694,15 +694,6 @@ cli-spinners@^2.5.0:
   resolved "https://registry.npmmirror.com/cli-spinners/-/cli-spinners-2.6.1.tgz#adc954ebe281c37a6319bfa401e6dd2488ffb70d"
   integrity sha512-x/5fWmGMnbKQAaNwN+UZlV79qBLM9JFnJuJ03gIi5whrob0xV0ofNVHy9DhwGdsMJQc2OKv0oGmLzvaqvAVv+g==
 
-clipboard@^2.0.4:
-  version "2.0.10"
-  resolved "https://registry.npmmirror.com/clipboard/-/clipboard-2.0.10.tgz#e61f6f7139ac5044c58c0484dcac9fb2a918bfd6"
-  integrity sha512-cz3m2YVwFz95qSEbCDi2fzLN/epEN9zXBvfgAoGkvGOJZATMl9gtTDVOtBYkx2ODUJl2kvmud7n32sV2BpYR4g==
-  dependencies:
-    good-listener "^1.2.2"
-    select "^1.1.2"
-    tiny-emitter "^2.0.0"
-
 clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.npmmirror.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
@@ -787,11 +778,6 @@ defaults@^1.0.3:
   integrity sha512-s82itHOnYrN0Ib8r+z7laQz3sdE+4FP3d9Q7VLO7U+KRT+CR0GsWuyHxzdAY82I7cXv0G/twrqomTJLOssO5HA==
   dependencies:
     clone "^1.0.2"
-
-delegate@^3.1.2:
-  version "3.2.0"
-  resolved "https://registry.npmmirror.com/delegate/-/delegate-3.2.0.tgz#b66b71c3158522e8ab5744f720d8ca0c2af59166"
-  integrity sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -1259,13 +1245,6 @@ globby@^6.1.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
-
-good-listener@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.npmmirror.com/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
-  integrity sha512-goW1b+d9q/HIwbVYZzZ6SsTr4IgE+WA44A0GmPIQstuOrgsFcT7VEJ48nmr9GaRtNu0XTKacFLGnBPAM6Afouw==
-  dependencies:
-    delegate "^3.1.2"
 
 graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   version "4.2.9"
@@ -1811,11 +1790,6 @@ section-matter@^1.0.0:
     extend-shallow "^2.0.1"
     kind-of "^6.0.0"
 
-select@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.npmmirror.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
-  integrity sha512-OwpTSOfy6xSs1+pwcNrv0RBMOzI39Lp3qQKUTPVVPRjCdNa5JH/oPRiqsesIskK8TVgmRiHwO4KXlV2Li9dANA==
-
 semver@^6.0.0:
   version "6.3.0"
   resolved "https://registry.npmmirror.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
@@ -1914,11 +1888,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
-
-tiny-emitter@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.npmmirror.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
-  integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
@@ -2033,13 +2002,6 @@ vuepress-plugin-copy-code2@^2.0.0-beta.24:
     vue "^3.2.31"
     vue-router "^4.0.14"
     vuepress-plugin-sass-palette "2.0.0-beta.24"
-
-vuepress-plugin-nuggets-style-copy@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmmirror.com/vuepress-plugin-nuggets-style-copy/-/vuepress-plugin-nuggets-style-copy-1.0.3.tgz#3a3bb57c04c7d9ec58afd93ff3db8b6102574bb8"
-  integrity sha512-0v+9i8ZkD0a87nxH/KGioJE6Szeh5ZMBQxRyjEyeUo3B/OSXuuED9ih6+JW2e3LKbsxkza1ZAv8dVXNurKXtFw==
-  dependencies:
-    clipboard "^2.0.4"
 
 vuepress-plugin-sass-palette@2.0.0-beta.24:
   version "2.0.0-beta.24"
