@@ -86,6 +86,12 @@ module.exports = {
           theme: 'dark-plus'
         }
         : false
+    ],
+    [
+      '@vuepress/pwa',
+      {
+        skipWaiting: true
+      }
     ]
   ],
   themeConfig: {
