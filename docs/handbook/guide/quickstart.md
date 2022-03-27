@@ -186,7 +186,7 @@ npm run lint
   <CodeGroupItem title="Stylelint">
 
 ```bash
-npm run stylelint
+npm run lint:style
 ```
 
   </CodeGroupItem>
