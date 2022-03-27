@@ -17,7 +17,7 @@
 鲸腾前端团队快速从"零"搭建 Web、小程序、H5、离线包应用程序的前端项目脚手架。
 
 ## 功能概览图
-<img src="/create-project/images/create-project.png"/>
+<img src="/images/create-project.png"/>
 
 ## 简介
 **create-project** 基于 [`vue`](https://vuejs.org/)，使用 `vite` 或者 `webpack` 构建项目，支持众多的开箱即用的功能和针对项目进行了不同程度的优化。它的宗旨是快速创建一套**纯净**却具备强大基础功能的模板，协助开发者自由发挥快速搭建任何类型的项目。
