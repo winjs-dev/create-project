@@ -65,6 +65,7 @@ module.exports = {
     }
   },
   plugins: [
+    copyCode({}),
     [
       '@vuepress/register-components',
       {
@@ -74,7 +75,6 @@ module.exports = {
     [
       '@vuepress/plugin-nprogress'
     ],
-    copyCode({}),
     [
       '@vuepress/plugin-search'
     ],
@@ -91,6 +91,15 @@ module.exports = {
       '@vuepress/pwa',
       {
         skipWaiting: true
+      }
+    ],
+    [
+      '@vuepress/docsearch',
+      {
+        apiKey: '95e0b6eab9f298373f256d8f00750d36',
+        indexName: 'cloud-templates',
+        // 如果 Algolia 没有为你提供 `appId` ，使用 `BH4D9OD16A` 或者移除该配置项
+        appId: 'ZL5DKREQUN'
       }
     ]
   ],
