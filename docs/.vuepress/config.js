@@ -1,5 +1,6 @@
 const { path } = require('@vuepress/utils');
 const { copyCode } = require('vuepress-plugin-copy-code2');
+const { sitemap } = require('vuepress-plugin-sitemap2');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -65,6 +66,12 @@ module.exports = {
     }
   },
   plugins: [
+    [
+      'sitemap2',
+      {
+        hostname: 'https://cloud-templates.github.io/create-project/'
+      }
+    ],
     copyCode({}),
     [
       '@vuepress/register-components',

@@ -24,7 +24,8 @@
     "@vuepress/plugin-shiki": "^2.0.0-beta.37",
     "gh-pages": "^3.2.3",
     "vuepress": "^2.0.0-beta.37",
-    "vuepress-plugin-copy-code2": "^2.0.0-beta.32"
+    "vuepress-plugin-copy-code2": "^2.0.0-beta.32",
+    "vuepress-plugin-sitemap2": "^2.0.0-beta.24"
   },
   "resolutions": {
     "vite": "2.8.6"
