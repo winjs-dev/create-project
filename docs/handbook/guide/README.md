@@ -16,6 +16,9 @@
 
 鲸腾前端团队快速从"零"搭建 Web、小程序、H5、离线包应用程序的前端项目脚手架。
 
+## 架构图
+<img src="/images/fe.png"/>
+
 ## 功能概览图
 <img src="/images/create-project.png"/>
 
