@@ -47,18 +47,30 @@ npm init @winner-fed/create-project@2 [project-name]
 - H5 离线包
 - PC
 
+#### 3. Select a mobile development platform?（选择移动开发平台）
+- GMU
+- mPaaS
+
 ::: tip 提示
 
-当选择 `H5 离线包` 的时候，会要求输入 `离线包 ID` 及 `离线包名称`。
+当选择 `H5 离线包` 的时候，**此选项会出现**。
+
+这个时候会要求输入 `离线包 ID` 及 `离线包名称`。
+
 其中，这两个值都是有校验规则的。
+
+在 [GMU](https://www.lightyy.com/#/index) 平台中，
 - 离线包 ID：4-8 位的小写英文字母或数字，注意唯一性
 - 离线包名称：1-10 位的中英文字符或数字
 
+在 [mPaaS](https://help.aliyun.com/document_detail/49549.html) 平台中，
+- 离线包 ID：8 位的数字，注意唯一性
+- 离线包名称：无规则限制
 :::
 
-#### 3. Add TypeScript?（是否需要使用 TypeScript）
+#### 4. Add TypeScript?（是否需要使用 TypeScript）
 
-#### 4. Choose whether your build tools is bundle(webpack) or bundless(vite)?（选择构建工具）
+#### 5. Choose whether your build tools is bundle(webpack) or bundless(vite)?（选择构建工具）
 
 - bundle(webpack)
 - bundleless(vite)
@@ -71,7 +83,7 @@ npm init @winner-fed/create-project@2 [project-name]
 :::
 
 
-#### 5. Select a UI Framework（选择 UI 组件库）
+#### 6. Select a UI Framework（选择 UI 组件库）
 
 - Element UI
 - Ant Design Vue
@@ -92,7 +104,7 @@ npm init @winner-fed/create-project@2 [project-name]
     
 :::
 
-#### 6. Select a mobile layout adaptation plan?（选择移动端布局适配方案）
+#### 7. Select a mobile layout adaptation plan?（选择移动端布局适配方案）
 
 - rem
 - vw
@@ -106,12 +118,12 @@ npm init @winner-fed/create-project@2 [project-name]
 
 :::
 
-#### 7. Select a Version control tool?（选择版本管理工具）
+#### 8. Select a Version control tool?（选择版本管理工具）
 
 - Git
 - SVN
 
-#### 8. Add Mirror Source Support?（是否使用公司镜像源）
+#### 9. Add Mirror Source Support?（是否使用公司镜像源）
 
 ::: tip 提示
 
@@ -119,7 +131,7 @@ npm init @winner-fed/create-project@2 [project-name]
 
 :::
 
-#### 9. Add See Package Support?（是否支持 SEE 平台发布物及 Docker 发布物）
+#### 10. Add See Package Support?（是否支持 SEE 平台发布物及 Docker 发布物）
 
 ::: tip 提示
 
@@ -127,7 +139,7 @@ npm init @winner-fed/create-project@2 [project-name]
 
 :::
 
-#### 10. Add Subsystem Support?（是否支持子系统）
+#### 11. Add Subsystem Support?（是否支持子系统）
 
 ::: tip 提示
 
