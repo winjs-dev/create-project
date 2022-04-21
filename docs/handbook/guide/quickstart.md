@@ -21,7 +21,9 @@
   <CodeGroupItem title="命令">
 
 ```bash
-npm init @winner-fed/create-project@2 [project-name]
+npm init @winner-fed/project@2 [project-name]
+# 相当于
+npx @winner-fed/create-project@2 [project-name]
 ```
 
   </CodeGroupItem>
