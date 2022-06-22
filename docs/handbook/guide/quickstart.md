@@ -18,19 +18,36 @@
 通过以下指令创建一个新项目：
 
 <CodeGroup>
-  <CodeGroupItem title="命令">
+  <CodeGroupItem title="pnpm">
 
 ```bash
-npm init @winner-fed/project@2 [project-name]
-# 相当于
-npx @winner-fed/create-project@2 [project-name]
+pnpm dlx @winner-fed/create-project project-name
 ```
 
   </CodeGroupItem>
+
+  <CodeGroupItem title="yarn">
+
+```bash
+yarn create @winner-fed/project project-name
+```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="npm">
+
+```bash
+npm init @winner-fed/project@2 project-name
+# 相当于
+npx @winner-fed/create-project@2 project-name
+```
+
+  </CodeGroupItem>
+
 </CodeGroup>
 
 ::: warning 注意
-版本号(@2)不能被省略，否则 npm 可能解析为包的缓存版本和过期版本。
+在使用 npm 时，版本号(@2)不能被省略，否则 npm 可能解析为包的缓存版本和过期版本。
 :::
 
 ### 选择特性
