@@ -154,7 +154,7 @@ npx @winner-fed/create-project@2 project-name
 
 ::: tip 提示
 
-当选择了第8步骤为 `yes` 时，此选项才会出现。
+当选择了第9步骤为 `yes` 时，此选项才会出现。
 
 :::
 
@@ -162,7 +162,7 @@ npx @winner-fed/create-project@2 project-name
 
 ::: tip 提示
 
-- 当选择了第8步骤为 `yes` 时，此选项才会出现。
+- 当选择了第9步骤为 `yes` 时，此选项才会出现。
 - 支持生成 Hui pro 1.x 的子系统，可以运行在以操作员中心或者财富中台作为外框架的主系统中 
   - Vite 作为构建工具的时候，不支持生成 Hui pro 1.x 的子系统
   - Vue3 不支持 Hui pro 1.x
