@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "An easy way to start a project",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
     "deploy": "sh deploy.sh"
   },
   "keywords": [
@@ -13,21 +11,5 @@
     "create-project"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/cloud-templates/create-project",
-  "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^2.0.0-beta.37",
-    "@vuepress/plugin-docsearch": "^2.0.0-beta.37",
-    "@vuepress/plugin-nprogress": "^2.0.0-beta.37",
-    "@vuepress/plugin-pwa": "^2.0.0-beta.37",
-    "@vuepress/plugin-register-components": "^2.0.0-beta.37",
-    "@vuepress/plugin-search": "^2.0.0-beta.37",
-    "@vuepress/plugin-shiki": "^2.0.0-beta.37",
-    "gh-pages": "^3.2.3",
-    "vuepress": "^2.0.0-beta.37",
-    "vuepress-plugin-copy-code2": "^2.0.0-beta.32",
-    "vuepress-plugin-sitemap2": "^2.0.0-beta.24"
-  },
-  "resolutions": {
-    "vite": "2.8.6"
-  }
+  "homepage": "https://github.com/cloud-templates/create-project"
 }
