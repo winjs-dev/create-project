@@ -7,7 +7,7 @@ set -e
 npm run docs:build
 
 # 进入生成的文件夹
-cd docs/.vuepress/dist
+cd docs/dist
 
 # 拷贝目录和文件
 cp -r ../../../.github ./
